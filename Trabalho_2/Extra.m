@@ -83,6 +83,12 @@ for a = linspace(0,pi/4,n_frames)
     pause(0.05)
 end
 
+for a = linspace(0,pi/2,n_frames)
+    r_cube = trans3(10,0,0)*rot3("y",pi)*trans3(10,0,0)*rot3("x",pi/4)*trans3(10,0,0)*rot3("z",a)*cube;
+    set(h, "XData", r_cube(1,:), "YData", r_cube(2,:), "ZData",  r_cube(3,:))
+    pause(0.05)
+end
+
 % for a = linspace(0,pi/2,n_frames)
 %     r_cube = rot3("z",a)*rot3("y",pi)*trans3(10,0,0)*rot3("x",pi/4)*cube;
 %     set(h, "XData", r_cube(1,:), "YData", r_cube(2,:), "ZData",  r_cube(3,:))
