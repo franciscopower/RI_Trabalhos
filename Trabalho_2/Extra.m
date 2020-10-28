@@ -45,7 +45,7 @@ cube = [L1 L2 L3 L4 L5 L6 L7 L8 L9 L10 L11 L12];
 cube = [cube; ones(1,12*n)];
 
 % Plot cube
-plot3(cube(1,:), cube(2,:), cube(3,:), '.r')
+hrf=plot3(cube(1,:), cube(2,:), cube(3,:), '.r')
 hold on
 axis equal
 axis([-15 15 -15 15 -15 15])
@@ -100,6 +100,16 @@ for a = linspace(0,4,n_frames)
     set(h, "XData", r_cube(1,:), "YData", r_cube(2,:), "ZData",  r_cube(3,:))
     pause(0.05)
 end
+
+for a = linspace(0,2*pi,n_frames)
+    r_cube = trans3(0,0,-4)*rot3("x",-pi/2)*rot3("z",pi/2)*rot3("y",pi)*trans3(10,0,0)*rot3("x",pi/4)*rot3("x",a)*cube;
+    cubefinal=rot3("z",a)*cube;
+    set(h, "XData", r_cube(1,:), "YData", r_cube(2,:), "ZData",  r_cube(3,:))
+    set(hrf,"XData", cubefinal(1,:), "YData", cubefinal(2,:), "ZData",  cubefinal(3,:))
+    pause(0.05)
+end
+
+
 
 hold off
 
