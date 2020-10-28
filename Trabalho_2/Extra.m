@@ -45,24 +45,58 @@ cube = [L1 L2 L3 L4 L5 L6 L7 L8 L9 L10 L11 L12];
 cube = [cube; ones(1,12*n)];
 
 % Plot cube
-scatter3(cube(1,:), cube(2,:), cube(3,:), '.r')
+plot3(cube(1,:), cube(2,:), cube(3,:), '.r')
 hold on
 axis equal
-axis([-5 15 -5 5 -5 5])
+axis([-15 15 -15 15 -15 15])
+grid on
+xlabel("x")
+ylabel("y")
+zlabel("z")
 
 pause(1)
 
 % Create copy of cube and display
 r_cube = cube;
-h=scatter3(r_cube(1,:), r_cube(2,:), r_cube(3,:), '.g')
+h=plot3(r_cube(1,:), r_cube(2,:), r_cube(3,:), '.g');
 
 % Animate cube
-n_frames = 50;
+n_frames = 30;
 r = linspace(0,pi/2,n_frames);
 t = linspace(0,10,n_frames);
 
 for a = 1:n_frames
-    r_cube = trans3(t(a),0,0)*rot3("z", r(a))*rot3("x", r(a))*cube;
+    r_cube = trans3(t(a),0,0)*rot3("z", r(a))*cube;
+    set(h, "XData", r_cube(1,:), "YData", r_cube(2,:), "ZData",  r_cube(3,:))
+    pause(0.05)
+end
+
+for a = linspace(0,pi,n_frames)
+    r_cube = rot3("y",a)*trans3(10,0,0)*cube;
+    set(h, "XData", r_cube(1,:), "YData", r_cube(2,:), "ZData",  r_cube(3,:))
+    pause(0.05)
+end
+
+for a = linspace(0,pi/4,n_frames)
+    r_cube = rot3("y",pi)*trans3(10,0,0)*rot3("x",a)*cube;
+    set(h, "XData", r_cube(1,:), "YData", r_cube(2,:), "ZData",  r_cube(3,:))
+    pause(0.05)
+end
+
+for a = linspace(0,pi/2,n_frames)
+    r_cube = rot3("z",a)*rot3("y",pi)*trans3(10,0,0)*rot3("x",pi/4)*cube;
+    set(h, "XData", r_cube(1,:), "YData", r_cube(2,:), "ZData",  r_cube(3,:))
+    pause(0.05)
+end
+
+for a = linspace(0,pi/2,n_frames)
+    r_cube = rot3("x",-a)*rot3("z",pi/2)*rot3("y",pi)*trans3(10,0,0)*rot3("x",pi/4)*cube;
+    set(h, "XData", r_cube(1,:), "YData", r_cube(2,:), "ZData",  r_cube(3,:))
+    pause(0.05)
+end
+
+for a = linspace(0,4,n_frames)
+    r_cube = trans3(0,0,-a)*rot3("x",-pi/2)*rot3("z",pi/2)*rot3("y",pi)*trans3(10,0,0)*rot3("x",pi/4)*cube;
     set(h, "XData", r_cube(1,:), "YData", r_cube(2,:), "ZData",  r_cube(3,:))
     pause(0.05)
 end
