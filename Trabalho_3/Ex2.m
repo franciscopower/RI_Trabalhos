@@ -70,11 +70,11 @@ while true
     %check if input is valid or canceled
     try
         aA = deg2rad(str2double(a{1}));
-        axisA = a{2};
+        axisA = a{2}(1);
         aB = deg2rad(str2double(a{3}));
-        axisB = a{4};
+        axisB = a{4}(1);
         aC = deg2rad(str2double(a{5}));
-        axisC = a{6};
+        axisC = a{6}(1);
         if isnan(aA) || isnan(aB) || isnan(aC)
             continue
         end
