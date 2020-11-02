@@ -21,8 +21,8 @@ p3 = [3 0.5 0]';
 p4 = [0 0.5 0]';
 
 % Create rectangles
-elo = [p1 p2 p3 p4
-    ones(1,4)];
+joint = [p1 p2 p3 p4;
+        ones(1,4)];
 
 % initial transformations
 TB = trans3(3,0,0); 
@@ -32,14 +32,14 @@ MA1 = eye(4);
 MB1 = TB;
 MC1 = TB*TC;
 
-eloA = elo;
-eloB = MB1*elo; %place arm B in initial position
-eloC = MC1*elo; %place arm C in initial position
+jointA = joint;
+jointB = MB1*joint; %place arm B in initial position
+jointC = MC1*joint; %place arm C in initial position
 
 % Display initial rectangles
-A = fill3(eloA(1,:), eloA(2,:), eloA(3,:), 'r');
-B = fill3(eloB(1,:), eloB(2,:), eloB(3,:), 'g');
-C = fill3(eloC(1,:), eloC(2,:), eloC(3,:), 'b');
+A = fill3(jointA(1,:), jointA(2,:), jointA(3,:), 'r');
+B = fill3(jointB(1,:), jointB(2,:), jointB(3,:), 'g');
+C = fill3(jointC(1,:), jointC(2,:), jointC(3,:), 'b');
 
 while true
     
@@ -70,19 +70,19 @@ while true
     %rotate joints
     for i = 1:frames
         % calculate transformation matrices
-        [MA2,MB2,MC2] = rotElo(1,"z",aA_incr(i),MA1,MB1,MC1);
-        [MA2,MB2,MC2] = rotElo(2,"z",aB_incr(i),MA2,MB2,MC2);
-        [MA2,MB2,MC2] = rotElo(3,"z",aC_incr(i),MA2,MB2,MC2);
+        [MA2,MB2,MC2] = rotJoint(1,"z",aA_incr(i),MA1,MB1,MC1);
+        [MA2,MB2,MC2] = rotJoint(2,"z",aB_incr(i),MA2,MB2,MC2);
+        [MA2,MB2,MC2] = rotJoint(3,"z",aC_incr(i),MA2,MB2,MC2);
 
         %calculate new positions of all points
-        eloA = MA2*elo;    
-        eloB = MB2*elo;
-        eloC = MC2*elo;
+        jointA = MA2*joint;    
+        jointB = MB2*joint;
+        jointC = MC2*joint;
         
         %display new positions
-        set(A, 'XData', eloA(1,:), 'YData', eloA(2,:), 'ZData', eloA(3,:))
-        set(B, 'XData', eloB(1,:), 'YData', eloB(2,:), 'ZData', eloB(3,:))
-        set(C, 'XData', eloC(1,:), 'YData', eloC(2,:), 'ZData', eloC(3,:))
+        set(A, 'XData', jointA(1,:), 'YData', jointA(2,:), 'ZData', jointA(3,:))
+        set(B, 'XData', jointB(1,:), 'YData', jointB(2,:), 'ZData', jointB(3,:))
+        set(C, 'XData', jointC(1,:), 'YData', jointC(2,:), 'ZData', jointC(3,:))
 
         pause(pause_time)
     end
