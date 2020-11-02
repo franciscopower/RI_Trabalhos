@@ -9,6 +9,7 @@ axis([-15 15 -15 15 0 15])
 xlabel('x')
 ylabel('y')
 zlabel('z')
+frames = 20;
 
 % Rectangle points
 p1 = [0 -0.5 0]';
@@ -24,72 +25,63 @@ elo = [p1 p2 p3 p4
 TB = trans3(3,0,0); 
 TC = trans3(3,0,0); 
 
+MA1 = eye(4);
+MB1 = TB;
+MC1 = TB*TC;
+
 eloA = elo;
-eloB = TB*elo; %place arm B in initial position
-eloC = TB*TC*elo; %place arm 3 in initial position
+eloB = MB1*elo; %place arm B in initial position
+eloC = MC1*elo; %place arm 3 in initial position
 
 % Display initial rectangles
 A = fill3(eloA(1,:), eloA(2,:), eloA(3,:), 'r');
 B = fill3(eloB(1,:), eloB(2,:), eloB(3,:), 'g');
 C = fill3(eloC(1,:), eloC(2,:), eloC(3,:), 'b');
 
-MA1 = eye(4);
-MA2 = eye(4);
-MB1 = TB;
-MB2 = eye(4);
-MC1 = TB*TC;
-MC2 = eye(4);
 
-%rotate on A ref
-for a = linspace(0,pi/2,20)
-    MA2 = rot3("z",a)*MA1;
-    eloA = MA2*elo;
-    
-    MB2 = MA2*MA1^-1*MB1;
-    eloB = MB2*elo;
-    
-    MC2 = MB2*MB1^-1*MC1;
-    eloC = MC2*elo;
-    
-    set(A, 'XData', eloA(1,:), 'YData', eloA(2,:), 'ZData', eloA(3,:))
-    set(B, 'XData', eloB(1,:), 'YData', eloB(2,:), 'ZData', eloB(3,:))
-    set(C, 'XData', eloC(1,:), 'YData', eloC(2,:), 'ZData', eloC(3,:))
 
-    pause(0.05)
+while 1 == 1
+    prompt = {'Joint 1:','Joint 2:','Joint 3:'};
+    dlgtitle = 'Rotation Angles';
+    dims = [1 35];
+    definput = {'0','0','0'};
+    a = inputdlg(prompt,dlgtitle,dims,definput);
+
+    try
+        aA = deg2rad(str2double(a{1}));
+        aB = deg2rad(str2double(a{2}));
+        aC = deg2rad(str2double(a{3}));
+        if isnan(aA) || isnan(aB) || isnan(aC)
+            continue
+        end
+    catch
+        break
+    end
+
+    aA_incr = linspace(0,aA,frames);
+    aB_incr = linspace(0,aB,frames);
+    aC_incr = linspace(0,aC,frames);
+
+    %rotate on A ref
+    for i = 1:frames
+
+        [MA2,MB2,MC2] = rotElo(1,"z",aA_incr(i),MA1,MB1,MC1);
+        [MA2,MB2,MC2] = rotElo(2,"z",aB_incr(i),MA2,MB2,MC2);
+        [MA2,MB2,MC2] = rotElo(3,"z",aC_incr(i),MA2,MB2,MC2);
+
+        eloA = MA2*elo;    
+        eloB = MB2*elo;
+        eloC = MC2*elo;
+
+        set(A, 'XData', eloA(1,:), 'YData', eloA(2,:), 'ZData', eloA(3,:))
+        set(B, 'XData', eloB(1,:), 'YData', eloB(2,:), 'ZData', eloB(3,:))
+        set(C, 'XData', eloC(1,:), 'YData', eloC(2,:), 'ZData', eloC(3,:))
+
+        pause(0.05)
+    end
+    MA1 = MA2;
+    MB1 = MB2;
+    MC1 = MC2;
+    
 end
-MA1 = MA2;
-MB1 = MB2;
-MC1 = MC2;
 
-%rotate on B ref
-for a = linspace(0,pi/2,20)
-    MB2 = MB1*rot3("z",a);
-    eloB = MB2*elo;
-    
-    MC2 = MB2*MB1^-1*MC1;
-    eloC = MC2*elo;
-    
-    set(A, 'XData', eloA(1,:), 'YData', eloA(2,:), 'ZData', eloA(3,:))
-    set(B, 'XData', eloB(1,:), 'YData', eloB(2,:), 'ZData', eloB(3,:))
-    set(C, 'XData', eloC(1,:), 'YData', eloC(2,:), 'ZData', eloC(3,:))
-
-    pause(0.05)
-end
-MA1 = MA2;
-MB1 = MB2;
-MC1 = MC2;
-
-%rotate on C ref
-for a = linspace(0,-pi/2,20)
-    MC2 = MC1*rot3("z",a);
-    eloC = MC2*elo;
-    
-    set(A, 'XData', eloA(1,:), 'YData', eloA(2,:), 'ZData', eloA(3,:))
-    set(B, 'XData', eloB(1,:), 'YData', eloB(2,:), 'ZData', eloB(3,:))
-    set(C, 'XData', eloC(1,:), 'YData', eloC(2,:), 'ZData', eloC(3,:))
-
-    pause(0.05)
-end
-MA1 = MA2;
-MB1 = MB2;
-MC1 = MC2;
