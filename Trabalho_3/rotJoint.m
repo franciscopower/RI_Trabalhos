@@ -24,6 +24,11 @@ elseif n_elo == 3
     MB2 = MB1;
     MC2 = MC1*rot3(axis,angle);
     Mt2 = MC2*MC1^-1*Mt1;
+elseif n_elo == 4
+    MA2 = MA1;
+    MB2 = MB1;
+    MC2 = MC1;
+    Mt2 = Mt1*rot3(axis,angle);
 end
 end
 

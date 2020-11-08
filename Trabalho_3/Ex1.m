@@ -70,9 +70,9 @@ while true
     %rotate joints
     for i = 1:frames
         % calculate transformation matrices
-        [MA2,MB2,MC2] = rotJoint(1,"z",aA_incr(i),MA1,MB1,MC1);
-        [MA2,MB2,MC2] = rotJoint(2,"z",aB_incr(i),MA2,MB2,MC2);
-        [MA2,MB2,MC2] = rotJoint(3,"z",aC_incr(i),MA2,MB2,MC2);
+        [MA2,MB2,MC2,~] = rotJoint(1,"z",aA_incr(i),MA1,MB1,MC1,eye(4));
+        [MA2,MB2,MC2,~] = rotJoint(2,"z",aB_incr(i),MA2,MB2,MC2,eye(4));
+        [MA2,MB2,MC2,~] = rotJoint(3,"z",aC_incr(i),MA2,MB2,MC2,eye(4));
 
         %calculate new positions of all points
         jointA = MA2*joint;    
