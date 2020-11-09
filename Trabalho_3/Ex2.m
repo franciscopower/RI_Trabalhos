@@ -83,53 +83,32 @@ Pt = oTt1*trans3(0,0,1)*[Pt';1];
 
 title(sprintf('Coordinates of tool tip: (%0.1f, %0.1f, %0.1f)', Pt(1),Pt(2),Pt(3)))
 
+a = {'z',0,'x',-90,'x',90,'x',0;
+    'z',-90,'x',0,'x',-180,'x',0;
+    'z',90,'x',0,'x',180,'x',0;
+    'z',-135,'x',-45+90,'x',-90,'x',-45};
 
-while true
-    
-    % prompt user for rotation angles, in degrees ------------------------
-    prompt = {'Position x:','Position y:','Position z:'};
-    dlgtitle = 'Position of tool tip';
-    dims = [1 35];
-    definput = {'0','0','10'};
-    a = inputdlg(prompt,dlgtitle,dims,definput);
-    
-    %check if input is valid or canceled
-    try
-        xx = str2double(a{1});
-        yy = str2double(a{2});
-        zz = str2double(a{3});
-        if isnan(aA) || isnan(aB) || isnan(aC)
-            continue
-        end        
-    catch
-        break
-    end
-    % end prompt ---------------------------------------------------------
-    
+for n = 1:2
+
     %get input values
-    xx_incr = linspace(0,xx,frames);
-    yy_incr = linspace(0,yy,frames);
-    zz_incr = linspace(0,zz,frames);
-    
-    [aAz,aA,aB,aC,aT]=posToAngle([xx,yy,zz],3,1);
-    
-    aAz_incr=linspace(1,aAz,frames);
-    aA_incr=linspace(1,aA,frames);
-    aB_incr=linspace(1,aB,frames);
-    aC_incr=linspace(1,aC,frames);
-    aT_incr=linspace(1,aT,frames);
-
+    axisA=a{n,1};
+    aA_incr = linspace(0,deg2rad(a{n,2}),frames);
+    axisB=a{n,3};
+    aB_incr = linspace(0,deg2rad(a{n,4}),frames);
+    axisC=a{n,5};
+    aC_incr = linspace(0,deg2rad(a{n,6}),frames);
+    axisT=a{n,7};
+    aT_incr = linspace(0,deg2rad(a{n,8}),frames);
 
     %rotate joints
-    for i = 1:frames        
+    for i = 1:frames
         
         % calculate transformation matrices
-%         oTa2 = rot3('z',aAz)*oTa1; %rotate around original oz
-        oTa2 = oTa1*rot3('z',aAz_incr(i));
-        oTa2 = oTa2*rot3('x',aA_incr(i));
-        aTb2 = aTb1*rot3('x',aB_incr(i));
-        bTc2 = bTc1*rot3('x',aC_incr(i));
-        cTt2 = cTt1*rot3('x',aT_incr(i));
+%         oTa2 = rot3('z',aA_incr(i))*oTa1; %rotate around original oz
+        oTa2 = oTa1*rot3(axisA,aA_incr(i));
+        aTb2 = aTb1*rot3(axisB,aB_incr(i));
+        bTc2 = bTc1*rot3(axisC,aC_incr(i));
+        cTt2 = cTt1*rot3(axisT,aT_incr(i));
         
         oTb2 = oTa2*aTb2;
         oTc2 = oTa2*aTb2*bTc2;
@@ -178,6 +157,8 @@ while true
     aTb1 = aTb2;
     bTc1 = bTc2;
     cTt1 = cTt2;
+    
+    pause(0.5)
     
 end
 
