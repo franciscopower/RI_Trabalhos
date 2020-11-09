@@ -25,16 +25,16 @@ joint = [p1 p2 p3 p4;
         ones(1,4)];
 
 % initial transformations
-TB = trans3(3,0,0); 
-TC = trans3(3,0,0); 
+aTb1 = trans3(3,0,0); 
+bTc1 = trans3(3,0,0); 
 
-MA1 = eye(4);
-MB1 = TB;
-MC1 = TB*TC;
+oTa1 = eye(4);
+oTb1 = aTb1;
+oTc1 = aTb1*bTc1;
 
 jointA = joint;
-jointB = MB1*joint; %place arm B in initial position
-jointC = MC1*joint; %place arm C in initial position
+jointB = oTb1*joint; %place arm B in initial position
+jointC = oTc1*joint; %place arm C in initial position
 
 % Display initial rectangles
 A = fill3(jointA(1,:), jointA(2,:), jointA(3,:), 'r');
@@ -43,7 +43,7 @@ C = fill3(jointC(1,:), jointC(2,:), jointC(3,:), 'b');
 
 while true
     
-    % prompt user for rotation angles, in degrees
+   % prompt user for rotation angles, in degrees
     prompt = {'Joint 1:','Joint 2:','Joint 3:'};
     dlgtitle = 'Rotation Angles (º)';
     dims = [1 35];
@@ -61,6 +61,7 @@ while true
     catch
         break
     end
+    % end prompt ---------------------------------------------------------
     
     %get input values
     aA_incr = linspace(0,aA,frames);
@@ -69,28 +70,31 @@ while true
 
     %rotate joints
     for i = 1:frames
-        % calculate transformation matrices
-        [MA2,MB2,MC2,~] = rotJoint(1,"z",aA_incr(i),MA1,MB1,MC1,eye(4));
-        [MA2,MB2,MC2,~] = rotJoint(2,"z",aB_incr(i),MA2,MB2,MC2,eye(4));
-        [MA2,MB2,MC2,~] = rotJoint(3,"z",aC_incr(i),MA2,MB2,MC2,eye(4));
-
-        %calculate new positions of all points
-        jointA = MA2*joint;    
-        jointB = MB2*joint;
-        jointC = MC2*joint;
         
+        % calculate transformation matrices
+        oTa2 = rot3('z',aA_incr(i))*oTa1;
+        aTb2 = aTb1*rot3('z',aB_incr(i));
+        bTc2 = bTc1*rot3('z',aC_incr(i));
+        
+        oTb2 = oTa2*aTb2;
+        oTc2 = oTa2*aTb2*bTc2;
+        
+        %calculate new positions of all points
+        jointA = oTa2*joint;    
+        jointB = oTb2*joint;
+        jointC = oTc2*joint;
+               
         %display new positions
         set(A, 'XData', jointA(1,:), 'YData', jointA(2,:), 'ZData', jointA(3,:))
         set(B, 'XData', jointB(1,:), 'YData', jointB(2,:), 'ZData', jointB(3,:))
         set(C, 'XData', jointC(1,:), 'YData', jointC(2,:), 'ZData', jointC(3,:))
-
+        
         pause(pause_time)
     end
     
     %update initial matrices
-    MA1 = MA2;
-    MB1 = MB2;
-    MC1 = MC2;
-    
+    oTa1 = oTa2;
+    aTb1 = aTb2;
+    bTc1 = bTc2;    
 end
 

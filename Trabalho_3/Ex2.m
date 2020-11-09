@@ -43,14 +43,14 @@ tool = [luft ldft rdft ruft rubt rdbt ldbt lubt;
         ones(1,8)];
 
 % initial transformations
-TB = trans3(0,0,3); 
-TC = trans3(0,0,3); 
-Tt = trans3(0,0,3);
+aTb1 = trans3(0,0,3); 
+bTc1 = trans3(0,0,3); 
+cTt1 = trans3(0,0,3);
 
 oTa1 = eye(4);
-oTb1 = TB;
-oTc1 = TB*TC;
-oTt1 = TB*TC*Tt;
+oTb1 = aTb1;
+oTc1 = aTb1*bTc1;
+oTt1 = aTb1*bTc1*cTt1;
 
 jointA = joint;
 jointB = oTb1*joint; %place arm B in initial position
@@ -124,11 +124,16 @@ while true
 
     %rotate joints
     for i = 1:frames
+        
         % calculate transformation matrices
-        [oTa2,oTb2,oTc2,oTt2] = rotJoint(1,axisA,aA_incr(i),oTa1,oTb1,oTc1,oTt1);
-        [oTa2,oTb2,oTc2,oTt2] = rotJoint(2,axisB,aB_incr(i),oTa2,oTb2,oTc2,oTt2);
-        [oTa2,oTb2,oTc2,oTt2] = rotJoint(3,axisC,aC_incr(i),oTa2,oTb2,oTc2,oTt2);
-        [oTa2,oTb2,oTc2,oTt2] = rotJoint(4,axisT,aT_incr(i),oTa2,oTb2,oTc2,oTt2);
+        oTa2 = rot3(axisA,aA_incr(i))*oTa1;
+        aTb2 = aTb1*rot3(axisB,aB_incr(i));
+        bTc2 = bTc1*rot3(axisC,aC_incr(i));
+        cTt2 = cTt1*rot3(axisT,aT_incr(i));
+        
+        oTb2 = oTa2*aTb2;
+        oTc2 = oTa2*aTb2*bTc2;
+        oTt2 = oTa2*aTb2*bTc2*cTt2;
         
         %calculate new positions of all points
         jointA = oTa2*joint;    
@@ -170,9 +175,9 @@ while true
     
     %update initial matrices
     oTa1 = oTa2;
-    oTb1 = oTb2;
-    oTc1 = oTc2;
-    oTt1 = oTt2;
+    aTb1 = aTb2;
+    bTc1 = bTc2;
+    cTt1 = cTt2;
     
 end
 
