@@ -47,15 +47,15 @@ TB = trans3(0,0,3);
 TC = trans3(0,0,3); 
 Tt = trans3(0,0,3);
 
-MA1 = eye(4);
-MB1 = TB;
-MC1 = TB*TC;
-Mt1 = TB*TC*Tt;
+oTa1 = eye(4);
+oTb1 = TB;
+oTc1 = TB*TC;
+oTt1 = TB*TC*Tt;
 
 jointA = joint;
-jointB = MB1*joint; %place arm B in initial position
-jointC = MC1*joint; %place arm C in initial position
-toolT = Mt1*tool; %place toolT in initial position
+jointB = oTb1*joint; %place arm B in initial position
+jointC = oTc1*joint; %place arm C in initial position
+toolT = oTt1*tool; %place toolT in initial position
 
 % Display initial joints
 Af = fill3(jointA(1,1:4), jointA(2,1:4), jointA(3,1:4), 'r');
@@ -79,7 +79,7 @@ tb = fill3(toolT(1,4:8), toolT(2,4:8), toolT(3,4:8), 'y');
 tl = fill3([toolT(1,1:2) toolT(1,7:8)] , [toolT(2,1:2) toolT(2,7:8)], [toolT(3,1:2) toolT(3,7:8)], 'y');
 
 Pt = [0,0,0];
-Pt = Mt1*trans3(0,0,1)*[Pt';1];
+Pt = oTt1*trans3(0,0,1)*[Pt';1];
 
 title(sprintf('Coordinates of tool tip: (%0.1f, %0.1f, %0.1f)', Pt(1),Pt(2),Pt(3)))
 
@@ -125,16 +125,16 @@ while true
     %rotate joints
     for i = 1:frames
         % calculate transformation matrices
-        [MA2,MB2,MC2,Mt2] = rotJoint(1,axisA,aA_incr(i),MA1,MB1,MC1,Mt1);
-        [MA2,MB2,MC2,Mt2] = rotJoint(2,axisB,aB_incr(i),MA2,MB2,MC2,Mt2);
-        [MA2,MB2,MC2,Mt2] = rotJoint(3,axisC,aC_incr(i),MA2,MB2,MC2,Mt2);
-        [MA2,MB2,MC2,Mt2] = rotJoint(4,axisT,aT_incr(i),MA2,MB2,MC2,Mt2);
+        [oTa2,oTb2,oTc2,oTt2] = rotJoint(1,axisA,aA_incr(i),oTa1,oTb1,oTc1,oTt1);
+        [oTa2,oTb2,oTc2,oTt2] = rotJoint(2,axisB,aB_incr(i),oTa2,oTb2,oTc2,oTt2);
+        [oTa2,oTb2,oTc2,oTt2] = rotJoint(3,axisC,aC_incr(i),oTa2,oTb2,oTc2,oTt2);
+        [oTa2,oTb2,oTc2,oTt2] = rotJoint(4,axisT,aT_incr(i),oTa2,oTb2,oTc2,oTt2);
         
         %calculate new positions of all points
-        jointA = MA2*joint;    
-        jointB = MB2*joint;
-        jointC = MC2*joint;
-        toolT = Mt2*tool;
+        jointA = oTa2*joint;    
+        jointB = oTb2*joint;
+        jointC = oTc2*joint;
+        toolT = oTt2*tool;
                
         %display new positions
         set(Af, 'XData',jointA(1,1:4) , 'YData',jointA(2,1:4) , 'ZData',jointA(3,1:4) )
@@ -159,7 +159,7 @@ while true
         
         % calculate coordinates of tool tip
         Pt = [0,0,0];
-        Pt = Mt2*trans3(0,0,1)*[Pt';1];
+        Pt = oTt2*trans3(0,0,1)*[Pt';1];
 %         % show tool tip trajectory
 %         plot3(Pt(1), Pt(2), Pt(3), 'r.')
         % update title
@@ -169,10 +169,10 @@ while true
     end
     
     %update initial matrices
-    MA1 = MA2;
-    MB1 = MB2;
-    MC1 = MC2;
-    Mt1 = Mt2;
+    oTa1 = oTa2;
+    oTb1 = oTb2;
+    oTc1 = oTc2;
+    oTt1 = oTt2;
     
 end
 
