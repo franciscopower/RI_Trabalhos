@@ -72,7 +72,7 @@ while true
     for i = 1:frames
         
         % calculate transformation matrices
-        oTa2 = rot3('z',aA_incr(i))*oTa1;
+        oTa2 = oTa1*rot3('z',aA_incr(i));
         aTb2 = aTb1*rot3('z',aB_incr(i));
         bTc2 = bTc1*rot3('z',aC_incr(i));
         

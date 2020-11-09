@@ -126,7 +126,8 @@ while true
     for i = 1:frames
         
         % calculate transformation matrices
-        oTa2 = rot3(axisA,aA_incr(i))*oTa1;
+%         oTa2 = rot3('z',aA_incr(i))*oTa1; %rotate around original oz
+        oTa2 = oTa1*rot3(axisA,aA_incr(i));
         aTb2 = aTb1*rot3(axisB,aB_incr(i));
         bTc2 = bTc1*rot3(axisC,aC_incr(i));
         cTt2 = cTt1*rot3(axisT,aT_incr(i));
