@@ -90,7 +90,7 @@ while true
     prompt = {'Position x:','Position y:','Position z:'};
     dlgtitle = 'Position of tool tip';
     dims = [1 35];
-    definput = {'0','0','10'};
+    definput = {'0','0','0'};
     a = inputdlg(prompt,dlgtitle,dims,definput);
     
     %check if input is valid or canceled
@@ -98,7 +98,7 @@ while true
         xx = str2double(a{1});
         yy = str2double(a{2});
         zz = str2double(a{3});
-        if isnan(aA) || isnan(aB) || isnan(aC)
+        if isnan(xx) || isnan(yy) || isnan(zz)
             continue
         end        
     catch
@@ -107,29 +107,41 @@ while true
     % end prompt ---------------------------------------------------------
     
     %get input values
-    xx_incr = linspace(0,xx,frames);
-    yy_incr = linspace(0,yy,frames);
-    zz_incr = linspace(0,zz,frames);
+%     xx_incr = linspace(0,xx,frames);
+%     yy_incr = linspace(0,yy,frames);
+%     zz_incr = linspace(0,zz,frames);
     
     [aAz,aA,aB,aC,aT]=posToAngle([xx,yy,zz],3,1);
     
-    aAz_incr=linspace(1,aAz,frames);
-    aA_incr=linspace(1,aA,frames);
-    aB_incr=linspace(1,aB,frames);
-    aC_incr=linspace(1,aC,frames);
-    aT_incr=linspace(1,aT,frames);
+%     % calculate coordinates of tool tip
+    Pt = [0,0,0];
+    Pt = oTa1*aTb1*bTc1*cTt1*trans3(0,0,1)*[Pt';1];
+    [aaz,aa,ab,ac,at]=posToAngle([Pt(1), Pt(2), Pt(3)],3,1);
+    
+    aAz=aAz-aaz;
+    aA=aA-aa;
+    aB=aB-ab;
+    aC=aC-ac;
+    aT=aT-at;
+    
+    aAz_incr=linspace(0,aAz,frames);
+    aA_incr=linspace(0,aA,frames);
+    aB_incr=linspace(0,aB,frames);
+    aC_incr=linspace(0,aC,frames);
+    aT_incr=linspace(0,aT,frames);
 
 
     %rotate joints
-    for i = 1:frames        
+    for i = 1:frames 
         
-        % calculate transformation matrices
-%         oTa2 = rot3('z',aAz)*oTa1; %rotate around original oz
+        % calculate transformation matrices - joint moves
         oTa2 = oTa1*rot3('z',aAz_incr(i));
-        oTa2 = oTa2*rot3('x',aA_incr(i));
-        aTb2 = aTb1*rot3('x',aB_incr(i));
-        bTc2 = bTc1*rot3('x',aC_incr(i));
-        cTt2 = cTt1*rot3('x',aT_incr(i));
+        oTa2 = oTa2*rot3('y',aA_incr(i));
+        aTb2 = aTb1*rot3('y',aB_incr(i));
+        bTc2 = bTc1*rot3('y',aC_incr(i));
+        cTt2 = cTt1*rot3('y',aT_incr(i));
+
+%--------------------------------------------------        
         
         oTb2 = oTa2*aTb2;
         oTc2 = oTa2*aTb2*bTc2;
@@ -166,7 +178,7 @@ while true
         Pt = [0,0,0];
         Pt = oTt2*trans3(0,0,1)*[Pt';1];
 %         % show tool tip trajectory
-%         plot3(Pt(1), Pt(2), Pt(3), 'r.')
+        plot3(Pt(1), Pt(2), Pt(3), 'r.')
         % update title
         title(sprintf('Coordinates of tool tip: (%0.1f, %0.1f, %0.1f)', Pt(1),Pt(2),Pt(3)))
         

@@ -88,7 +88,7 @@ a = {'z',0,'x',-90,'x',90,'x',0;
     'z',90,'x',0,'x',180,'x',0;
     'z',-135,'x',-45+90,'x',-90,'x',-45};
 
-for n = 1:2
+for n = 1:4
 
     %get input values
     axisA=a{n,1};
@@ -145,7 +145,7 @@ for n = 1:2
         Pt = [0,0,0];
         Pt = oTt2*trans3(0,0,1)*[Pt';1];
 %         % show tool tip trajectory
-%         plot3(Pt(1), Pt(2), Pt(3), 'r.')
+        plot3(Pt(1), Pt(2), Pt(3), 'r.')
         % update title
         title(sprintf('Coordinates of tool tip: (%0.1f, %0.1f, %0.1f)', Pt(1),Pt(2),Pt(3)))
         
