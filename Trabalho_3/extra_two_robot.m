@@ -1,5 +1,9 @@
 %% 3D Robot arms
 
+clear all
+clc
+close all
+
 % Create figure
 figure(1)
 hold on
@@ -64,7 +68,7 @@ aTb1_2 = trans3(0,0,3);
 bTc1_2 = trans3(0,0,3); 
 cTt1_2 = trans3(0,0,3);
 
-oTa1_2 = trans3(10,0,0);
+oTa1_2 = trans3(12.3,0,0);
 oTb1_2 = oTa1_2*aTb1_2;
 oTc1_2 = oTa1_2*aTb1_2*bTc1_2;
 oTt1_2 = oTa1_2*aTb1_2*bTc1_2*cTt1_2;
@@ -131,19 +135,31 @@ Pt_2 = oTt1_2*trans3(0,0,1)*[Pt_2';1];
 
 
 % movimentos a executar para o robot1 
-a = {'z',0,'x',-90,'x',90,'x',0;
-    'z',-90,'x',0,'x',-180,'x',0;
-    'z',90,'x',0,'x',180,'x',0;
-    'z',-135,'x',-45+90,'x',-90,'x',-45};
+a = {'z',-45,'x',100,'x',20,'x',20;
+    'z',0,'x',-45,'x',0,'x',0;
+    'z',135,'x',0,'x',0,'x',0;
+    'z',0,'x',45,'x',0,'x',0;
+    'z',0,'x',-100,'x',0,'x',0;
+    'z',0,'x',0,'x',-20,'x',-20;
+    'z',0,'x',0,'x',0,'x',0;
+    'z',0,'x',0,'x',0,'x',0;
+    'z',0,'x',0,'x',0,'x',0;
+    };
 
 % movimentos a executar para o robot2 
-b = {'z',0,'x',-90,'x',90,'x',0;
-    'z',-90,'x',0,'x',-180,'x',0;
-    'z',90,'x',0,'x',180,'x',0;
-    'z',-135,'x',-45+90,'x',-90,'x',-45};
+b = {'z',-45,'x',-100,'x',-20,'x',-20;
+    'z',0,'x',0,'x',0,'x',0;
+    'z',0,'x',0,'x',0,'x',0;
+    'z',0,'x',0,'x',0,'x',0;
+    'z',135,'x',0,'x',0,'x',0;
+    'z',90,'x',45,'x',-20,'x',20;
+     'z',0,'x',0,'x',0,'z',-360;
+     'z',90,'x',-45,'x',-20,'z',-20;
+     'z',-90,'x',100,'x',60,'z',20;
+    };
 
 
-for n = 1:4
+for n = 1:9
 
     %get input values of Robot 1
     axisA=a{n,1};
@@ -156,14 +172,14 @@ for n = 1:4
     aT_incr = linspace(0,deg2rad(a{n,8}),frames);
     
     %get input values of Robot 2
-    axisA_2=a{n,1};
-    aA_incr_2 = linspace(0,deg2rad(a{n,2}),frames);
-    axisB_2=a{n,3};
-    aB_incr_2 = linspace(0,deg2rad(a{n,4}),frames);
-    axisC_2=a{n,5};
-    aC_incr_2 = linspace(0,deg2rad(a{n,6}),frames);
-    axisT_2=a{n,7};
-    aT_incr_2 = linspace(0,deg2rad(a{n,8}),frames);
+    axisA_2=b{n,1};
+    aA_incr_2 = linspace(0,deg2rad(b{n,2}),frames);
+    axisB_2=b{n,3};
+    aB_incr_2 = linspace(0,deg2rad(b{n,4}),frames);
+    axisC_2=b{n,5};
+    aC_incr_2 = linspace(0,deg2rad(b{n,6}),frames);
+    axisT_2=b{n,7};
+    aT_incr_2 = linspace(0,deg2rad(b{n,8}),frames);
 
     %rotate joints
     for i = 1:frames
@@ -194,10 +210,10 @@ for n = 1:4
  
         % calculate transformation matrices 
         %oTa2 = rot3('z',aA_incr(i))*oTa1; %rotate around original oz
-        oTa2_2 = oTa1_2*rot3(axisA,aA_incr(i));
-        aTb2_2 = aTb1_2*rot3(axisB,aB_incr(i));
-        bTc2_2 = bTc1_2*rot3(axisC,aC_incr(i));
-        cTt2_2 = cTt1_2*rot3(axisT,aT_incr(i));
+        oTa2_2 = oTa1_2*rot3(axisA_2,aA_incr_2(i));
+        aTb2_2 = aTb1_2*rot3(axisB_2,aB_incr_2(i));
+        bTc2_2 = bTc1_2*rot3(axisC_2,aC_incr_2(i));
+        cTt2_2 = cTt1_2*rot3(axisT_2,aT_incr_2(i));
         
         oTb2_2 = oTa2_2*aTb2_2;
         oTc2_2 = oTa2_2*aTb2_2*bTc2_2;
@@ -267,12 +283,12 @@ for n = 1:4
         
         
         % calculate coordinates of tool tip of robot 1
-        Pt = [0,0,0];
-        Pt = oTt2*trans3(0,0,1)*[Pt';1];
+        %Pt = [0,0,0];
+        %Pt = oTt2*trans3(0,0,1)*[Pt';1];
 %         % show tool tip trajectory
-        plot3(Pt(1), Pt(2), Pt(3), 'r.')
+       % plot3(Pt(1), Pt(2), Pt(3), 'r.')
         % update title
-        title(sprintf('Coordinates of tool tip: (%0.1f, %0.1f, %0.1f)', Pt(1),Pt(2),Pt(3)))
+        title("workspace")
         
         pause(pause_time)
     end
