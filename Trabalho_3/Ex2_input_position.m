@@ -83,6 +83,11 @@ Pt = oTt1*trans3(0,0,1)*[Pt';1];
 
 title(sprintf('Coordinates of tool tip: (%0.1f, %0.1f, %0.1f)', Pt(1),Pt(2),Pt(3)))
 
+aaz = 0;
+aa = 0;
+ab = 0;
+ac = 0;
+at = 0;
 
 while true
     
@@ -106,18 +111,13 @@ while true
     end
     % end prompt ---------------------------------------------------------
     
-    %get input values
+%     get input values
 %     xx_incr = linspace(0,xx,frames);
 %     yy_incr = linspace(0,yy,frames);
 %     zz_incr = linspace(0,zz,frames);
     
     [aAz,aA,aB,aC,aT]=posToAngle([xx,yy,zz],3,1);
-    
-%     % calculate coordinates of tool tip
-    Pt = [0,0,0];
-    Pt = oTa1*aTb1*bTc1*cTt1*trans3(0,0,1)*[Pt';1];
-    [aaz,aa,ab,ac,at]=posToAngle([Pt(1), Pt(2), Pt(3)],3,1);
-    
+        
     aAz=aAz-aaz;
     aA=aA-aa;
     aB=aB-ab;
@@ -190,6 +190,13 @@ while true
     aTb1 = aTb2;
     bTc1 = bTc2;
     cTt1 = cTt2;
+    
+    aaz = aAz;
+    aa = aA;
+    ab = aB;
+    ac = aC;
+    at = aT;
+    
     
 end
 

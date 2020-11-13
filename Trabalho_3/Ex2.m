@@ -48,9 +48,9 @@ bTc1 = trans3(0,0,3);
 cTt1 = trans3(0,0,3);
 
 oTa1 = eye(4);
-oTb1 = aTb1;
-oTc1 = aTb1*bTc1;
-oTt1 = aTb1*bTc1*cTt1;
+oTb1 = oTa1*aTb1;
+oTc1 = oTa1*aTb1*bTc1;
+oTt1 = oTa1*aTb1*bTc1*cTt1;
 
 jointA = joint;
 jointB = oTb1*joint; %place arm B in initial position

@@ -90,7 +90,7 @@ while true
     prompt = {'Joint 1:','Axis 1:','Joint 2:','Axis 2:','Joint 3:','Axis 3:','Tool: ','Tool Axis:'};
     dlgtitle = 'Rotation Angles (º)';
     dims = [1 35];
-    definput = {'0','x','0','x','0','x','0','x'};
+    definput = {'0','z','0','x','0','x','0','x'};
     a = inputdlg(prompt,dlgtitle,dims,definput);
     
     %check if input is valid or canceled
