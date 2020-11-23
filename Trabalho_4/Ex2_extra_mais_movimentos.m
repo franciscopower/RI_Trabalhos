@@ -97,6 +97,7 @@ pts_gripper = [luf*escalaGrip ldf*escalaGrip rdf*escalaGrip ruf*escalaGrip rub*e
     LG 0 0 LG LG 0 0 LG;
     ones(1,8)];
 
+
 % pontos da mesa
 w = 2;
 h = 1.5;
@@ -180,7 +181,6 @@ Dr = fill3(eloD(1,2:6), eloD(2,2:6), eloD(3,2:6), 'm');
 Db = fill3(eloD(1,4:8), eloD(2,4:8), eloD(3,4:8), 'm');
 Dl = fill3([eloD(1,1:2) eloD(1,7:8)] , [eloD(2,1:2) eloD(2,7:8)], [eloD(3,1:2) eloD(3,7:8)], 'm');
 
-
 td = fill3([gripper(1,2:3) gripper(1,6:7)], [gripper(2,2:3) gripper(2,6:7)], [gripper(3,2:3) gripper(3,6:7)], 'y');
 tf = fill3(gripper(1,1:4), gripper(2,1:4), gripper(3,1:4), 'y');
 tb = fill3(gripper(1,5:8), gripper(2,5:8), gripper(3,5:8), 'y');
@@ -188,7 +188,8 @@ tb = fill3(gripper(1,5:8), gripper(2,5:8), gripper(3,5:8), 'y');
 
 a = {0,0,0,0;
     45,45,0,90;
-    0,0,-90,0;};
+    0,0,-90,0;
+    };
 
 BTw = BTa*aTb*bTc*cTc1*c1Td;
 p = BTw(1:3,4);
@@ -204,7 +205,7 @@ s = strcat(s1, s2);
 title(s)
 
 
-for i = 2:3
+for i = 2:size(a,1)
     %get input values
     thetaA_incr = linspace(deg2rad(a{i-1,1}),deg2rad(a{i,1}),frames);
     thetaB_incr = linspace(deg2rad(a{i-1,2}),deg2rad(a{i,2}),frames);
@@ -258,6 +259,7 @@ for i = 2:3
         set(Dr, 'XData',eloD(1,2:6) , 'YData',eloD(2,2:6) , 'ZData',eloD(3,2:6) )
         set(Db, 'XData',eloD(1,4:8) , 'YData',eloD(2,4:8) , 'ZData',eloD(3,4:8) )
         set(Dl, 'XData',[eloD(1,1:2) eloD(1,7:8)] , 'YData',[eloD(2,1:2) eloD(2,7:8)] , 'ZData',[eloD(3,1:2) eloD(3,7:8)] )
+        
         
         set(td, 'XData',[gripper(1,2:3) gripper(1,6:7)] , 'YData', [gripper(2,2:3) gripper(2,6:7)], 'ZData',[gripper(3,2:3) gripper(3,6:7)] )
         set(tf, 'XData',gripper(1,1:4) , 'YData',gripper(2,1:4) , 'ZData',gripper(3,1:4) )
