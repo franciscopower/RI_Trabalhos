@@ -182,10 +182,6 @@ tf = fill3(gripper(1,1:4), gripper(2,1:4), gripper(3,1:4), 'y');
 tb = fill3(gripper(1,5:8), gripper(2,5:8), gripper(3,5:8), 'y');
 
 
-a = {0,0,0,0;
-    45,45,0,90;
-    0,0,-90,0;};
-
 BTw = BTa*aTb*bTc*cTc1*c1Td;
 p = BTw(1:3,4);
 theta = rad2deg(asin(-BTw(3,1)));
@@ -199,11 +195,16 @@ s2 = sprintf("[%1.0f %1.0f %1.0f %1.0f %1.0f %1.0f]", r(1), r(2), r(3), r(4), r(
 s = strcat(s1, s2);
 title(s)
 
+aA_0 = 0;
+aB_0 = 0;
+aC_0 = 0;
+aD_0 = 0;
+
 while true
     
      % prompt user for rotation angles, in degrees ------------------------
-    prompt = {'Joint 1:','Axis 1:','Joint 2:','Axis 2:','Joint 3:','Axis 3:','Tool: ','Tool Axis:'};
-    dlgtitle = 'Rotation Angles (º)';
+    prompt = {'Joint 1:','Joint 2:','Joint 3:','Tool: '};
+    dlgtitle = 'Absolute Rotation Angles (º)';
     dims = [1 35];
     definput = {'0','0','0','0'};
     a = inputdlg(prompt,dlgtitle,dims,definput);
@@ -211,33 +212,23 @@ while true
     %check if input is valid or canceled
     try
         aA = deg2rad(str2double(a{1}));
-        aB = deg2rad(str2double(a{3}));
-        aC = deg2rad(str2double(a{5}));
-        aT = deg2rad(str2double(a{7}));
-        if isnan(aA) || isnan(aB) || isnan(aC) || isnan(aT)
+        aB = deg2rad(str2double(a{2}));
+        aC = deg2rad(str2double(a{3}));
+        aD = deg2rad(str2double(a{4}));
+        if isnan(aA) || isnan(aB) || isnan(aC) || isnan(aD)
             continue
         end
-        
-        if (axisA~='x' && axisA~='y' && axisA~='z') || (axisB~='x' && axisB~='y' && axisB~='z') || (axisC~='x' && axisC~='y' && axisC~='z') || (axisT~='x' && axisT~='y' && axisT~='z')
-            continue
-        end
-        
+       
     catch
         break
     end
     % end prompt ---------------------------------------------------------
     
     %get input values
-    aA_incr = linspace(0,aA,frames);
-    aB_incr = linspace(0,aB,frames);
-    aC_incr = linspace(0,aC,frames);
-    aT_incr = linspace(0,aT,frames);
-    
-    %get input values
-    thetaA_incr = linspace(deg2rad(a{i-1,1}),deg2rad(a{i,1}),frames);
-    thetaB_incr = linspace(deg2rad(a{i-1,2}),deg2rad(a{i,2}),frames);
-    thetaC_incr = linspace(deg2rad(a{i-1,3}),deg2rad(a{i,3}),frames);
-    thetaD_incr = linspace(deg2rad(a{i-1,4}),deg2rad(a{i,4}),frames);
+    thetaA_incr = linspace(aA_0,aA,frames);
+    thetaB_incr = linspace(aB_0,aB,frames);
+    thetaC_incr = linspace(aC_0,aC,frames);
+    thetaD_incr = linspace(aD_0,aD,frames);
 
     for n=1:frames
 
@@ -306,6 +297,11 @@ while true
         
         pause(pause_time)
     end
+    
+    aA_0 = aA;
+    aB_0 = aB;
+    aC_0 = aC;
+    aD_0 = aD;
    
     pause(0.5)
 end
