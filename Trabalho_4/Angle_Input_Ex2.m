@@ -200,11 +200,20 @@ aB_0 = 0;
 aC_0 = 0;
 aD_0 = 0;
 
+list = {'Absolute angles', 'Relative angles'};
+[indx,~] = listdlg('ListString',list,'SelectionMode','single');
+if indx == 2
+    relative_mode = true;
+else
+    relative_mode = false;
+end
+
+
 while true
     
      % prompt user for rotation angles, in degrees ------------------------
     prompt = {'Joint 1:','Joint 2:','Joint 3:','Tool: '};
-    dlgtitle = 'Absolute Rotation Angles (º)';
+    dlgtitle = 'Rotation Angles (º)';
     dims = [1 35];
     definput = {'0','0','0','0'};
     a = inputdlg(prompt,dlgtitle,dims,definput);
@@ -218,10 +227,17 @@ while true
         if isnan(aA) || isnan(aB) || isnan(aC) || isnan(aD)
             continue
         end
-       
     catch
         break
     end
+    
+    if relative_mode
+        aA = aA + aA_0;
+        aB = aB + aB_0;
+        aC = aC + aC_0;
+        aD = aD + aD_0;
+    end
+    
     % end prompt ---------------------------------------------------------
     
     %get input values
