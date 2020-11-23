@@ -1,3 +1,6 @@
+clear all
+close all
+clc
 %% Dados
 
 LA = 4;
@@ -190,6 +193,66 @@ YGrip = [ XpartGrip(2,:) YpartGrip(2,:) ZpartGrip(2,:)];
 ZGrip = [ XpartGrip(3,:) YpartGrip(3,:) ZpartGrip(3,:)];
 Gripaxis = fill3(XGrip(1:38), YGrip(1:38), ZGrip(1:38), 'b', XGrip(39:end), YGrip(39:end), ZGrip(39:end), 'b');
 
+
+
+w = 0.001;
+h = 0.001;
+
+ruf = [w h]';
+rub = [-w h]';
+lub = [-w -h]';
+luf = [w -h]';
+rdf = [w h]';
+rdb = [-w h]';
+ldb = [-w -h]';
+ldf = [w -h]';
+
+pts_elo_A = [luf ldf rdf ruf rub rdb ldb lub;
+    -LA 0 0 -LA -LA 0 0 -LA;
+    ones(1,8)];
+pts_elo_B = [-LB 0 0 -LB -LB 0 0 -LB;
+    luf ldf rdf ruf rub rdb ldb lub;
+    ones(1,8)];
+pts_elo_C = [-LC 0 0 -LC -LC 0 0 -LC;
+    luf ldf rdf ruf rub rdb ldb lub;
+    ones(1,8)];
+pts_elo_D = [luf ldf rdf ruf rub rdb ldb lub;
+    LD 0 0 LD LD 0 0 LD;
+    ones(1,8)];
+pts_gripper = [luf ldf rdf ruf rub rdb ldb lub;
+    LG 0 0 LG LG 0 0 LG;
+    ones(1,8)];
+
+
+
+eloA = BTa*pts_elo_A;
+eloB = BTa*aTb*pts_elo_B;
+eloC = BTa*aTb*bTc*pts_elo_C;
+eloD = BTa*aTb*bTc*cTc1*pts_elo_D;
+gripper = BTa*aTb*bTc*cTc1*c1Td*pts_gripper;
+
+Af = fill3(eloA(1,1:4), eloA(2,1:4), eloA(3,1:4), 'r');
+Ar = fill3(eloA(1,2:6), eloA(2,2:6), eloA(3,2:6), 'r');
+Ab = fill3(eloA(1,4:8), eloA(2,4:8), eloA(3,4:8), 'r');
+Al = fill3([eloA(1,1:2) eloA(1,7:8)] , [eloA(2,1:2) eloA(2,7:8)], [eloA(3,1:2) eloA(3,7:8)], 'r');
+
+Bf = fill3(eloB(1,1:4), eloB(2,1:4), eloB(3,1:4), 'g');
+Br = fill3(eloB(1,2:6), eloB(2,2:6), eloB(3,2:6), 'g');
+Bb = fill3(eloB(1,4:8), eloB(2,4:8), eloB(3,4:8), 'g');
+Bl = fill3([eloB(1,1:2) eloB(1,7:8)] , [eloB(2,1:2) eloB(2,7:8)], [eloB(3,1:2) eloB(3,7:8)], 'g');
+
+Cf = fill3(eloC(1,1:4), eloC(2,1:4), eloC(3,1:4), 'b');
+Cr = fill3(eloC(1,2:6), eloC(2,2:6), eloC(3,2:6), 'b');
+Cb = fill3(eloC(1,4:8), eloC(2,4:8), eloC(3,4:8), 'b');
+Cl = fill3([eloC(1,1:2) eloC(1,7:8)] , [eloC(2,1:2) eloC(2,7:8)], [eloC(3,1:2) eloC(3,7:8)], 'b');
+
+Df = fill3(eloD(1,1:4), eloD(2,1:4), eloD(3,1:4), 'm');
+Dr = fill3(eloD(1,2:6), eloD(2,2:6), eloD(3,2:6), 'm');
+Db = fill3(eloD(1,4:8), eloD(2,4:8), eloD(3,4:8), 'm');
+Dl = fill3([eloD(1,1:2) eloD(1,7:8)] , [eloD(2,1:2) eloD(2,7:8)], [eloD(3,1:2) eloD(3,7:8)], 'm');
+
+tf = fill3(gripper(1,1:4), gripper(2,1:4), gripper(3,1:4), 'y');
+tb = fill3(gripper(1,5:8), gripper(2,5:8), gripper(3,5:8), 'y');
 hold off
 
 %% Ex 2b
