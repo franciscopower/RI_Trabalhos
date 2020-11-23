@@ -7,7 +7,7 @@ LD = 1;
 LG = 1;
 
 thetaB = 0;
-thetaC = pi/2;
+thetaC = 0;
 thetaC2 = 0;
 thetaD = 0;
 
@@ -73,7 +73,7 @@ title("Braço com Gripper")
 hold on
 axis equal
 grid on
-axis([-20 20 -20 20 0 15])
+% axis([-5 15 -15 15 0 7])
 xlabel('x')
 ylabel('y')
 zlabel('z')
@@ -139,6 +139,10 @@ XpartD = BTa*aTb*bTc*Xpart;
 YpartD = BTa*aTb*bTc*Ypart;
 ZpartD = BTa*aTb*bTc*Zpart;
 
+XpartD1 = BTa*aTb*bTc*cTc1*Xpart;
+YpartD1 = BTa*aTb*bTc*cTc1*Ypart;
+ZpartD1 = BTa*aTb*bTc*cTc1*Zpart;
+
 XpartGrip = BTa*aTb*bTc*cTc1*c1Td*Xpart;
 YpartGrip = BTa*aTb*bTc*cTc1*c1Td*Ypart;
 ZpartGrip = BTa*aTb*bTc*cTc1*c1Td*Zpart;
@@ -150,7 +154,7 @@ title("Sistemas de coordenadas de cada elo")
 hold on
 axis equal
 grid on
-axis([-20 20 -20 20 0 15])
+% axis([-5 15 -15 15 0 7])
 xlabel('x')
 ylabel('y')
 zlabel('z')
@@ -171,6 +175,11 @@ YC = [ XpartC(2,:) YpartC(2,:) ZpartC(2,:)];
 ZC = [ XpartC(3,:) YpartC(3,:) ZpartC(3,:)];
 Caxis = fill3(XC(1:38), YC(1:38), ZC(1:38), 'b', XC(39:end), YC(39:end), ZC(39:end), 'b');
 
+XD1 = [ XpartD1(1,:) YpartD1(1,:) ZpartD1(1,:)];
+YD1 = [ XpartD1(2,:) YpartD1(2,:) ZpartD1(2,:)];
+ZD1 = [ XpartD1(3,:) YpartD1(3,:) ZpartD1(3,:)];
+D1axis = fill3(XD1(1:38), YD1(1:38), ZD1(1:38), 'r', XD1(39:end), YD1(39:end), ZD1(39:end), 'r');
+
 XD = [ XpartD(1,:) YpartD(1,:) ZpartD(1,:)];
 YD = [ XpartD(2,:) YpartD(2,:) ZpartD(2,:)];
 ZD = [ XpartD(3,:) YpartD(3,:) ZpartD(3,:)];
@@ -184,3 +193,11 @@ Gripaxis = fill3(XGrip(1:38), YGrip(1:38), ZGrip(1:38), 'b', XGrip(39:end), YGri
 hold off
 
 %% Ex 2b
+BTw = BTa*aTb*bTc*cTc1*c1Td
+p = BTw(1:3,4);
+theta = rad2deg(asin(-BTw(3,1)));
+phi = rad2deg(atan2(BTw(3,2), BTw(3,3)));
+psi = rad2deg(atan2(BTw(2,1), BTw(1,1)));
+
+% End factor
+r = [p; phi; theta; psi]

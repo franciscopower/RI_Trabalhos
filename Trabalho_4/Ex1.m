@@ -13,11 +13,11 @@ param_eloC1 = [theta3+pi/2, pi/2, 0, 0];
 param_eloD = [theta4, 0, 0, L4];
 
 % 1b - Transformações de cada elo
-BTa = trans_elo(param_eloA);
-aTb = trans_elo(param_eloB);
-bTc = trans_elo(param_eloC);
-cTc1 = trans_elo(param_eloC1);
-c1Td = trans_elo(param_eloD);
+BTa = trans_elo(param_eloA)
+aTb = trans_elo(param_eloB)
+bTc = trans_elo(param_eloC)
+cTc1 = trans_elo(param_eloC1)
+c1Td = trans_elo(param_eloD)
 
 % 1c Transformação global
 BTw = BTa*aTb*bTc*cTc1*c1Td

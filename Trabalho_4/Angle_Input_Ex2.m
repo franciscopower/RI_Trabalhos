@@ -199,8 +199,40 @@ s2 = sprintf("[%1.0f %1.0f %1.0f %1.0f %1.0f %1.0f]", r(1), r(2), r(3), r(4), r(
 s = strcat(s1, s2);
 title(s)
 
-
-for i = 2:3
+while true
+    
+     % prompt user for rotation angles, in degrees ------------------------
+    prompt = {'Joint 1:','Axis 1:','Joint 2:','Axis 2:','Joint 3:','Axis 3:','Tool: ','Tool Axis:'};
+    dlgtitle = 'Rotation Angles (º)';
+    dims = [1 35];
+    definput = {'0','0','0','0'};
+    a = inputdlg(prompt,dlgtitle,dims,definput);
+    
+    %check if input is valid or canceled
+    try
+        aA = deg2rad(str2double(a{1}));
+        aB = deg2rad(str2double(a{3}));
+        aC = deg2rad(str2double(a{5}));
+        aT = deg2rad(str2double(a{7}));
+        if isnan(aA) || isnan(aB) || isnan(aC) || isnan(aT)
+            continue
+        end
+        
+        if (axisA~='x' && axisA~='y' && axisA~='z') || (axisB~='x' && axisB~='y' && axisB~='z') || (axisC~='x' && axisC~='y' && axisC~='z') || (axisT~='x' && axisT~='y' && axisT~='z')
+            continue
+        end
+        
+    catch
+        break
+    end
+    % end prompt ---------------------------------------------------------
+    
+    %get input values
+    aA_incr = linspace(0,aA,frames);
+    aB_incr = linspace(0,aB,frames);
+    aC_incr = linspace(0,aC,frames);
+    aT_incr = linspace(0,aT,frames);
+    
     %get input values
     thetaA_incr = linspace(deg2rad(a{i-1,1}),deg2rad(a{i,1}),frames);
     thetaB_incr = linspace(deg2rad(a{i-1,2}),deg2rad(a{i,2}),frames);

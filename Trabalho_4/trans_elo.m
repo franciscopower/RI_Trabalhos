@@ -5,7 +5,8 @@ t = eloN(1);
 a = eloN(2);
 l = eloN(3);
 d = eloN(4);
-% 
+
+% Alternative way to calculate T
 % Rz = [cos(t) -sin(t) 0 0;
 %     sin(t) cos(t) 0 0;
 %     0 0 1 0;
