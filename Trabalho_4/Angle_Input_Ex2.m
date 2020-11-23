@@ -1,6 +1,7 @@
 clear all
 close all
 clc
+%%
 
 % Create figure
 figure(1)
@@ -67,8 +68,8 @@ wTg = BTw^-1 * BTs * sTg;
 
 % Joints ------------------------------------------------------------------
 % pontos dos elos
-w = 0.2;
-h = 0.2;
+w = 0.4;
+h = 0.4;
 
 ruf = [w h]';
 rub = [-w h]';
@@ -91,7 +92,9 @@ pts_elo_C = [-LC 0 0 -LC -LC 0 0 -LC;
 pts_elo_D = [luf ldf rdf ruf rub rdb ldb lub;
     LD 0 0 LD LD 0 0 LD;
     ones(1,8)];
-pts_gripper = [luf ldf rdf ruf rub rdb ldb lub;
+
+escalaGrip=1.6;
+pts_gripper = [luf*escalaGrip ldf*escalaGrip rdf*escalaGrip ruf*escalaGrip rub*escalaGrip rdb*escalaGrip ldb*escalaGrip lub*escalaGrip;
     LG 0 0 LG LG 0 0 LG;
     ones(1,8)];
 
@@ -178,6 +181,7 @@ Dr = fill3(eloD(1,2:6), eloD(2,2:6), eloD(3,2:6), 'm');
 Db = fill3(eloD(1,4:8), eloD(2,4:8), eloD(3,4:8), 'm');
 Dl = fill3([eloD(1,1:2) eloD(1,7:8)] , [eloD(2,1:2) eloD(2,7:8)], [eloD(3,1:2) eloD(3,7:8)], 'm');
 
+td = fill3([gripper(1,2:3) gripper(1,6:7)], [gripper(2,2:3) gripper(2,6:7)], [gripper(3,2:3) gripper(3,6:7)], 'y');
 tf = fill3(gripper(1,1:4), gripper(2,1:4), gripper(3,1:4), 'y');
 tb = fill3(gripper(1,5:8), gripper(2,5:8), gripper(3,5:8), 'y');
 
@@ -294,6 +298,7 @@ while true
         set(Db, 'XData',eloD(1,4:8) , 'YData',eloD(2,4:8) , 'ZData',eloD(3,4:8) )
         set(Dl, 'XData',[eloD(1,1:2) eloD(1,7:8)] , 'YData',[eloD(2,1:2) eloD(2,7:8)] , 'ZData',[eloD(3,1:2) eloD(3,7:8)] )
 
+        set(td, 'XData',[gripper(1,2:3) gripper(1,6:7)] , 'YData', [gripper(2,2:3) gripper(2,6:7)], 'ZData',[gripper(3,2:3) gripper(3,6:7)] )
         set(tf, 'XData',gripper(1,1:4) , 'YData',gripper(2,1:4) , 'ZData',gripper(3,1:4) )
         set(tb, 'XData',gripper(1,5:8) , 'YData',gripper(2,5:8) , 'ZData',gripper(3,5:8) )
         
