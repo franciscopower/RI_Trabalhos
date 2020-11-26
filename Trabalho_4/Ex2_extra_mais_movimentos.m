@@ -44,24 +44,25 @@ aTb = trans_elo(param_eloB);
 bTc = trans_elo(param_eloC);
 cTc1 = trans_elo(param_eloC1);
 c1Td = trans_elo(param_eloD);
+dTg2= rot3('y',pi)*rot3('z', pi/2)*trans3(0,-0.5,-1.5);
 
-% Transformação global
-BTw = BTa*aTb*bTc*cTc1*c1Td;
 
-% Angulos de orientação e posição finais
-p = BTw(1:3,4);
-theta = rad2deg(asin(-BTw(3,1)));
-phi = rad2deg(atan2(BTw(3,2), BTw(3,3)));
-psi = rad2deg(atan2(BTw(2,1), BTw(1,1)));
-
-% End factor
-r = [p; phi; theta; psi];
+% % Transformação global
+% BTw = BTa*aTb*bTc*cTc1*c1Td;
+% 
+% % Angulos de orientação e posição finais
+% p = BTw(1:3,4);
+% theta = rad2deg(asin(-BTw(3,1)));
+% phi = rad2deg(atan2(BTw(3,2), BTw(3,3)));
+% psi = rad2deg(atan2(BTw(2,1), BTw(1,1)));
+% 
+% % End factor
+% r = [p; phi; theta; psi];
 % BTs
 BTs = trans3(10,0,0)*rot3('z', -pi/2);
-% sTg
+
+% 1f sTg
 sTg = trans3(0,0.5,1.5);
-% wTg
-wTg = BTw^-1 * BTs * sTg;
 
 %% Ex2 --------------------------------------------------------------------
 
@@ -151,7 +152,7 @@ objetor = fill3(objeto(1,3:6), objeto(2,3:6), objeto(3,3:6), 'c');
 objetob = fill3(objeto(1,5:8), objeto(2,5:8), objeto(3,5:8), 'c');
 objetol = fill3([objeto(1,1:2) objeto(1,7:8)] , [objeto(2,1:2) objeto(2,7:8)], [objeto(3,1:2) objeto(3,7:8)], 'c');
 objetou = fill3([objeto(1,1) objeto(1,4:5) objeto(1,8)] , [objeto(2,1) objeto(2,4:5) objeto(2,8)], [objeto(3,1) objeto(3,4:5) objeto(3,8)], 'c');
-objetod = fill3([objeto(1,2:3) objeto(1,6:7)] , [objeto(2,2:3) objeto(2,6:7)], [objeto(3,2:3) objeto(3,6:7)], 'r');
+objetod = fill3([objeto(1,2:3) objeto(1,6:7)] , [objeto(2,2:3) objeto(2,6:7)], [objeto(3,2:3) objeto(3,6:7)], 'c');
 
 % calculate position of joints
 eloA = BTa*pts_elo_A;
@@ -189,6 +190,7 @@ tb = fill3(gripper(1,5:8), gripper(2,5:8), gripper(3,5:8), 'y');
 a = {0,0,0,0;
     45,45,0,90;
     0,0,-90,0;
+    45,45,45,180;
     };
 
 BTw = BTa*aTb*bTc*cTc1*c1Td;
@@ -211,6 +213,14 @@ for i = 2:size(a,1)
     thetaB_incr = linspace(deg2rad(a{i-1,2}),deg2rad(a{i,2}),frames);
     thetaC_incr = linspace(deg2rad(a{i-1,3}),deg2rad(a{i,3}),frames);
     thetaD_incr = linspace(deg2rad(a{i-1,4}),deg2rad(a{i,4}),frames);
+    
+    pos = [round(r(1)) round(r(2)) round(r(3))];
+    
+    if pos(1)==11 && pos(2)==0 && pos(3)==3
+       pickup = true; 
+    else
+        pickup = false;
+    end
 
     for n=1:frames
 
@@ -238,6 +248,11 @@ for i = 2:size(a,1)
         eloC = BTa*aTb*bTc*pts_elo_C;
         eloD = BTa*aTb*bTc*cTc1*pts_elo_D;
         gripper = BTa*aTb*bTc*cTc1*c1Td*pts_gripper;
+        
+        
+        if pickup
+            objeto = BTa*aTb*bTc*cTc1*c1Td*dTg2*pts_objeto;
+        end
 
          %display new positions
         set(Af, 'XData',eloA(1,1:4) , 'YData',eloA(2,1:4) , 'ZData',eloA(3,1:4) )
@@ -264,6 +279,14 @@ for i = 2:size(a,1)
         set(td, 'XData',[gripper(1,2:3) gripper(1,6:7)] , 'YData', [gripper(2,2:3) gripper(2,6:7)], 'ZData',[gripper(3,2:3) gripper(3,6:7)] )
         set(tf, 'XData',gripper(1,1:4) , 'YData',gripper(2,1:4) , 'ZData',gripper(3,1:4) )
         set(tb, 'XData',gripper(1,5:8) , 'YData',gripper(2,5:8) , 'ZData',gripper(3,5:8) )
+
+        
+        set(objetof, 'XData',objeto(1,1:4) , 'YData',objeto(2,1:4) , 'ZData', objeto(3,1:4))
+        set(objetor, 'XData',objeto(1,3:6) , 'YData',objeto(2,3:6) , 'ZData', objeto(3,3:6))
+        set(objetob, 'XData',objeto(1,5:8) , 'YData', objeto(2,5:8), 'ZData',objeto(3,5:8) )
+        set(objetol, 'XData',[objeto(1,1:2) objeto(1,7:8)] , 'YData', [objeto(2,1:2) objeto(2,7:8)], 'ZData',[objeto(3,1:2) objeto(3,7:8)] )
+        set(objetou, 'XData',[objeto(1,1) objeto(1,4:5) objeto(1,8)] , 'YData',  [objeto(2,1) objeto(2,4:5) objeto(2,8)], 'ZData',[objeto(3,1) objeto(3,4:5) objeto(3,8)] )
+        set( objetod, 'XData',[objeto(1,2:3) objeto(1,6:7)] , 'YData', [objeto(2,2:3) objeto(2,6:7)], 'ZData',[objeto(3,2:3) objeto(3,6:7)] )
         
         
         BTw = BTa*aTb*bTc*cTc1*c1Td;
