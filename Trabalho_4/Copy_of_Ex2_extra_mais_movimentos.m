@@ -13,7 +13,7 @@ ylabel('y')
 zlabel('z')
 view(30,10)
 % Animation settings
-frames = 20;
+frames = 50;
 pause_time = 0.05;
 
 
@@ -25,7 +25,6 @@ LC = 5;
 LD = 1;
 LG = 1;
 
-theta0=0;
 thetaA = 0;
 thetaB = 0;
 thetaC = 0;
@@ -33,8 +32,8 @@ thetaD = 0;
 
 % Atribuição do sistema de coordenadas
 %eloN = [theta, alfa, l, d]
-param_eloA = [theta0, pi/2, 0, LA];
-param_eloB = [thetaA, 0, LB, 0];
+param_eloA = [0, 0, 0, LA];
+param_eloB = [thetaA, pi/2, LB, 0];
 param_eloC = [thetaB, 0, LC, 0];
 param_eloC1 = [thetaC+pi/2, pi/2, 0, 0];
 param_eloD = [thetaD, 0, 0, LD];
@@ -61,7 +60,6 @@ dTg2= rot3('y',pi)*rot3('z', pi/2)*trans3(0,-0.5,-1.5);
 % r = [p; phi; theta; psi];
 % BTs
 BTs = trans3(10,0,0)*rot3('z', -pi/2);
-BTs2 = trans3(0,10,0);%*rot3('z', -pi/2);
 
 % 1f sTg
 sTg = trans3(0,0.5,1.5);
@@ -82,9 +80,8 @@ rdb = [-w h]';
 ldb = [-w -h]';
 ldf = [w -h]';
 
-pts_elo_A = [luf(1) ldf(1) rdf(1) ruf(1) rub(1) rdb(1) ldb(1) lub(1);
+pts_elo_A = [luf ldf rdf ruf rub rdb ldb lub;
     -LA 0 0 -LA -LA 0 0 -LA;
-    luf(2) ldf(2) rdf(2) ruf(2) rub(2) rdb(2) ldb(2) lub(2);
     ones(1,8)];
 pts_elo_B = [-LB 0 0 -LB -LB 0 0 -LB;
     luf ldf rdf ruf rub rdb ldb lub;
@@ -119,10 +116,6 @@ ldf = [l 0 0]';
 pts_mesa = [luf ldf rdf ruf rub rdb ldb lub;
     ones(1,8)];
 
-pts_mesa2 = [luf ldf rdf ruf rub rdb ldb lub;
-    ones(1,8)];
-
-
 % pontos do objeto
 w = 1;
 h = 1.5;
@@ -143,10 +136,9 @@ pts_objeto = [luf ldf rdf ruf rub rdb ldb lub;
 % -------------------------------------------------------------------------
 % calculate position of table and object
 mesa = BTs*pts_mesa;
-mesa2 = BTs2*pts_mesa2;
 objeto = BTs*sTg*pts_objeto;
 
-% Display table
+% Display table and object
 mesaf = fill3(mesa(1,1:4), mesa(2,1:4), mesa(3,1:4), 'r');
 mesar = fill3(mesa(1,3:6), mesa(2,3:6), mesa(3,3:6), 'r');
 mesab = fill3(mesa(1,5:8), mesa(2,5:8), mesa(3,5:8), 'r');
@@ -154,15 +146,7 @@ mesal = fill3([mesa(1,1:2) mesa(1,7:8)] , [mesa(2,1:2) mesa(2,7:8)], [mesa(3,1:2
 mesau = fill3([mesa(1,1) mesa(1,4:5) mesa(1,8)] , [mesa(2,1) mesa(2,4:5) mesa(2,8)], [mesa(3,1) mesa(3,4:5) mesa(3,8)], 'r');
 mesad = fill3([mesa(1,2:3) mesa(1,6:7)] , [mesa(2,2:3) mesa(2,6:7)], [mesa(3,2:3) mesa(3,6:7)], 'r');
 
-% Display table2
-mesa2f = fill3(mesa2(1,1:4), mesa2(2,1:4), mesa2(3,1:4), 'r');
-mesa2r = fill3(mesa2(1,3:6), mesa2(2,3:6), mesa2(3,3:6), 'r');
-mesa2b = fill3(mesa2(1,5:8), mesa2(2,5:8), mesa2(3,5:8), 'r');
-mesa2l = fill3([mesa2(1,1:2) mesa2(1,7:8)] , [mesa2(2,1:2) mesa2(2,7:8)], [mesa2(3,1:2) mesa2(3,7:8)], 'r');
-mesa2u = fill3([mesa2(1,1) mesa2(1,4:5) mesa2(1,8)] , [mesa2(2,1) mesa2(2,4:5) mesa2(2,8)], [mesa2(3,1) mesa2(3,4:5) mesa2(3,8)], 'r');
-mesa2d = fill3([mesa2(1,2:3) mesa2(1,6:7)] , [mesa2(2,2:3) mesa2(2,6:7)], [mesa2(3,2:3) mesa2(3,6:7)], 'r');
 
-% display object
 objetof = fill3(objeto(1,1:4), objeto(2,1:4), objeto(3,1:4), 'c');
 objetor = fill3(objeto(1,3:6), objeto(2,3:6), objeto(3,3:6), 'c');
 objetob = fill3(objeto(1,5:8), objeto(2,5:8), objeto(3,5:8), 'c');
@@ -203,14 +187,10 @@ tf = fill3(gripper(1,1:4), gripper(2,1:4), gripper(3,1:4), 'y');
 tb = fill3(gripper(1,5:8), gripper(2,5:8), gripper(3,5:8), 'y');
 
 
-a = {0,0,0,0,0;
-    45,45,45,0,90;
-    0,0,0,-90,0;
-    -45,45,45,45,180;
-    90,0,0,0,90;
-    90,26,-64,64-26,90;
-    90, 50 ,-100, 50, 90;
-    0,0,0,0,0;
+a = {0,0,0,0;
+    45,45,0,90;
+    0,0,-90,0;
+    45,45,45,180;
     };
 
 BTw = BTa*aTb*bTc*cTc1*c1Td;
@@ -226,35 +206,32 @@ s2 = sprintf("[%1.0f %1.0f %1.0f %1.0f %1.0f %1.0f]", r(1), r(2), r(3), r(4), r(
 s = strcat(s1, s2);
 title(s)
 
-pickup = false;
+
 for i = 2:size(a,1)
     %get input values
-    theta0_incr = linspace(deg2rad(a{i-1,1}),deg2rad(a{i,1}),frames);    
-    thetaA_incr = linspace(deg2rad(a{i-1,2}),deg2rad(a{i,2}),frames);
-    thetaB_incr = linspace(deg2rad(a{i-1,3}),deg2rad(a{i,3}),frames);
-    thetaC_incr = linspace(deg2rad(a{i-1,4}),deg2rad(a{i,4}),frames);
-    thetaD_incr = linspace(deg2rad(a{i-1,5}),deg2rad(a{i,5}),frames);
+    thetaA_incr = linspace(deg2rad(a{i-1,1}),deg2rad(a{i,1}),frames);
+    thetaB_incr = linspace(deg2rad(a{i-1,2}),deg2rad(a{i,2}),frames);
+    thetaC_incr = linspace(deg2rad(a{i-1,3}),deg2rad(a{i,3}),frames);
+    thetaD_incr = linspace(deg2rad(a{i-1,4}),deg2rad(a{i,4}),frames);
     
     pos = [round(r(1)) round(r(2)) round(r(3))];
     
     if pos(1)==11 && pos(2)==0 && pos(3)==3
-       pickup = true;
-    elseif pos(1)==0 && pos(2)==10 && pos(3)==4
+       pickup = true; 
+    else
         pickup = false;
     end
-    
 
     for n=1:frames
 
-        theta0 = theta0_incr(n);
         thetaA = thetaA_incr(n);
         thetaB = thetaB_incr(n);
         thetaC = thetaC_incr(n);
         thetaD = thetaD_incr(n);
 
         %eloN = [theta, alfa, l, d]
-        param_eloA = [theta0, pi/2, 0, LA];
-        param_eloB = [thetaA, 0, LB, 0];
+        param_eloA = [0, 0, 0, LA];
+        param_eloB = [thetaA, pi/2, LB, 0];
         param_eloC = [thetaB, 0, LC, 0];
         param_eloC1 = [thetaC+pi/2, pi/2, 0, 0];
         param_eloD = [thetaD, 0, 0, LD];
