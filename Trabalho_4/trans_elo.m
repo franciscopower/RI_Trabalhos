@@ -1,5 +1,6 @@
 function [T] = trans_elo(eloN)
-%TRANS_ELO 
+%TRANS_ELO returns the transformation matrix of a segment given its
+%parameters
 
 t = eloN(1);
 a = eloN(2);

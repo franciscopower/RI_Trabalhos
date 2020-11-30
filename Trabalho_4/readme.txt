@@ -1,11 +1,13 @@
-Trabalho de Robotica industrial 
+Trabalho de Robotica Industrial 
 Trabalho realizado por: 
 
 Francisco Power nº84706
 Pedro Rolo nº84803
 
 
-nesta pasta encontrasse 2 trabalhos extra:
-1-um sequencia de movimentos realizados com o braço onde o modamos as rotacoes do braço e onde enterage com outros objetos (EX2_extra_mais_movimentos)
+Nesta pasta encontram-se 2 trabalhos extra:
+1 - Extra_mais_movimentos
+    -Uma sequêcia de movimentos realizados com um novo braço que permite rotação na base e a rotação do segundo elo é feita num eixo diferente, e onde o braço interage com outro objeto 
 
-2- e outro extra onde se pode introduzir anglos a mão atraves de uma interface e introduzilos de forma relativa e absoluta
+2- Extra_Angle_input
+    -Extra onde se pode introduzir angulos, em graus, do espaço de juntas desejado (absoluto ou relativamente ao espaço anterior) manualmente através de uma GUI 

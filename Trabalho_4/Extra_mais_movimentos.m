@@ -13,7 +13,7 @@ ylabel('y')
 zlabel('z')
 view(30,10)
 % Animation settings
-frames = 20;
+frames = 40;
 pause_time = 0.05;
 
 
@@ -47,26 +47,13 @@ cTc1 = trans_elo(param_eloC1);
 c1Td = trans_elo(param_eloD);
 dTg2= rot3('y',pi)*rot3('z', pi/2)*trans3(0,-0.5,-1.5);
 
-
-% % Transformação global
-% BTw = BTa*aTb*bTc*cTc1*c1Td;
-% 
-% % Angulos de orientação e posição finais
-% p = BTw(1:3,4);
-% theta = rad2deg(asin(-BTw(3,1)));
-% phi = rad2deg(atan2(BTw(3,2), BTw(3,3)));
-% psi = rad2deg(atan2(BTw(2,1), BTw(1,1)));
-% 
-% % End factor
-% r = [p; phi; theta; psi];
-% BTs
 BTs = trans3(10,0,0)*rot3('z', -pi/2);
-BTs2 = trans3(0,10,0);%*rot3('z', -pi/2);
+BTs2 = trans3(0,10,0);
 
-% 1f sTg
+% sTg
 sTg = trans3(0,0.5,1.5);
 
-%% Ex2 --------------------------------------------------------------------
+%% --------------------------------------------------------------------
 
 % Joints ------------------------------------------------------------------
 % pontos dos elos
@@ -202,7 +189,7 @@ td = fill3([gripper(1,2:3) gripper(1,6:7)], [gripper(2,2:3) gripper(2,6:7)], [gr
 tf = fill3(gripper(1,1:4), gripper(2,1:4), gripper(3,1:4), 'y');
 tb = fill3(gripper(1,5:8), gripper(2,5:8), gripper(3,5:8), 'y');
 
-
+% Sequence of joint angle spaces
 a = {0,0,0,0,0;
     45,45,45,0,90;
     0,0,0,-90,0;

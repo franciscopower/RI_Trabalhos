@@ -136,14 +136,13 @@ pts_objeto = [luf ldf rdf ruf rub rdb ldb lub;
 mesa = BTs*pts_mesa;
 objeto = BTs*sTg*pts_objeto;
 
-% Display table and object
+% Display table and object <------ ALINEAS E, F, DO EXERCICIO 2 ---
 mesaf = fill3(mesa(1,1:4), mesa(2,1:4), mesa(3,1:4), 'r');
 mesar = fill3(mesa(1,3:6), mesa(2,3:6), mesa(3,3:6), 'r');
 mesab = fill3(mesa(1,5:8), mesa(2,5:8), mesa(3,5:8), 'r');
 mesal = fill3([mesa(1,1:2) mesa(1,7:8)] , [mesa(2,1:2) mesa(2,7:8)], [mesa(3,1:2) mesa(3,7:8)], 'r');
 mesau = fill3([mesa(1,1) mesa(1,4:5) mesa(1,8)] , [mesa(2,1) mesa(2,4:5) mesa(2,8)], [mesa(3,1) mesa(3,4:5) mesa(3,8)], 'r');
 mesad = fill3([mesa(1,2:3) mesa(1,6:7)] , [mesa(2,2:3) mesa(2,6:7)], [mesa(3,2:3) mesa(3,6:7)], 'r');
-
 
 objetof = fill3(objeto(1,1:4), objeto(2,1:4), objeto(3,1:4), 'c');
 objetor = fill3(objeto(1,3:6), objeto(2,3:6), objeto(3,3:6), 'c');
@@ -187,7 +186,7 @@ tb = fill3(gripper(1,5:8), gripper(2,5:8), gripper(3,5:8), 'y');
 
 
 a = {0,0,0,0;
-    45,45,0,90;
+    45,45,0,90; % <----------- ALINEAS D, G, DO EXERCICIO 2 ---
     0,0,-90,0;};
 
 BTw = BTa*aTb*bTc*cTc1*c1Td;
