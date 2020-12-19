@@ -59,20 +59,20 @@ fTt = eye(4);
 % fTt = trans_elo([pi/2,pi/2,0,0])*trans_elo([-pi/2,0,0,0]);
 
 % Criar Cilindros dos elos
-
-eloO = createCylinder(50,-250,"xy");
+d = 50;
+eloO = createCylinder(d,-250,"xy");
 [cxO, cyO, czO] = transfCylinder(eye(4),eloO);
-eloA = createCylinder(50,-LB,"yz");
+eloA = createCylinder(d,-LB,"yz");
 [cxA, cyA, czA] = transfCylinder(OTa,eloA);
-eloB = createCylinder(50,-LC,"yz");
+eloB = createCylinder(d,-LC,"yz");
 [cxB, cyB, czB] = transfCylinder(OTa*aTb,eloB);
-eloC = createCylinder(50,-LD,"yz");
+eloC = createCylinder(d,-LD,"yz");
 [cxC, cyC, czC] = transfCylinder(OTa*aTb*bTc,eloC);
-eloC1 = createCylinder(50,LEE,"xy");
+eloC1 = createCylinder(d,LEE,"xy");
 [cxC1, cyC1, czC1] = transfCylinder(OTa*aTb*bTc*cTc1,eloC1);
-eloD = createCylinder(50,LEEE,"xz");
+eloD = createCylinder(d,LEEE,"xz");
 [cxD, cyD, czD] = transfCylinder(OTa*aTb*bTc*cTc1*c1Td,eloD);
-eloE = createCylinder(50,-LF,"xy");
+eloE = createCylinder(d,-LF,"xy");
 [cxE, cyE, czE] = transfCylinder(OTa*aTb*bTc*cTc1*c1Td*dTe,eloE);
 
 % gripper
@@ -239,18 +239,14 @@ for i=2:5
         theta4 = theta4_incr(n);
         theta5 = theta5_incr(n);
         theta6 = theta6_incr(n);
-        
-        
+         
         % matriz das tranformações % for i=2:5
-   theta1_incr = linspace(deg2rad(a{i-1,1}),deg2rad(a{i,1}),frames);
-   theta2_incr = linspace(deg2rad(a{i-1,2}),deg2rad(a{i,2}),frames);
-   theta3_incr = linspace(deg2rad(a{i-1,3}),deg2rad(a{i,3}),frames);
-   theta4_incr = linspace(deg2rad(a{i-1,4}),deg2rad(a{i,4}),frames);
-   theta5_incr = linspace(deg2rad(a{i-1,5}),deg2rad(a{i,5}),frames);
-   theta6_incr = linspace(deg2rad(a{i-1,6}),deg2rad(a{i,6}),frames); 
-    
-  
-
+       theta1_incr = linspace(deg2rad(a{i-1,1}),deg2rad(a{i,1}),frames);
+       theta2_incr = linspace(deg2rad(a{i-1,2}),deg2rad(a{i,2}),frames);
+       theta3_incr = linspace(deg2rad(a{i-1,3}),deg2rad(a{i,3}),frames);
+       theta4_incr = linspace(deg2rad(a{i-1,4}),deg2rad(a{i,4}),frames);
+       theta5_incr = linspace(deg2rad(a{i-1,5}),deg2rad(a{i,5}),frames);
+       theta6_incr = linspace(deg2rad(a{i-1,6}),deg2rad(a{i,6}),frames); 
 
         param_eloA = [theta1, -pi/2, LB,LA];
         param_eloB = [theta2-pi/2, pi, LC, 0];
@@ -270,11 +266,7 @@ for i=2:5
         dTe = trans_elo(param_eloE);
         eTf = trans_elo(param_eloF);
         fTt= rot3("x",pi);
-%         fTt = trans_elo([pi/2,pi/2,0,0])*trans_elo([-pi/2,0,0,0]);.
-%         fTt = eye(4);
 
-
-        %[ncx, ncy, ncz] = transfCylinder(OTa,eloO);
         [ncxA, ncyA, nczA] = transfCylinder(OTa,eloA);
         [ncxB, ncyB, nczB] = transfCylinder(OTa*aTb,eloB);
         [ncxC, ncyC, nczC] = transfCylinder(OTa*aTb*bTc,eloC);
@@ -293,14 +285,6 @@ for i=2:5
         set(td, 'XData',[gripper(1,2:3) gripper(1,6:7)] , 'YData', [gripper(2,2:3) gripper(2,6:7)], 'ZData',[gripper(3,2:3) gripper(3,6:7)] )
         set(tf, 'XData',gripper(1,1:4) , 'YData',gripper(2,1:4) , 'ZData',gripper(3,1:4) )
         set(tb, 'XData',gripper(1,5:8) , 'YData',gripper(2,5:8) , 'ZData',gripper(3,5:8) )
-       %[ncx, ncy, ncz] = transfCylinder(OTa,eloO);
-       [ncxA, ncyA, nczA] = transfCylinder(OTa,eloA);
-       [ncxB, ncyB, nczB] = transfCylinder(OTa*aTb,eloB);
-       [ncxC, ncyC, nczC] = transfCylinder(OTa*aTb*bTc,eloC);
-       [ncxC1, ncyC1, nczC1] = transfCylinder(OTa*aTb*bTc*cTc1,eloC1);
-       [ncxD, ncyD, nczD] = transfCylinder(OTa*aTb*bTc*cTc1*c1Td,eloD);
-       [ncxE, ncyE, nczE] = transfCylinder(OTa*aTb*bTc*cTc1*c1Td*dTe,eloE);
-%        [ncxTool, ncyTool, nczTool] = transfCylinder(OTa*aTb*bTc*cTc1*c1Td*dTe*eTf*fTt,tool);
 
 %__________________eixos_____________________
 
@@ -341,7 +325,6 @@ Y_B = [ Xpart_B(2,:) Ypart_B(2,:) Zpart_B(2,:)];
 Z_B = [ Xpart_B(3,:) Ypart_B(3,:) Zpart_B(3,:)];
 
 %C 
-
 Xpart_C=trasC*Xpart;
 Ypart_C=trasC*Ypart;
 Zpart_C=trasC*Zpart;
