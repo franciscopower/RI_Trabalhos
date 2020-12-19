@@ -16,6 +16,7 @@ view(30,10)
 frames = 20;
 pause_time = 0.05;
 
+
 %% Ex1 --------------------------------------------------------------------
 
 % Dados
@@ -102,16 +103,120 @@ C1 = surf(cxC1, cyC1, czC1, 'FaceColor', 'b');
 D = surf(cxD, cyD, czD, 'FaceColor', 'c');
 E = surf(cxE, cyE, czE, 'FaceColor', 'm');
 
+%eixos
+
+ eixos
+Xpart=eye(3)*100*Xpart;
+Ypart=eye(3)*100*Ypart;
+Zpart=eye(3)*100*Zpart;
+
+Xpart = [Xpart; ones(1,size(Xpart, 2))];
+Ypart = [Ypart; ones(1,size(Ypart, 2))];
+Zpart = [Zpart; ones(1,size(Zpart, 2))];
+
+%tranformações 
+trasO=eye(4);
+trasA=OTa;
+trasB=OTa*aTb;
+trasC=OTa*aTb*bTc;
+trasC1=OTa*aTb*bTc*cTc1;
+trasD=OTa*aTb*bTc*cTc1*c1Td;
+trasE=OTa*aTb*bTc*cTc1*c1Td*dTe;
+
+%O
+Xpart_O=trasO*Xpart;
+Ypart_O=trasO*Ypart;
+Zpart_O=trasO*Zpart;
+
+X_O = [ Xpart_O(1,:) Ypart_O(1,:) Zpart_O(1,:)];
+Y_O = [ Xpart_O(2,:) Ypart_O(2,:) Zpart_O(2,:)];
+Z_O = [ Xpart_O(3,:) Ypart_O(3,:) Zpart_O(3,:)];
+
+%A
+Xpart_A=trasA*Xpart;
+Ypart_A=trasA*Ypart;
+Zpart_A=trasA*Zpart;
+
+X_A = [ Xpart_A(1,:) Ypart_A(1,:) Zpart_A(1,:)];
+Y_A = [ Xpart_A(2,:) Ypart_A(2,:) Zpart_A(2,:)];
+Z_A = [ Xpart_A(3,:) Ypart_A(3,:) Zpart_A(3,:)];
+
+%B
+Xpart_B=trasB*Xpart;
+Ypart_B=trasB*Ypart;
+Zpart_B=trasB*Zpart;
+
+X_B = [ Xpart_B(1,:) Ypart_B(1,:) Zpart_B(1,:)];
+Y_B = [ Xpart_B(2,:) Ypart_B(2,:) Zpart_B(2,:)];
+Z_B = [ Xpart_B(3,:) Ypart_B(3,:) Zpart_B(3,:)];
+
+%C 
+
+Xpart_C=trasC*Xpart;
+Ypart_C=trasC*Ypart;
+Zpart_C=trasC*Zpart;
+
+X_C = [ Xpart_C(1,:) Ypart_C(1,:) Zpart_C(1,:)];
+Y_C = [ Xpart_C(2,:) Ypart_C(2,:) Zpart_C(2,:)];
+Z_C = [ Xpart_C(3,:) Ypart_C(3,:) Zpart_C(3,:)];
+
+%C1
+Xpart_C1=trasC1*Xpart;
+Ypart_C1=trasC1*Ypart;
+Zpart_C1=trasC1*Zpart;
+
+X_C1 = [ Xpart_C1(1,:) Ypart_C1(1,:) Zpart_C1(1,:)];
+Y_C1 = [ Xpart_C1(2,:) Ypart_C1(2,:) Zpart_C1(2,:)];
+Z_C1 = [ Xpart_C1(3,:) Ypart_C1(3,:) Zpart_C1(3,:)];
+
+%D
+Xpart_D=trasD*Xpart;
+Ypart_D=trasD*Ypart;
+Zpart_D=trasD*Zpart;
+
+X_D = [ Xpart_D(1,:) Ypart_D(1,:) Zpart_D(1,:)];
+Y_D = [ Xpart_D(2,:) Ypart_D(2,:) Zpart_D(2,:)];
+Z_D = [ Xpart_D(3,:) Ypart_D(3,:) Zpart_D(3,:)];
+
+%E
+Xpart_E=trasE*Xpart;
+Ypart_E=trasE*Ypart;
+Zpart_E=trasE*Zpart;
+
+X_E = [ Xpart_E(1,:) Ypart_E(1,:) Zpart_E(1,:)];
+Y_E = [ Xpart_E(2,:) Ypart_E(2,:) Zpart_E(2,:)];
+Z_E = [ Xpart_E(3,:) Ypart_E(3,:) Zpart_E(3,:)];
+
+
+%plot dos eixos
+
+hold on
+hO = fill3(X_O(1:38), Y_O(1:38), Z_O(1:38), 'b', X_O(39:end), Y_O(39:end), Z_O(39:end), 'b');
+
+hA = fill3(X_A(1:38), Y_A(1:38), Z_A(1:38), 'b', X_A(39:end), Y_A(39:end), Z_A(39:end), 'b');
+
+hB = fill3(X_B(1:38), Y_B(1:38), Z_B(1:38), 'b', X_B(39:end), Y_B(39:end), Z_B(39:end), 'b');
+
+hC = fill3(X_C(1:38), Y_C(1:38), Z_C(1:38), 'b', X_C(39:end), Y_C(39:end), Z_C(39:end), 'b');
+
+hC1 = fill3(X_C1(1:38), Y_C1(1:38), Z_C1(1:38), 'b', X_C1(39:end), Y_C1(39:end), Z_C1(39:end), 'b');
+
+hD = fill3(X_D(1:38), Y_D(1:38), Z_D(1:38), 'b', X_D(39:end), Y_D(39:end), Z_D(39:end), 'b');
+
+hE = fill3(X_E(1:38), Y_E(1:38), Z_E(1:38), 'r', X_E(39:end), Y_E(39:end), Z_E(39:end), 'r');
+
 td = fill3([gripper(1,2:3) gripper(1,6:7)], [gripper(2,2:3) gripper(2,6:7)], [gripper(3,2:3) gripper(3,6:7)], 'y');
 tf = fill3(gripper(1,1:4), gripper(2,1:4), gripper(3,1:4), 'y');
 tb = fill3(gripper(1,5:8), gripper(2,5:8), gripper(3,5:8), 'y');
 
+hold off
 % lista de espaços de juntas
 a = {0,0,0,0,0,0;
     35,0,-40,0,50,0;
     35,-40,0,0,50,0;
     105,60,-30,120,-20,40
     15,-30,-30,20,-20,165};
+
 
 % ciclo de movimentação dos elos
 
@@ -134,9 +239,19 @@ for i=2:5
         theta4 = theta4_incr(n);
         theta5 = theta5_incr(n);
         theta6 = theta6_incr(n);
+        
+        
+        % matriz das tranformações % for i=2:5
+   theta1_incr = linspace(deg2rad(a{i-1,1}),deg2rad(a{i,1}),frames);
+   theta2_incr = linspace(deg2rad(a{i-1,2}),deg2rad(a{i,2}),frames);
+   theta3_incr = linspace(deg2rad(a{i-1,3}),deg2rad(a{i,3}),frames);
+   theta4_incr = linspace(deg2rad(a{i-1,4}),deg2rad(a{i,4}),frames);
+   theta5_incr = linspace(deg2rad(a{i-1,5}),deg2rad(a{i,5}),frames);
+   theta6_incr = linspace(deg2rad(a{i-1,6}),deg2rad(a{i,6}),frames); 
+    
+  
 
 
-        % matriz das tranformações 
         param_eloA = [theta1, -pi/2, LB,LA];
         param_eloB = [theta2-pi/2, pi, LC, 0];
         param_eloC = [theta3+theta2, -pi/2, LD, 0];
@@ -178,6 +293,122 @@ for i=2:5
         set(td, 'XData',[gripper(1,2:3) gripper(1,6:7)] , 'YData', [gripper(2,2:3) gripper(2,6:7)], 'ZData',[gripper(3,2:3) gripper(3,6:7)] )
         set(tf, 'XData',gripper(1,1:4) , 'YData',gripper(2,1:4) , 'ZData',gripper(3,1:4) )
         set(tb, 'XData',gripper(1,5:8) , 'YData',gripper(2,5:8) , 'ZData',gripper(3,5:8) )
+       %[ncx, ncy, ncz] = transfCylinder(OTa,eloO);
+       [ncxA, ncyA, nczA] = transfCylinder(OTa,eloA);
+       [ncxB, ncyB, nczB] = transfCylinder(OTa*aTb,eloB);
+       [ncxC, ncyC, nczC] = transfCylinder(OTa*aTb*bTc,eloC);
+       [ncxC1, ncyC1, nczC1] = transfCylinder(OTa*aTb*bTc*cTc1,eloC1);
+       [ncxD, ncyD, nczD] = transfCylinder(OTa*aTb*bTc*cTc1*c1Td,eloD);
+       [ncxE, ncyE, nczE] = transfCylinder(OTa*aTb*bTc*cTc1*c1Td*dTe,eloE);
+%        [ncxTool, ncyTool, nczTool] = transfCylinder(OTa*aTb*bTc*cTc1*c1Td*dTe*eTf*fTt,tool);
+
+%__________________eixos_____________________
+
+%tranformações 
+trasO=eye(4);
+trasA=OTa;
+trasB=OTa*aTb;
+trasC=OTa*aTb*bTc;
+trasC1=OTa*aTb*bTc*cTc1;
+trasD=OTa*aTb*bTc*cTc1*c1Td;
+trasE=OTa*aTb*bTc*cTc1*c1Td*dTe;
+
+%O
+Xpart_O=trasO*Xpart;
+Ypart_O=trasO*Ypart;
+Zpart_O=trasO*Zpart;
+
+X_O = [ Xpart_O(1,:) Ypart_O(1,:) Zpart_O(1,:)];
+Y_O = [ Xpart_O(2,:) Ypart_O(2,:) Zpart_O(2,:)];
+Z_O = [ Xpart_O(3,:) Ypart_O(3,:) Zpart_O(3,:)];
+
+%A
+Xpart_A=trasA*Xpart;
+Ypart_A=trasA*Ypart;
+Zpart_A=trasA*Zpart;
+
+X_A = [ Xpart_A(1,:) Ypart_A(1,:) Zpart_A(1,:)];
+Y_A = [ Xpart_A(2,:) Ypart_A(2,:) Zpart_A(2,:)];
+Z_A = [ Xpart_A(3,:) Ypart_A(3,:) Zpart_A(3,:)];
+
+%B
+Xpart_B=trasB*Xpart;
+Ypart_B=trasB*Ypart;
+Zpart_B=trasB*Zpart;
+
+X_B = [ Xpart_B(1,:) Ypart_B(1,:) Zpart_B(1,:)];
+Y_B = [ Xpart_B(2,:) Ypart_B(2,:) Zpart_B(2,:)];
+Z_B = [ Xpart_B(3,:) Ypart_B(3,:) Zpart_B(3,:)];
+
+%C 
+
+Xpart_C=trasC*Xpart;
+Ypart_C=trasC*Ypart;
+Zpart_C=trasC*Zpart;
+
+X_C = [ Xpart_C(1,:) Ypart_C(1,:) Zpart_C(1,:)];
+Y_C = [ Xpart_C(2,:) Ypart_C(2,:) Zpart_C(2,:)];
+Z_C = [ Xpart_C(3,:) Ypart_C(3,:) Zpart_C(3,:)];
+
+%C1
+Xpart_C1=trasC1*Xpart;
+Ypart_C1=trasC1*Ypart;
+Zpart_C1=trasC1*Zpart;
+
+X_C1 = [ Xpart_C1(1,:) Ypart_C1(1,:) Zpart_C1(1,:)];
+Y_C1 = [ Xpart_C1(2,:) Ypart_C1(2,:) Zpart_C1(2,:)];
+Z_C1 = [ Xpart_C1(3,:) Ypart_C1(3,:) Zpart_C1(3,:)];
+
+%D
+Xpart_D=trasD*Xpart;
+Ypart_D=trasD*Ypart;
+Zpart_D=trasD*Zpart;
+
+X_D = [ Xpart_D(1,:) Ypart_D(1,:) Zpart_D(1,:)];
+Y_D = [ Xpart_D(2,:) Ypart_D(2,:) Zpart_D(2,:)];
+Z_D = [ Xpart_D(3,:) Ypart_D(3,:) Zpart_D(3,:)];
+
+%E
+Xpart_E=trasE*Xpart;
+Ypart_E=trasE*Ypart;
+Zpart_E=trasE*Zpart;
+
+X_E = [ Xpart_E(1,:) Ypart_E(1,:) Zpart_E(1,:)];
+Y_E = [ Xpart_E(2,:) Ypart_E(2,:) Zpart_E(2,:)];
+Z_E = [ Xpart_E(3,:) Ypart_E(3,:) Zpart_E(3,:)];
+
+
+%plot dos eixos
+
+set(hO, 'XData', X_O(1:38), 'YData', Y_O(1:38), 'ZData', Z_O(1:38))
+set(hA, 'XData', X_A(1:38), 'YData', Y_A(1:38), 'ZData', Z_A(1:38))
+set(hB, 'XData', X_B(1:38), 'YData', Y_B(1:38), 'ZData', Z_B(1:38))
+set(hC, 'XData', X_C(1:38), 'YData', Y_C(1:38), 'ZData', Z_C(1:38))
+set(hC1, 'XData', X_C1(1:38), 'YData', Y_C1(1:38), 'ZData', Z_C1(1:38))
+set(hD, 'XData', X_D(1:38), 'YData',Y_D(1:38), 'ZData', Z_D(1:38))
+set(hE, 'XData', X_E(1:38), 'YData', Y_E(1:38), 'ZData', Z_E(1:38))
+
+
+% hold on
+% hO = fill3(X_O(1:38), Y_O(1:38), Z_O(1:38), 'b', X_O(39:end), Y_O(39:end), Z_O(39:end), 'b');
+% 
+% hA = fill3(X_A(1:38), Y_A(1:38), Z_A(1:38), 'b', X_A(39:end), Y_A(39:end), Z_A(39:end), 'b');
+% 
+% hB = fill3(X_B(1:38), Y_B(1:38), Z_B(1:38), 'b', X_B(39:end), Y_B(39:end), Z_B(39:end), 'b');
+% 
+% hC = fill3(X_C(1:38), Y_C(1:38), Z_C(1:38), 'b', X_C(39:end), Y_C(39:end), Z_C(39:end), 'b');
+% 
+% hC1 = fill3(X_C1(1:38), Y_C1(1:38), Z_C1(1:38), 'b', X_C1(39:end), Y_C1(39:end), Z_C1(39:end), 'b');
+% 
+% hD = fill3(X_D(1:38), Y_D(1:38), Z_D(1:38), 'b', X_D(39:end), Y_D(39:end), Z_D(39:end), 'b');
+% 
+% hE = fill3(X_E(1:38), Y_E(1:38), Z_E(1:38), 'r', X_E(39:end), Y_E(39:end), Z_E(39:end), 'r');
+% 
+% hold off
+
+
+%_________________ eixos______________________
+
         
         pause(pause_time)
 
@@ -200,12 +431,12 @@ end
 
 
 
-
-
-
-
-
-
-
-
-
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
