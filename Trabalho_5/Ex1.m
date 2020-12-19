@@ -54,20 +54,8 @@ c1Td = trans_elo(param_eloD);
 dTe = trans_elo(param_eloE);
 eTf = trans_elo(param_eloF);
 % fTt= rot3("y",pi);
-% fTt = eye(4);
-fTt = trans_elo([pi/2,pi/2,0,0])*trans_elo([-pi/2,0,0,0]);
-
-% Transformação global
-OTw = OTa*aTb*bTc*cTc1*c1Td*dTe*eTf*fTt;
-
-% 1d - Angulos de orientação e posição finais
-p = OTw(1:3,4);
-theta = rad2deg(asin(-OTw(3,1)));
-phi = rad2deg(atan2(OTw(3,2), OTw(3,3)));
-psi = rad2deg(atan2(OTw(2,1), OTw(1,1)));
-
-% End factor
-r = [p; phi; theta; psi]
+fTt = eye(4);
+% fTt = trans_elo([pi/2,pi/2,0,0])*trans_elo([-pi/2,0,0,0]);
 
 % Criar Cilindros dos elos
 
@@ -105,7 +93,7 @@ pts_gripper = [luf ldf rdf ruf rub rdb ldb lub;
     ones(1,8)];
 gripper = OTa*aTb*bTc*cTc1*c1Td*dTe*eTf*pts_gripper;
 
-% initial representation
+%
 O = surf(cxO, cyO, czO, 'FaceColor', 'r');
 A = surf(cxA, cyA, czA, 'FaceColor', 'r');
 B = surf(cxB, cyB, czB, 'FaceColor', 'g');
@@ -128,6 +116,8 @@ a = {0,0,0,0,0,0;
 % ciclo de movimentação dos elos
 
 for i=2:5
+    pause()
+    
     theta1_incr = linspace(deg2rad(a{i-1,1}),deg2rad(a{i,1}),frames);
     theta2_incr = linspace(deg2rad(a{i-1,2}),deg2rad(a{i,2}),frames);
     theta3_incr = linspace(deg2rad(a{i-1,3}),deg2rad(a{i,3}),frames);
@@ -164,7 +154,9 @@ for i=2:5
         c1Td = trans_elo(param_eloD);
         dTe = trans_elo(param_eloE);
         eTf = trans_elo(param_eloF);
-        fTt= rot3("y",pi/2);
+        fTt= rot3("x",pi);
+%         fTt = trans_elo([pi/2,pi/2,0,0])*trans_elo([-pi/2,0,0,0]);.
+%         fTt = eye(4);
 
 
         %[ncx, ncy, ncz] = transfCylinder(OTa,eloO);
@@ -199,12 +191,11 @@ for i=2:5
         r = [p; phi; theta; psi];
 
         s1 = "End factor [x y z \phi \theta \psi]: ";
-        s2 = sprintf("[%1.0f %1.0f %1.0f %1.0f %1.0f %1.0f]", r(1), r(2), r(3), r(4), r(5), r(6));
+        s2 = sprintf("[%1.1f %1.1f %1.1f %1.1f %1.1f %1.1f]", r(1), r(2), r(3), r(4), r(5), r(6));
         s = strcat(s1, s2);
         title(s)
     end
 
-    pause()
 end
 
 
