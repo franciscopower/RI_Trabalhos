@@ -11,12 +11,12 @@ LEEE = 280;
 LF = 100;
 
 
-theta1 = deg2rad(35);
-theta2 = deg2rad(-40);
-theta3 = deg2rad(0);
-theta4 = deg2rad(0);
-theta5 = deg2rad(50);
-theta6 = deg2rad(0);
+theta1 = deg2rad(105);
+theta2 = deg2rad(60);
+theta3 = deg2rad(-30);
+theta4 = deg2rad(120);
+theta5 = deg2rad(-20);
+theta6 = deg2rad(40);
 
 % Atribuição do sistema de coordenadas
 %eloN = [theta, alfa, l, d]
@@ -49,6 +49,23 @@ psi = rad2deg(atan2(OTw(2,1), OTw(1,1)));
 
 % End factor
 r = [p; phi; theta; psi]
+
+% Criar Cilindros dos elos
+
+eloA
+eloB
+eloC
+eloC1
+eloD
+eloE
+tool
+
+
+% Aplicar Transformações iniciais aos cilindros dos elos
+
+% lista de espaços de juntas
+
+% ciclo de movimentação dos elos
 
 
 
