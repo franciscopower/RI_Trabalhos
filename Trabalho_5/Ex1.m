@@ -1,30 +1,30 @@
 %% Ex1 --------------------------------------------------------------------
 
 % Dados
-LA = 250;
+LA = 0;
 LB = 150;
 LC = 360;
 LD = 100;
 LE = 430;
-LEE=150;
-LEEE=280;
-LF=100;
+LEE = 150;
+LEEE = 280;
+LF = 100;
 
 
-theta1 = 0;
-theta2 = 0;
-theta3 = 0;
-theta4 = 0;
-theta5 = 0;
-theta6 = 0;
+theta1 = deg2rad(35);
+theta2 = deg2rad(-40);
+theta3 = deg2rad(0);
+theta4 = deg2rad(0);
+theta5 = deg2rad(50);
+theta6 = deg2rad(0);
 
 % Atribuição do sistema de coordenadas
 %eloN = [theta, alfa, l, d]
 param_eloA = [theta1, -pi/2, LB,LA];
-param_eloB = [theta2, pi, LC, LC];
-param_eloC = [theta3+theta2+pi/2, -pi/2, LD, 0];
+param_eloB = [theta2-pi/2, pi, LC, 0];
+param_eloC = [theta3+theta2, -pi/2, LD, 0];
 param_eloC1 = [0, 0, 0, -LEE];
-param_eloD = [theta4, pi/2, 0, LEEE];
+param_eloD = [theta4, pi/2, 0, -LEEE];
 param_eloE = [theta5, -pi/2, 0, 0];
 param_eloF = [theta6, 0, 0, -LF];
 
