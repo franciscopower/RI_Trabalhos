@@ -2,8 +2,8 @@
 [cx, cy, cz] = cylinder(2)
 cz = -cz* 8;
 cyl = zeros(4, size(cx, 2), 2);
-cyl(:,:,1) = [cx(1,:); cz(1,:); cy(1,:); ones(1,size(cx,2))];
-cyl(:,:,2) = [cx(2,:); cz(2,:); cy(2,:); ones(1,size(cx,2))];
+cyl(:,:,1) = [cz(1,:); cy(1,:); cx(1,:); ones(1,size(cx,2))];
+cyl(:,:,2) = [cz(2,:); cy(2,:); cx(2,:); ones(1,size(cx,2))];
 
 h = surf(cx, cy, cz, 'FaceColor', 'r');
 

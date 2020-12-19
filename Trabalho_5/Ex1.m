@@ -1,3 +1,21 @@
+clear all
+close all
+clc
+
+% Create figure
+figure(1)
+hold on
+axis equal
+grid on
+% axis([-5 15 -15 15 0 15])
+xlabel('x')
+ylabel('y')
+zlabel('z')
+view(30,10)
+% Animation settings
+frames = 50;
+pause_time = 0.05;
+
 %% Ex1 --------------------------------------------------------------------
 
 % Dados
@@ -11,12 +29,12 @@ LEEE = 280;
 LF = 100;
 
 
-theta1 = deg2rad(105);
-theta2 = deg2rad(60);
-theta3 = deg2rad(-30);
-theta4 = deg2rad(120);
-theta5 = deg2rad(-20);
-theta6 = deg2rad(40);
+theta1 = deg2rad(0);
+theta2 = deg2rad(0);
+theta3 = deg2rad(0);
+theta4 = deg2rad(0);
+theta5 = deg2rad(0);
+theta6 = deg2rad(0);
 
 % Atribuição do sistema de coordenadas
 %eloN = [theta, alfa, l, d]
@@ -52,13 +70,37 @@ r = [p; phi; theta; psi]
 
 % Criar Cilindros dos elos
 
-eloA
-eloB
-eloC
-eloC1
-eloD
-eloE
-tool
+% basic cylinder
+eloO = createCylinder(50,-250,"xy");
+[cxO, cyO, czO] = transfCylinder(eye(4),eloO);
+eloA = createCylinder(50,-LB,"yz");
+[cxA, cyA, czA] = transfCylinder(OTa,eloA);
+eloB = createCylinder(50,-LC,"yz");
+[cxB, cyB, czB] = transfCylinder(OTa*aTb,eloB);
+eloC = createCylinder(50,-LD,"yz");
+[cxC, cyC, czC] = transfCylinder(OTa*aTb*bTc,eloC);
+eloC1 = createCylinder(50,LEE,"xy");
+[cxC1, cyC1, czC1] = transfCylinder(OTa*aTb*bTc*cTc1,eloC1);
+eloD = createCylinder(50,LEEE,"xz");
+[cxD, cyD, czD] = transfCylinder(OTa*aTb*bTc*cTc1*c1Td,eloD);
+eloE = createCylinder(50,-LF,"xy");
+[cxE, cyE, czE] = transfCylinder(OTa*aTb*bTc*cTc1*c1Td*dTe,eloE);
+
+O = surf(cxO, cyO, czO, 'FaceColor', 'r');
+A = surf(cxA, cyA, czA, 'FaceColor', 'r');
+B = surf(cxB, cyB, czB, 'FaceColor', 'g');
+C = surf(cxC, cyC, czC, 'FaceColor', 'b');
+C1 = surf(cxC1, cyC1, czC1, 'FaceColor', 'm');
+D = surf(cxD, cyD, czD, 'FaceColor', 'c');
+E = surf(cxE, cyE, czE, 'FaceColor', 'y');
+
+% eloA
+% eloB
+% eloC
+% eloC1
+% eloD
+% eloE
+% tool
 
 
 % Aplicar Transformações iniciais aos cilindros dos elos
