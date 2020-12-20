@@ -122,6 +122,9 @@ trasC=OTa*aTb*bTc;
 trasC1=OTa*aTb*bTc*cTc1;
 trasD=OTa*aTb*bTc*cTc1*c1Td;
 trasE=OTa*aTb*bTc*cTc1*c1Td*dTe;
+trastool=OTa*aTb*bTc*cTc1*c1Td*dTe*eTf;
+trastool1=OTa*aTb*bTc*cTc1*c1Td*dTe*eTf*fTt;
+
 
 %O
 Xpart_O=trasO*Xpart;
@@ -187,23 +190,58 @@ X_E = [ Xpart_E(1,:) Ypart_E(1,:) Zpart_E(1,:)];
 Y_E = [ Xpart_E(2,:) Ypart_E(2,:) Zpart_E(2,:)];
 Z_E = [ Xpart_E(3,:) Ypart_E(3,:) Zpart_E(3,:)];
 
+%tool
+Xpart_tool=trastool*Xpart;
+Ypart_tool=trastool*Ypart;
+Zpart_tool=trastool*Zpart;
+
+X_tool = [ Xpart_tool(1,:) Ypart_tool(1,:) Zpart_tool(1,:)];
+Y_tool = [ Xpart_tool(2,:) Ypart_tool(2,:) Zpart_tool(2,:)];
+Z_tool = [ Xpart_tool(3,:) Ypart_tool(3,:) Zpart_tool(3,:)];
+
+%tool1
+Xpart_tool1=trastool1*Xpart;
+Ypart_tool1=trastool1*Ypart;
+Zpart_tool1=trastool1*Zpart;
+
+X_tool1 = [ Xpart_tool1(1,:) Ypart_tool1(1,:) Zpart_tool1(1,:)];
+Y_tool1 = [ Xpart_tool1(2,:) Ypart_tool1(2,:) Zpart_tool1(2,:)];
+Z_tool1 = [ Xpart_tool1(3,:) Ypart_tool1(3,:) Zpart_tool1(3,:)];
+
+
 
 %plot dos eixos
 
 hold on
-hO = fill3(X_O(1:38), Y_O(1:38), Z_O(1:38), 'b', X_O(39:end), Y_O(39:end), Z_O(39:end), 'b');
+hO = fill3(X_O(1:38), Y_O(1:38), Z_O(1:38), 'b' );
+hO1=fill3(X_O(39:end), Y_O(39:end), Z_O(39:end), 'b');
 
-hA = fill3(X_A(1:38), Y_A(1:38), Z_A(1:38), 'b', X_A(39:end), Y_A(39:end), Z_A(39:end), 'b');
+hA = fill3(X_A(1:38), Y_A(1:38), Z_A(1:38), 'b' );
+hA1=fill3(X_A(39:end), Y_A(39:end), Z_A(39:end), 'b');
 
-hB = fill3(X_B(1:38), Y_B(1:38), Z_B(1:38), 'b', X_B(39:end), Y_B(39:end), Z_B(39:end), 'b');
+hB = fill3(X_B(1:38), Y_B(1:38), Z_B(1:38), 'b' );
+hB1 = fill3(X_B(39:end), Y_B(39:end), Z_B(39:end), 'b');
 
-hC = fill3(X_C(1:38), Y_C(1:38), Z_C(1:38), 'b', X_C(39:end), Y_C(39:end), Z_C(39:end), 'b');
+hC = fill3(X_C(1:38), Y_C(1:38), Z_C(1:38), 'b' );
+hC11=fill3(X_C(39:end), Y_C(39:end), Z_C(39:end), 'b');
 
-hC1 = fill3(X_C1(1:38), Y_C1(1:38), Z_C1(1:38), 'b', X_C1(39:end), Y_C1(39:end), Z_C1(39:end), 'b');
+hC1 = fill3(X_C1(1:38), Y_C1(1:38), Z_C1(1:38), 'b');
+hC111=fill3( X_C1(39:end), Y_C1(39:end), Z_C1(39:end), 'b');
 
-hD = fill3(X_D(1:38), Y_D(1:38), Z_D(1:38), 'b', X_D(39:end), Y_D(39:end), Z_D(39:end), 'b');
+hD = fill3(X_D(1:38), Y_D(1:38), Z_D(1:38), 'b');
+hD1=fill3(X_D(39:end), Y_D(39:end), Z_D(39:end), 'b');
 
-hE = fill3(X_E(1:38), Y_E(1:38), Z_E(1:38), 'r', X_E(39:end), Y_E(39:end), Z_E(39:end), 'r');
+
+hE = fill3(X_E(1:38), Y_E(1:38), Z_E(1:38), 'r');
+hE1=fill3(X_E(39:end), Y_E(39:end), Z_E(39:end), 'r');
+
+htool = fill3(X_tool(1:38), Y_tool(1:38), Z_tool(1:38), 'b');
+htool11=fill3(X_tool(39:end), Y_tool(39:end), Z_tool(39:end), 'b');
+
+htool1 = fill3(X_tool1(1:38), Y_tool1(1:38), Z_tool1(1:38), 'r');
+htool111=fill3(X_tool1(39:end), Y_tool1(39:end), Z_tool1(39:end), 'r');
+
+
 
 td = fill3([gripper(1,2:3) gripper(1,6:7)], [gripper(2,2:3) gripper(2,6:7)], [gripper(3,2:3) gripper(3,6:7)], 'y');
 tf = fill3(gripper(1,1:4), gripper(2,1:4), gripper(3,1:4), 'y');
@@ -296,6 +334,9 @@ trasC=OTa*aTb*bTc;
 trasC1=OTa*aTb*bTc*cTc1;
 trasD=OTa*aTb*bTc*cTc1*c1Td;
 trasE=OTa*aTb*bTc*cTc1*c1Td*dTe;
+trastool=OTa*aTb*bTc*cTc1*c1Td*dTe*eTf;
+trastool1=OTa*aTb*bTc*cTc1*c1Td*dTe*eTf*fTt;
+
 
 %O
 Xpart_O=trasO*Xpart;
@@ -360,6 +401,24 @@ X_E = [ Xpart_E(1,:) Ypart_E(1,:) Zpart_E(1,:)];
 Y_E = [ Xpart_E(2,:) Ypart_E(2,:) Zpart_E(2,:)];
 Z_E = [ Xpart_E(3,:) Ypart_E(3,:) Zpart_E(3,:)];
 
+%tool
+Xpart_tool=trastool*Xpart;
+Ypart_tool=trastool*Ypart;
+Zpart_tool=trastool*Zpart;
+
+X_tool = [ Xpart_tool(1,:) Ypart_tool(1,:) Zpart_tool(1,:)];
+Y_tool = [ Xpart_tool(2,:) Ypart_tool(2,:) Zpart_tool(2,:)];
+Z_tool = [ Xpart_tool(3,:) Ypart_tool(3,:) Zpart_tool(3,:)];
+
+%tool1
+Xpart_tool1=trastool1*Xpart;
+Ypart_tool1=trastool1*Ypart;
+Zpart_tool1=trastool1*Zpart;
+
+X_tool1 = [ Xpart_tool1(1,:) Ypart_tool1(1,:) Zpart_tool1(1,:)];
+Y_tool1 = [ Xpart_tool1(2,:) Ypart_tool1(2,:) Zpart_tool1(2,:)];
+Z_tool1 = [ Xpart_tool1(3,:) Ypart_tool1(3,:) Zpart_tool1(3,:)];
+
 
 %plot dos eixos
 
@@ -370,24 +429,22 @@ set(hC, 'XData', X_C(1:38), 'YData', Y_C(1:38), 'ZData', Z_C(1:38))
 set(hC1, 'XData', X_C1(1:38), 'YData', Y_C1(1:38), 'ZData', Z_C1(1:38))
 set(hD, 'XData', X_D(1:38), 'YData',Y_D(1:38), 'ZData', Z_D(1:38))
 set(hE, 'XData', X_E(1:38), 'YData', Y_E(1:38), 'ZData', Z_E(1:38))
+set(htool, 'XData', X_tool(1:38), 'YData', Y_tool(1:38), 'ZData', Z_tool(1:38))
+set(htool1, 'XData', X_tool1(1:38), 'YData', Y_tool1(1:38), 'ZData', Z_tool1(1:38))
 
 
-% hold on
-% hO = fill3(X_O(1:38), Y_O(1:38), Z_O(1:38), 'b', X_O(39:end), Y_O(39:end), Z_O(39:end), 'b');
-% 
-% hA = fill3(X_A(1:38), Y_A(1:38), Z_A(1:38), 'b', X_A(39:end), Y_A(39:end), Z_A(39:end), 'b');
-% 
-% hB = fill3(X_B(1:38), Y_B(1:38), Z_B(1:38), 'b', X_B(39:end), Y_B(39:end), Z_B(39:end), 'b');
-% 
-% hC = fill3(X_C(1:38), Y_C(1:38), Z_C(1:38), 'b', X_C(39:end), Y_C(39:end), Z_C(39:end), 'b');
-% 
-% hC1 = fill3(X_C1(1:38), Y_C1(1:38), Z_C1(1:38), 'b', X_C1(39:end), Y_C1(39:end), Z_C1(39:end), 'b');
-% 
-% hD = fill3(X_D(1:38), Y_D(1:38), Z_D(1:38), 'b', X_D(39:end), Y_D(39:end), Z_D(39:end), 'b');
-% 
-% hE = fill3(X_E(1:38), Y_E(1:38), Z_E(1:38), 'r', X_E(39:end), Y_E(39:end), Z_E(39:end), 'r');
-% 
-% hold off
+set(hO1, 'XData',  X_O(39:end), 'YData', Y_O(39:end), 'ZData',  Z_O(39:end))
+set(hA1, 'XData', X_A(39:end), 'YData', Y_A(39:end), 'ZData', Z_A(39:end))
+set(hB1, 'XData',  X_B(39:end), 'YData', Y_B(39:end), 'ZData', Z_B(39:end))
+set(hC11, 'XData', X_C(39:end), 'YData', Y_C(39:end), 'ZData', Z_C(39:end))
+set(hC111, 'XData', X_C1(39:end), 'YData', Y_C1(39:end), 'ZData', Z_C1(39:end))
+set(hD1, 'XData',  X_D(39:end), 'YData',Y_D(39:end), 'ZData', Z_D(39:end))
+set(hE1, 'XData', X_E(39:end), 'YData', Y_E(39:end), 'ZData', Z_E(39:end))
+set(htool11, 'XData', X_tool(39:end), 'YData', Y_tool(39:end), 'ZData', Z_tool(39:end))
+set(htool111, 'XData', X_tool1(39:end), 'YData', Y_tool1(39:end), 'ZData', Z_tool1(39:end))
+
+
+
 
 
 %_________________ eixos______________________
