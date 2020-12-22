@@ -34,6 +34,10 @@ fTt= rot3("x",pi);
 OTw = OTa*aTb*bTc*cTc1;
 OTw = simplify(OTw)
 
+% calculo theta3
+
+
+
 % p = OTw(1:3,4);
 % theta = rad2deg(asin(-OTw(3,1)));
 % phi = rad2deg(atan2(OTw(3,2), OTw(3,3)));
