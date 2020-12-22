@@ -4,6 +4,9 @@ clc
 %% Ex1 --------------------------------------------------------------------
 
 % Dados
+
+syms x y z theta phi psi
+
 syms LA LB LC LD LE LEE LEEE LF
 
 syms theta1 theta2 theta3 theta4 theta5 theta6
@@ -11,6 +14,13 @@ syms theta1 theta2 theta3 theta4 theta5 theta6
 syms pwx pwy pwz
 
 syms dp dp1 dp2
+
+% matriz de transformação global
+oTt_i = [
+    cos(theta)*cos(psi) cos(psi)*sin(phi)*sin(theta)-cos(phi)*sin(psi) cos(phi)*cos(psi)*sin(theta)+sin(phi)*sin(psi) x;
+    cos(theta)*sin(psi) cos(theta)*cos(psi)+sin(phi)*sin(theta)*sin(psi) -cos(psi)*sin(phi)+cos(phi)*sin(theta)*sin(psi) y;
+    -sin(theta) cos(theta)*sin(phi) cos(phi)*cos(theta) z
+    0 0 0 1]
 
 % Atribuição do sistema de coordenadas
 %eloN = [theta, alfa, l, d]
@@ -32,7 +42,7 @@ dTe = trans_elo(param_eloE);
 eTf = trans_elo(param_eloF);
 fTt= rot3("x",pi);
 
-% calculo posicao
+% matriz de transformação para pw
 OTw = OTa*aTb*bTc*cTc1;
 OTw = simplify(OTw)
 
