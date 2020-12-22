@@ -1,5 +1,6 @@
 clear all
 clc
+close all
 
 %% Ex1 --------------------------------------------------------------------
 
@@ -81,6 +82,38 @@ t2 = acos((L2*d1 + L1*d2)/(L1^2 + L2^2)) %atenção ao +/- da raiz quadrada do d
 % 
 % % End factor
 % r = [p; phi; theta; psi];
+
+
+
+
+% segundo sistema de cordenadas
+c1Td
+dTe
+eTf
+wTt = c1Td*dTe*eTf;
+wTt = simplify(wTt)
+wTf=wTt*fTt
+wTt = simplify(wTt)
+
+
+den=sqrt(wTt(1,3)^2+wTt(2,3))
+t5=atan2(wTt(3,3),den)
+simplify(t5)
+
+t4=atan2(-wTt(1,3),wTt(2,3))
+simplify(t4)
+
+t6=atan2(wTt(3,2),-wTt(3,1))
+simplify(t6)
+
+
+
+
+
+
+
+
+
 
 
 
