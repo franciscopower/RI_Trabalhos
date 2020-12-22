@@ -18,7 +18,7 @@ syms dp dp1 dp2
 % matriz de transformação global
 oTt_i = [
     cos(theta)*cos(psi) cos(psi)*sin(phi)*sin(theta)-cos(phi)*sin(psi) cos(phi)*cos(psi)*sin(theta)+sin(phi)*sin(psi) x;
-    cos(theta)*sin(psi) cos(theta)*cos(psi)+sin(phi)*sin(theta)*sin(psi) -cos(psi)*sin(phi)+cos(phi)*sin(theta)*sin(psi) y;
+    cos(theta)*sin(psi) cos(phihh)*cos(psi)+sin(phi)*sin(theta)*sin(psi) -cos(psi)*sin(phi)+cos(phi)*sin(theta)*sin(psi) y;
     -sin(theta) cos(theta)*sin(phi) cos(phi)*cos(theta) z
     0 0 0 1]
 
