@@ -20,7 +20,7 @@ syms dp dp1 dp2
 oTt_i = [
     cos(theta)*cos(psi) cos(psi)*sin(phi)*sin(theta)-cos(phi)*sin(psi) cos(phi)*cos(psi)*sin(theta)+sin(phi)*sin(psi) x;
     cos(theta)*sin(psi) cos(theta)*cos(psi)+sin(phi)*sin(theta)*sin(psi) -cos(psi)*sin(phi)+cos(phi)*sin(theta)*sin(psi) y;
-    -sin(theta) cos(theta)*sin(phi) cos(phi)*cos(theta) z
+    -sin(theta) cos(theta)*sin(phi) cos(phi)*cos(theta) z;
     0 0 0 1]
 
 % Atribuição do sistema de coordenadas
@@ -87,13 +87,27 @@ t2 = acos((L2*d1 + L1*d2)/(L1^2 + L2^2)) %atenção ao +/- da raiz quadrada do d
 
 
 % segundo sistema de cordenadas
-c1Td
-dTe
-eTf
+
+%(0R3)⁻1*0R6=4R6
+
+% matriz de [OR3]⁻¹
+inv_OTw=inv(OTw);
+
+% matriz 4R6
 wTt = c1Td*dTe*eTf;
+wTt = simplify(wTt);
+wTf=wTt*fTt;
 wTt = simplify(wTt)
-wTf=wTt*fTt
-wTt = simplify(wTt)
+
+
+
+
+
+
+
+
+
+
 
 
 den=sqrt(wTt(1,3)^2+wTt(2,3))
@@ -105,6 +119,8 @@ simplify(t4)
 
 t6=atan2(wTt(3,2),-wTt(3,1))
 simplify(t6)
+
+
 
 
 
