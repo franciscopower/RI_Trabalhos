@@ -258,11 +258,11 @@ a = {0,0,0,0,0,0;
     15,-30,-30,20,-20,165};
 
 % calculo posicao para titulo
-OTw = OTa*aTb*bTc*cTc1*c1Td*dTe*eTf*fTt;
-p = OTw(1:3,4);
-theta = rad2deg(asin(-OTw(3,1)));
-phi = rad2deg(atan2(OTw(3,2), OTw(3,3)));
-psi = rad2deg(atan2(OTw(2,1), OTw(1,1)));
+OTt = OTa*aTb*bTc*cTc1*c1Td*dTe*eTf*fTt;
+p = OTt(1:3,4);
+theta = rad2deg(asin(-OTt(3,1)));
+phi = rad2deg(atan2(OTt(3,2), OTt(3,3)));
+psi = rad2deg(atan2(OTt(2,1), OTt(1,1)));
 
 % End factor
 r = [p; phi; theta; psi];
@@ -463,11 +463,11 @@ for i=2:5
         %_________________/eixos______________________
         
      
-        OTw = OTa*aTb*bTc*cTc1*c1Td*dTe*eTf*fTt;
-        p = OTw(1:3,4);
-        theta = rad2deg(asin(-OTw(3,1)));
-        phi = rad2deg(atan2(OTw(3,2), OTw(3,3)));
-        psi = rad2deg(atan2(OTw(2,1), OTw(1,1)));
+        OTt = OTa*aTb*bTc*cTc1*c1Td*dTe*eTf*fTt;
+        p = OTt(1:3,4);
+        theta = rad2deg(asin(-OTt(3,1)));
+        phi = rad2deg(atan2(OTt(3,2), OTt(3,3)));
+        psi = rad2deg(atan2(OTt(2,1), OTt(1,1)));
         
         % End factor
         r = [p; phi; theta; psi];
