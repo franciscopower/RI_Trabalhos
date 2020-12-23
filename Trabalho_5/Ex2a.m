@@ -47,11 +47,12 @@ fTt= rot3("x",pi);
 OTw = OTa*aTb*bTc*cTc1;
 OTw = simplify(OTw)
 
-pwx1 = OTw(1,4);
-pwy1 = OTw(2,4);
-pwz1 = OTw(3,4);
+% calculo do pw
+pw = [x;y;z] - LF*oTt_i(1:3,3);
+pwx = pw(1); pwy=pw(2); pwz=pw(3);
 
-% dp = (sqrt(pwx^2 + pwy^2) - LB)^2 + pwz^2
+% dp = (sqrt(pwx^2 + pwy^2) - LB)^2 + pwz^2 % !!! descomentar isto para
+% correr o programa mesmo !!!
 
 % calculo theta1
 t1 = atan2(pwy,pwx)
@@ -60,7 +61,7 @@ t1 = atan2(pwy,pwx)
 d1 = LC*sin(theta2) + LD*sin(theta2+theta3) + LE*cos(theta2+theta3);
 d2 = LC*cos(theta2) + LD*cos(theta2+theta3) - LE*sin(theta2+theta3);
 d = expand(d1^2) + expand(d2^2);
-d = simplify(d);
+d = simplify(d)
 
 k1 = -2*LC*LE;
 k2 = 2*LC*LD;
@@ -72,7 +73,7 @@ t3 = 2 * atan2(k2 + sqrt(k1^2 + k2^2 - k3^2), k1 + k3) %atenção ao +/- da raiz
 L1 = LC + LD*cos(theta3) - LE*sin(theta3);
 L2 = LD*sin(theta3) + LE*cos(theta3);
 
-t2 = acos((L2*d1 + L1*d2)/(L1^2 + L2^2)) %atenção ao +/- da raiz quadrada do d1
+t2 = acos((L2*sqrt(pwx^2 + pwy^2) + L1*pwz)/(L1^2 + L2^2)) %atenção ao +/- da raiz quadrada do d1
 
 
 % p = OTw(1:3,4);
