@@ -70,10 +70,10 @@ k3 = dp - LC^2 - LD^2 - LE^2;
 t3 = 2 * atan2(k2 + sqrt(k1^2 + k2^2 - k3^2), k1 + k3) %atenção ao +/- da raiz quadrada
 
 % calculo theta2 (t2)
-L1 = LC + LD*cos(theta3) - LE*sin(theta3);
-L2 = LD*sin(theta3) + LE*cos(theta3);
-
-t2 = acos((L2*sqrt(pwx^2 + pwy^2) + L1*pwz)/(L1^2 + L2^2)) %atenção ao +/- da raiz quadrada do d1
+%calculo theta2
+L1 = LC + LD*cos(theta3) + LE*sin(theta3);
+L2 = LE*cos(theta3) - LD*sin(theta3);
+theta2 = acos((L2*(sqrt(pwx^2 + pwy^2)-LB) + L1*pwz)/(L1^2 + L2^2));
 
 
 % p = OTw(1:3,4);
@@ -89,35 +89,48 @@ t2 = acos((L2*sqrt(pwx^2 + pwy^2) + L1*pwz)/(L1^2 + L2^2)) %atenção ao +/- da 
 
 % segundo sistema de cordenadas
 
-%(0R3)⁻1*0R6=4R6
-
-% matriz de [OR3]⁻¹
-inv_OTw=inv(OTw);
-
-
 % matriz 4R6
 wTt = c1Td*dTe*eTf;
 wTt = simplify(wTt);
 wTf=wTt*fTt;
 wTt = simplify(wTt)
 
-% calculo de (0R3)⁻1*0R6 para retirar os valores para de e substituir nos
-% thetas
-mult_matrix=inv_OTw*oTt_i;
-mult_matrix= simplify(mult_matrix)
 
-% para calculo de theta 5 temos que theta5=atan(sqtr(ax²+ay²)/az)=atan(S5 /c5)
+oTw = OTa*aTb*bTc*cTc1;
 
-t5=atan2(sqrt(mult_matrix(1,3)^2+mult_matrix(2,3)^2),mult_matrix(3,3))
-% para calcular o theta 4 = atan( -ax/-ay)=atan(-c4*S5/-S4S5)
-%  nao esquecer de ver o sinal por quasao do theta 5
+wTt = oTw^-1 * oTt_i;
 
-t4= atan2(-mult_matrix(1,3)*sin(theta5),-mult_matrix(2,3)*sin(theta5))
+theta5 = atan2(sqrt(wTt(1,3)^2 + wTt(2,3)^2),wTt(3,3))
 
-%para i calcular o theta 6 = atan(-sz/nz)
-%  nao esquecer de ver o sinal por quasao do theta 5
+theta4 = atan2(wTt(2,3), wTt(1,3))
 
-t6= atan2(-mult_matrix(3,2)*sin(theta5),mult_matrix(3,3)*sin(theta5))
+theta6 = atan2(-wTt(3,2), wTt(3,1))
+
+% %(0R3)⁻1*0R6=4R6
+% 
+% % matriz de [OR3]⁻¹
+% inv_OTw=inv(OTw);
+
+
+
+
+% % calculo de (0R3)⁻1*0R6 para retirar os valores para de e substituir nos
+% % thetas
+% mult_matrix=inv_OTw*oTt_i;
+% mult_matrix= simplify(mult_matrix)
+% 
+% % para calculo de theta 5 temos que theta5=atan(sqtr(ax²+ay²)/az)=atan(S5 /c5)
+% 
+% t5=atan2(sqrt(mult_matrix(1,3)^2+mult_matrix(2,3)^2),mult_matrix(3,3))
+% % para calcular o theta 4 = atan( -ax/-ay)=atan(-c4*S5/-S4S5)
+% %  nao esquecer de ver o sinal por quasao do theta 5
+% 
+% t4= atan2(-mult_matrix(1,3)*sin(theta5),-mult_matrix(2,3)*sin(theta5))
+% 
+% %para i calcular o theta 6 = atan(-sz/nz)
+% %  nao esquecer de ver o sinal por quasao do theta 5
+% 
+% t6= atan2(-mult_matrix(3,2)*sin(theta5),mult_matrix(3,3)*sin(theta5))
 
 
 
@@ -125,19 +138,19 @@ t6= atan2(-mult_matrix(3,2)*sin(theta5),mult_matrix(3,3)*sin(theta5))
 %
 %% valor pertendidos do ponto final 
 
-% x=526.03;
-% y=368.32;
-% z=177.6;
-% theta= deg2rad(-80);
-% phi= deg2rad(0);
-% psi= deg2rad(-145);
+x=526.03;
+y=368.32;
+z=177.6;
+theta= deg2rad(-80);
+phi= deg2rad(0);
+psi= deg2rad(-145);
 
-x=-223.5;
-y=948.6;
-z=19.4;
-phi= deg2rad(147.7);
-theta= deg2rad(67.6);
-psi= deg2rad(-127.5);
+% x=-223.5;
+% y=948.6;
+% z=19.4;
+% phi= deg2rad(147.7);
+% theta= deg2rad(67.6);
+% psi= deg2rad(-127.5);
 
 
 % Dados
@@ -206,11 +219,9 @@ wTt = oTw^-1 * oTt_i;
 
 theta5 = atan2(sqrt(wTt(1,3)^2 + wTt(2,3)^2),wTt(3,3))
 
-theta4 = atan2(-wTt(1,3), -wTt(2,3))
-theta4 = pi-theta4
+theta4 = atan2(-wTt(2,3)*sin(theta5), -wTt(1,3)*sin(theta5))
 
-theta6 = atan2(-wTt(3,2), wTt(3,1))
-theta6 = pi-theta6
+theta6 = atan2(-wTt(3,2)*sin(theta5), +wTt(3,1)*sin(theta5))
 
 
 %redundancias
@@ -218,8 +229,8 @@ theta6 = pi-theta6
 % theta2 = theta2 - pi;
 % theta3 = theta3 - 2*pi;
 % theta4 = 2*pi - theta4;
-theta5 = theta5 - pi;
-% theta6 = theta6 - pi;
+% theta5 = theta5 - pi;
+% theta6 = - theta6 + pi;
 
 % confirmar
 espaco_juntas = [
