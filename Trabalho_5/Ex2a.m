@@ -61,10 +61,10 @@ t1 = atan2(pwy,pwx)
 d1 = LC*sin(theta2) + LD*sin(theta2-theta3) + LE*cos(theta2-theta3);
 d2 = LC*cos(theta2) + LD*cos(theta2-theta3) - LE*sin(theta2-theta3);
 d = expand(d1^2) + expand(d2^2);
-d = simplify(d)
+d = simplify(d)\begin
 
-k1 = 2*LC*LE;
-k2 = 2*LC*LD;
+k2 = 2*LC*LE;
+k1 = 2*LC*LD;
 k3 = dp - LC^2 - LD^2 - LE^2;
 
 t3 = 2 * atan2(k2 + sqrt(k1^2 + k2^2 - k3^2), k1 + k3) %atenção ao +/- da raiz quadrada
@@ -138,19 +138,19 @@ theta6 = atan2(-wTt(3,2), wTt(3,1))
 %
 %% valor pertendidos do ponto final 
 
-x=526.03;
-y=368.32;
-z=177.6;
-theta= deg2rad(-80);
-phi= deg2rad(0);
-psi= deg2rad(-145);
+% x=526.03;
+% y=368.32;
+% z=177.6;
+% theta= deg2rad(-80);
+% phi= deg2rad(0);
+% psi= deg2rad(-145);
 
-% x=-223.5;
-% y=948.6;
-% z=19.4;
-% phi= deg2rad(147.7);
-% theta= deg2rad(67.6);
-% psi= deg2rad(-127.5);
+x=-223.5;
+y=948.6;
+z=19.4;
+phi= deg2rad(147.7);
+theta= deg2rad(67.6);
+psi= deg2rad(-127.5);
 
 
 % Dados
