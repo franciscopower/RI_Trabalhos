@@ -113,7 +113,7 @@ tb = fill3(gripper(1,5:8), gripper(2,5:8), gripper(3,5:8), 'y');
 
 % lista de espaços de juntas
 a = {0,0,0,0,0,0;
-    35,180,193.81,0,50,0;
+    105,60,30,120,-20,40;
     35,0,-40,0,50,0};
 
 % calculo posicao para titulo

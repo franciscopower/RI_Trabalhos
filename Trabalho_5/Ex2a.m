@@ -125,12 +125,20 @@ t6= atan2(-mult_matrix(3,2)*sin(theta5),mult_matrix(3,3)*sin(theta5))
 %
 %% valor pertendidos do ponto final 
 
-x=526.03;
-y=368.32;
-z=177.6;
-theta= deg2rad(-80);
-phi= deg2rad(0);
-psi= deg2rad(-145);
+% x=526.03;
+% y=368.32;
+% z=177.6;
+% theta= deg2rad(-80);
+% phi= deg2rad(0);
+% psi= deg2rad(-145);
+
+x=-223.5;
+y=948.6;
+z=19.4;
+phi= deg2rad(147.7);
+theta= deg2rad(67.6);
+psi= deg2rad(-127.5);
+
 
 % Dados
 LA = 0;
@@ -150,7 +158,7 @@ pw = [x;y;z] - LF*oTt_i(1:3,3);
 pwx = pw(1); pwy=pw(2); pwz=pw(3);
 
 %calculo t1
-theta1=atan2(pwy,pwx)
+theta1=atan2(pwy,pwx);
 
 %t3------------------------------------------------
 
@@ -161,32 +169,41 @@ k1 = 2*LC*LD;
 k3 = dp - (LC^2 + LD^2 + LE^2);
 
 theta3 = 2 * atan2(k2 - sqrt(k1^2 + k2^2 - k3^2), k1 + k3);
-theta3 = - 2*pi + theta3
+% theta3 = theta3 - 2*pi
 
 % theta3=-0.6981
 %----------------------------------------------------
 %t2
 L1 = LC + LD*cos(theta3) + LE*sin(theta3);
-L2 = - LD*sin(theta3) + LE*cos(theta3);
-theta2=acos((L2*sqrt(pwx^2 + pwy^2) + L1*pwz)/(L1^2 + L2^2))
-%theta2=pi-theta2
+L2 = LE*cos(theta3) - LD*sin(theta3);
+theta2 = acos((L2*(sqrt(pwx^2 + pwy^2)-LB) + L1*pwz)/(L1^2 + L2^2))
 theta2 = real(theta2);
+% theta2 = deg2rad(60);
 % theta2 = theta2 - pi;
 %-----------------------------------------------------
 
 theta5=atan2(((cos(psi)*cos(theta1)*sin(phi) + sin(psi)*sin(phi)*sin(theta1) + cos(psi)*cos(phi)*sin(theta)*sin(theta1) - sin(psi)*cos(phi)*cos(theta1)*sin(theta))^2 + (cos(theta2 - theta3)*cos(phi)*cos(theta) - sin(theta2 - theta3)*cos(psi)*sin(phi)*sin(theta1) + sin(theta2 - theta3)*sin(psi)*cos(theta1)*sin(phi) + sin(theta2 - theta3)*cos(psi)*cos(phi)*cos(theta1)*sin(theta) + sin(theta2 - theta3)*sin(psi)*cos(phi)*sin(theta)*sin(theta1))^2)^(1/2), sin(theta2 - theta3)*cos(phi)*cos(theta) + cos(theta2 - theta3)*cos(psi)*sin(phi)*sin(theta1) - cos(theta2 - theta3)*sin(psi)*cos(theta1)*sin(phi) - cos(theta2 - theta3)*cos(psi)*cos(phi)*cos(theta1)*sin(theta) - cos(theta2 - theta3)*sin(psi)*cos(phi)*sin(theta)*sin(theta1));
-theta5 = pi - theta5
+% theta5 = pi - theta5
 
 theta4=atan2(-sin(theta5)*(cos(theta2 - theta3)*cos(phi)*cos(theta) - sin(theta2 - theta3)*cos(psi)*sin(phi)*sin(theta1) + sin(theta2 - theta3)*sin(psi)*cos(theta1)*sin(phi) + sin(theta2 - theta3)*cos(psi)*cos(phi)*cos(theta1)*sin(theta) + sin(theta2 - theta3)*sin(psi)*cos(phi)*sin(theta)*sin(theta1)), sin(theta5)*(cos(psi)*cos(theta1)*sin(phi) + sin(psi)*sin(phi)*sin(theta1) + cos(psi)*cos(phi)*sin(theta)*sin(theta1) - sin(psi)*cos(phi)*cos(theta1)*sin(theta)));
 % theta4 = 2*pi - theta4
 % % 
 theta6=atan2(sin(theta5)*(cos(theta2 - theta3)*cos(psi)*cos(phi)*sin(theta1) - sin(theta2 - theta3)*cos(theta)*sin(phi) - cos(theta2 - theta3)*sin(psi)*cos(phi)*cos(theta1) + cos(theta2 - theta3)*cos(psi)*cos(theta1)*sin(phi)*sin(theta) + cos(theta2 - theta3)*sin(psi)*sin(phi)*sin(theta)*sin(theta1)), -sin(theta5)*(cos(theta2 - theta3)*sin(psi)*cos(theta1)*sin(phi) - cos(theta2 - theta3)*cos(psi)*sin(phi)*sin(theta1) - sin(theta2 - theta3)*cos(phi)*cos(theta) + cos(theta2 - theta3)*cos(psi)*cos(phi)*cos(theta1)*sin(theta) + cos(theta2 - theta3)*sin(psi)*cos(phi)*sin(theta)*sin(theta1)));
-theta6 = theta6 - pi
+% theta6 = theta6 - pi
 
 
 % theta5=atan2(((cos(psi)*cos(theta1)*sin(phi) + sin(psi)*sin(phi)*sin(theta1) + cos(psi)*cos(phi)*sin(theta)*sin(theta1) - sin(psi)*cos(phi)*cos(theta1)*sin(theta))^2 + (cos(theta2 - theta3)*cos(phi)*cos(theta) - sin(theta2 - theta3)*cos(psi)*sin(phi)*sin(theta1) + sin(theta2 - theta3)*sin(psi)*cos(theta1)*sin(phi) + sin(theta2 - theta3)*cos(psi)*cos(phi)*cos(theta1)*sin(theta) + sin(theta2 - theta3)*sin(psi)*cos(phi)*sin(theta)*sin(theta1))^2)^(1/2), sin(theta2 - theta3)*cos(phi)*cos(theta) + cos(theta2 - theta3)*cos(psi)*sin(phi)*sin(theta1) - cos(theta2 - theta3)*sin(psi)*cos(theta1)*sin(phi) - cos(theta2 - theta3)*cos(psi)*cos(phi)*cos(theta1)*sin(theta) - cos(theta2 - theta3)*sin(psi)*cos(phi)*sin(theta)*sin(theta1))
 % theta4=atan2(-sin(theta5)*(cos(theta2 - theta3)*cos(phi)*cos(theta) - sin(theta2 - theta3)*cos(psi)*sin(phi)*sin(theta1) + sin(theta2 - theta3)*sin(psi)*cos(theta1)*sin(phi) + sin(theta2 - theta3)*cos(psi)*cos(phi)*cos(theta1)*sin(theta) + sin(theta2 - theta3)*sin(psi)*cos(phi)*sin(theta)*sin(theta1)), sin(theta5)*(cos(psi)*cos(theta1)*sin(phi) + sin(psi)*sin(phi)*sin(theta1) + cos(psi)*cos(phi)*sin(theta)*sin(theta1) - sin(psi)*cos(phi)*cos(theta1)*sin(theta)))
 % theta6=atan2(sin(theta5)*(cos(theta2 - theta3)*cos(psi)*cos(phi)*sin(theta1) - sin(theta2 - theta3)*cos(theta)*sin(phi) - cos(theta2 - theta3)*sin(psi)*cos(phi)*cos(theta1) + cos(theta2 - theta3)*cos(psi)*cos(theta1)*sin(phi)*sin(theta) + cos(theta2 - theta3)*sin(psi)*sin(phi)*sin(theta)*sin(theta1)), -sin(theta5)*(cos(theta2 - theta3)*sin(psi)*cos(theta1)*sin(phi) - cos(theta2 - theta3)*cos(psi)*sin(phi)*sin(theta1) - sin(theta2 - theta3)*cos(phi)*cos(theta) + cos(theta2 - theta3)*cos(psi)*cos(phi)*cos(theta1)*sin(theta) + cos(theta2 - theta3)*sin(psi)*cos(phi)*sin(theta)*sin(theta1)))
+
+
+% theta2 = theta2 - pi;
+theta3 = theta3 - 2*pi;
+% theta4 = 2*pi - theta4;
+theta5 =theta5 - pi;
+% theta6 = theta6 - pi;
+
+
 
 % confirmar
 espaco_juntas = [
