@@ -63,7 +63,8 @@ for s=1:b(1)
     %calculo theta2
     L1 = LC + LD*cos(theta3) + LE*sin(theta3);
     L2 = LE*cos(theta3) - LD*sin(theta3);
-    theta2 = acos((L2*(sqrt(pwx^2 + pwy^2)-LB) + L1*pwz)/(L1^2 + L2^2));
+    C2 = (L2*(sqrt(pwx^2 + pwy^2)-LB) + L1*pwz)/(L1^2 + L2^2);
+    theta2 = asin((L1*C2 - pwz)/L2);
 %     theta2 = real(theta2);
     
     %-----------------------------------------------------
@@ -95,18 +96,19 @@ for s=1:b(1)
     wTt = oTw^-1 * oTt_i;
     
     theta5 = atan2(sqrt(wTt(1,3)^2 + wTt(2,3)^2),wTt(3,3));
+    theta5 = theta5 - pi; %nao sei se e correto
     
     theta4 = atan2(-wTt(2,3)*sin(theta5), -wTt(1,3)*sin(theta5));
     
-    theta6 = atan2(-wTt(3,2)*sin(theta5), +wTt(3,1)*sin(theta5));
-    
+    theta6 = - atan2(-wTt(3,2)*sin(theta5), +wTt(3,1)*sin(theta5));
+    % nao sei se o - antes do theta6 e correto
     
     %redundancias
     
     % theta2 = theta2 - pi;
     % theta3 = theta3 - 2*pi;
     % theta4 = 2*pi - theta4;
-    % theta5 = theta5 - pi;
+%     theta5 = theta5 - pi;
     % theta6 = - theta6 + pi;
     
     % confirmar
