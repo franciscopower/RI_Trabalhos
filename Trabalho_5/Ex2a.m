@@ -286,7 +286,7 @@ for i=2:b(1)+1
         %nova angulo para cada angulo ate chegar ao angulo pertendido
         theta1 = theta1_incr(n);
         theta2 = theta2_incr(n);
-        theta3 = theta3_incr(n) + theta2;
+        theta3 = theta3_incr(n);
         theta4 = theta4_incr(n);
         theta5 = theta5_incr(n);
         theta6 = theta6_incr(n);
