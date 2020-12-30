@@ -95,13 +95,12 @@ for s=1:b(1)
     
     wTt = oTw^-1 * oTt_i;
     
-    theta5 = atan2(sqrt(wTt(1,3)^2 + wTt(2,3)^2),wTt(3,3));
+    theta5 = atan2(-sqrt(wTt(1,3)^2 + wTt(2,3)^2),wTt(3,3));
     theta5 = theta5 - pi; %nao sei se e correto
     
     theta4 = atan2(-wTt(2,3)*sin(theta5), -wTt(1,3)*sin(theta5));
     
-    theta6 = - atan2(-wTt(3,2)*sin(theta5), +wTt(3,1)*sin(theta5));
-    % nao sei se o - antes do theta6 e correto
+    theta6 = atan2(-wTt(3,2)*sin(theta5), +wTt(3,1)*sin(theta5));
     
     %redundancias
     
@@ -124,6 +123,8 @@ for s=1:b(1)
     for i=1:size(espaco_juntas,1)
         if espaco_juntas(i)>180
             espaco_juntas(i) = espaco_juntas(i)-360;
+        elseif espaco_juntas(i)<-180
+            espaco_juntas(i) = espaco_juntas(i)+360;
         end
     end
     
