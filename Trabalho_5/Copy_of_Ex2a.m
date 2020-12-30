@@ -138,19 +138,19 @@ theta6 = atan2(-wTt(3,2), wTt(3,1))
 %
 %% valor pertendidos do ponto final 
 
-% x=526.03;
-% y=368.32;
-% z=177.6;
-% theta= deg2rad(-80);
-% phi= deg2rad(0);
-% psi= deg2rad(-145);
+x=526.03;
+y=368.32;
+z=177.6;
+theta= deg2rad(-80);
+phi= deg2rad(0);
+psi= deg2rad(-145);
 
-x=-223.5;
-y=948.6;
-z=19.4;
-phi= deg2rad(147.7);
-theta= deg2rad(67.6);
-psi= deg2rad(-127.5);
+% x=-223.5;
+% y=948.6;
+% z=19.4;
+% phi= deg2rad(147.7);
+% theta= deg2rad(67.6);
+% psi= deg2rad(-127.5);
 
 
 % Dados
