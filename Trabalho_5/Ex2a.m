@@ -1,3 +1,4 @@
+
 clear all
 clc
 close all
@@ -157,7 +158,7 @@ LF = 100;
 
 % ordem da lista x,y,z,phi,theta,psi
 c = {680, 0,460, 0,0,0;
-    526.03,368.32,177.6,deg2rad(0),deg2rad(-80),deg2rad(-145);
+    526.03,368.32,177.6,deg2rad(0),deg2rad(80),deg2rad(-145);
     338.21, 236.82,452.38,deg2rad(0),deg2rad(-40),deg2rad(-145);
     -223.5,948.6,19.4,deg2rad(147.7),deg2rad(67.6),deg2rad(-127.5);
     
@@ -170,7 +171,6 @@ a(1,3)={0};
 a(1,4)={0};
 a(1,5)={0};
 a(1,6)={0};
-
 for s=1:b(1)
     
     x=c{s,1};
@@ -512,9 +512,6 @@ for i=2:b(1)+1
     end
     
 end
-
-
-
 
 
 
