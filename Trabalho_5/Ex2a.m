@@ -13,11 +13,11 @@ LEEE = 280;
 LF = 100;
 
 % ordem da lista x,y,z,phi,theta,psi
-c = {680, 0,460, 0,0,0;
+c = {680, 0,460,deg2rad(-135),deg2rad(-90),deg2rad(-45);
     526.03,368.32,177.6,deg2rad(0),deg2rad(-80),deg2rad(-145);
     338.21, 236.82,452.38,deg2rad(0),deg2rad(-40),deg2rad(-145);
     -223.5,948.6,19.4,deg2rad(147.7),deg2rad(67.6),deg2rad(-127.5);
-    
+    445.1,107.2,108.6,deg2rad(-170),deg2rad(40.6),deg2rad(-159.9);
     };
 
 b=size(c);
@@ -64,7 +64,7 @@ for s=1:b(1)
     L1 = LC + LD*cos(theta3) + LE*sin(theta3);
     L2 = LE*cos(theta3) - LD*sin(theta3);
     theta2 = acos((L2*(sqrt(pwx^2 + pwy^2)-LB) + L1*pwz)/(L1^2 + L2^2));
-    theta2 = real(theta2);
+%     theta2 = real(theta2);
     
     %-----------------------------------------------------
     %calculos theta4,5,6
