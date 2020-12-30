@@ -61,7 +61,7 @@ t1 = atan2(pwy,pwx)
 d1 = LC*sin(theta2) + LD*sin(theta2-theta3) + LE*cos(theta2-theta3);
 d2 = LC*cos(theta2) + LD*cos(theta2-theta3) - LE*sin(theta2-theta3);
 d = expand(d1^2) + expand(d2^2);
-d = simplify(d)\begin
+d = simplify(d)
 
 k2 = 2*LC*LE;
 k1 = 2*LC*LD;
@@ -100,11 +100,11 @@ oTw = OTa*aTb*bTc*cTc1;
 
 wTt = oTw^-1 * oTt_i;
 
-theta5 = atan2(sqrt(wTt(1,3)^2 + wTt(2,3)^2),wTt(3,3))
+theta5 = atan2(sqrt(wTt(1,3)^2 + wTt(2,3)^2),wTt(3,3));
 
-theta4 = atan2(wTt(2,3), wTt(1,3))
+theta4 = atan2(wTt(2,3), wTt(1,3));
 
-theta6 = atan2(-wTt(3,2), wTt(3,1))
+theta6 = atan2(-wTt(3,2), wTt(3,1));
 
 % %(0R3)⁻1*0R6=4R6
 % 

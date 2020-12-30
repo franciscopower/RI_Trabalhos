@@ -1,7 +1,7 @@
 % valor pertendidos do ponto final 
 close all
 clear all
-clc
+% clc
 
 LA = 0;
 LB = 150;
@@ -95,20 +95,19 @@ for s=1:b(1)
     
     wTt = oTw^-1 * oTt_i;
     
-    theta5 = atan2(-sqrt(wTt(1,3)^2 + wTt(2,3)^2),wTt(3,3));
-    theta5 = theta5 - pi; %nao sei se e correto
+    theta5 = atan2(-sqrt(wTt(1,3)^2 + wTt(2,3)^2),-wTt(3,3));
     
     theta4 = atan2(-wTt(2,3)*sin(theta5), -wTt(1,3)*sin(theta5));
     
-    theta6 = atan2(-wTt(3,2)*sin(theta5), +wTt(3,1)*sin(theta5));
+    theta6 = atan2(wTt(3,2)*sin(theta5), +wTt(3,1)*sin(theta5)); %foi retirado o sinal menos no numerador
     
     %redundancias
     
-    % theta2 = theta2 - pi;
-    % theta3 = theta3 - 2*pi;
-    % theta4 = 2*pi - theta4;
+%     theta2 = theta2 - pi;
+%     theta3 = theta3 - 2*pi;
+    theta4 = theta4 - pi;
 %     theta5 = theta5 - pi;
-    % theta6 = - theta6 + pi;
+%     theta6 = - theta6 + pi;
     
     % confirmar
     espaco_juntas = [
