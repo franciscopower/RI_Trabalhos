@@ -43,62 +43,73 @@ for s=1:b(1)
         cos(theta)*sin(psi) cos(phi)*cos(psi)+sin(phi)*sin(theta)*sin(psi) -cos(psi)*sin(phi)+cos(phi)*sin(theta)*sin(psi) y;
         -sin(theta) cos(theta)*sin(phi) cos(phi)*cos(theta) z;
         0 0 0 1];
-
+    
     pw = [x;y;z] - LF*oTt_i(1:3,3);
     pwx = pw(1); pwy=pw(2); pwz=pw(3);
-
+    
     %----------------------------------------------
     %calculo theta1
     theta1=atan2(pwy,pwx);
-
+    
     %calculo theta3
     dp = (sqrt(pwx^2 + pwy^2) - LB)^2 + pwz^2;
-
+    
     k2 = 2*LC*LE;
     k1 = 2*LC*LD;
     k3 = dp - (LC^2 + LD^2 + LE^2);
-
+    
     theta3 = 2 * atan2(k2 - sqrt(k1^2 + k2^2 - k3^2), k1 + k3);
-
+    
     %calculo theta2
     L1 = LC + LD*cos(theta3) + LE*sin(theta3);
     L2 = LE*cos(theta3) - LD*sin(theta3);
     theta2 = acos((L2*(sqrt(pwx^2 + pwy^2)-LB) + L1*pwz)/(L1^2 + L2^2));
     theta2 = real(theta2);
-
+    
     %-----------------------------------------------------
     %calculos theta4,5,6
-
+    
     % Atribuição do sistema de coordenadas
     %eloN = [theta, alfa, l, d]
     param_eloA = [theta1, -pi/2, LB,LA];
     param_eloB = [theta2-pi/2, pi, LC, 0];
     param_eloC = [theta3, -pi/2, LD, 0];
     param_eloC1 = [0, 0, 0, -LE];
-
+    % param_eloD = [theta4, pi/2, 0, 0];
+    % param_eloE = [theta5, -pi/2, 0, 0];
+    % param_eloF = [theta6, 0, 0, -LF];
+    
+    
     % Transformações de cada elo
     OTa = trans_elo(param_eloA);
     aTb = trans_elo(param_eloB);
     bTc = trans_elo(param_eloC);
     cTc1 = trans_elo(param_eloC1);
-
+    % c1Td = trans_elo(param_eloD);
+    % dTe = trans_elo(param_eloE);
+    % eTf = trans_elo(param_eloF);
+    % fTt= rot3("x",pi);
+    
     oTw = OTa*aTb*bTc*cTc1;
-
+    
     wTt = oTw^-1 * oTt_i;
-
+    
     theta5 = atan2(sqrt(wTt(1,3)^2 + wTt(2,3)^2),wTt(3,3));
-    theta4 = atan2(-wTt(1,3), -wTt(2,3));
-    theta6 = atan2(-wTt(3,2), wTt(3,1));
-
-
+    
+    theta4 = atan2(-wTt(2,3)*sin(theta5), -wTt(1,3)*sin(theta5));
+    
+    theta6 = atan2(-wTt(3,2)*sin(theta5), +wTt(3,1)*sin(theta5));
+    
+    
     %redundancias
-
+    
     % theta2 = theta2 - pi;
     % theta3 = theta3 - 2*pi;
-    theta4 = pi-theta4;
-    theta5 = theta5 - pi;
-    theta6 = pi-theta6;
-
+    % theta4 = 2*pi - theta4;
+    % theta5 = theta5 - pi;
+    % theta6 = - theta6 + pi;
+    
+    % confirmar
     espaco_juntas = [
         rad2deg(theta1);
         rad2deg(theta2);
@@ -107,13 +118,13 @@ for s=1:b(1)
         rad2deg(theta5);
         rad2deg(theta6);
         ];
-
+    
     for i=1:size(espaco_juntas,1)
         if espaco_juntas(i)>180
             espaco_juntas(i) = espaco_juntas(i)-360;
         end
     end
-
+    
     espaco_juntas
     
     % cria o espaco de juntas que vai ser usado no movimento do robo
