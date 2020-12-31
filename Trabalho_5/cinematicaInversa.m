@@ -1,4 +1,4 @@
-function [espaco_juntas] = cinematicaInversa(end_factor, dim_elos)
+function [espaco_juntas] = cinematicaInversa(end_factor, dim_elos, redundancias)
 
 LA = dim_elos(1);
 LB = dim_elos(2);
@@ -34,7 +34,7 @@ k2 = 2*LC*LE;
 k1 = 2*LC*LD;
 k3 = dp - (LC^2 + LD^2 + LE^2);
 
-theta3 = 2 * atan2(k2 - sqrt(k1^2 + k2^2 - k3^2), k1 + k3);
+theta3 = 2 * atan2(k2 + redundancias(2)*sqrt(k1^2 + k2^2 - k3^2), k1 + k3);
 
 %calculo theta2
 L1 = LC + LD*cos(theta3) + LE*sin(theta3);
@@ -43,10 +43,12 @@ C2 = (L2*(sqrt(pwx^2 + pwy^2)-LB) + L1*pwz)/(L1^2 + L2^2);
 theta2 = asin((L1*C2 - pwz)/L2);
 
 %     redundancia theta1 - inadmissivel
-%     theta1 = theta1 + pi;
-%     theta2 = pi - theta2;
-%     theta3 = - theta3;
-
+if redundancias(1) == -1
+%     redundancia theta1 - inadmissivel
+    theta1 = theta1 + pi;
+    theta2 = pi - theta2;
+    theta3 = - theta3;
+end
 %-----------------------------------------------------
 %calculos theta4,5,6
 
@@ -67,7 +69,7 @@ oTw = OTa*aTb*bTc*cTc1;
 
 wTt = oTw^-1 * oTt_i;
 
-theta5 = atan2(+sqrt(wTt(1,3)^2 + wTt(2,3)^2),-wTt(3,3));
+theta5 = atan2(redundancias(3)*sqrt(wTt(1,3)^2 + wTt(2,3)^2),-wTt(3,3));
 
 theta4 = atan2(wTt(2,3)*sin(theta5), wTt(1,3)*sin(theta5));
 

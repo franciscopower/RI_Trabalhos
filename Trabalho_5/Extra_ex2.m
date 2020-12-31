@@ -12,43 +12,6 @@ LEE = 150;
 LEEE = 280;
 LF = 100;
 
-% ordem da lista x,y,z,phi,theta,psi
-c = {680, 0,460,deg2rad(-135),deg2rad(-90),deg2rad(-45);
-    526.03,368.32,177.6,deg2rad(0),deg2rad(-80),deg2rad(-145);
-    338.21, 236.82,452.38,deg2rad(0),deg2rad(-40),deg2rad(-145);
-    -223.5,948.6,19.4,deg2rad(147.7),deg2rad(67.6),deg2rad(-127.5);
-    445.1,107.2,108.6,deg2rad(-170),deg2rad(40.6),deg2rad(-159.9);
-    };
-
-b=size(c);
-a=cell(b(1),6);
-a(1,1)={0};
-a(1,2)={0};
-a(1,3)={0};
-a(1,4)={0};
-a(1,5)={0};
-a(1,6)={0};
-
-for s=1:b(1)
-    
-    x=c{s,1};
-    y=c{s,2};
-    z=c{s,3};
-    phi= c{s,4};
-    theta= c{s,5};
-    psi= c{s,6};
-    
-    espaco_juntas = cinematicaInversa([x,y,z,phi,theta,psi],[LA,LB,LC,LD,LE,LF],[1,-1,1])
-    
-    % cria o espaco de juntas que vai ser usado no movimento do robo
-    a(s+1,1)={espaco_juntas(1)};
-    a(s+1,2)={espaco_juntas(2)};
-    a(s+1,3)={espaco_juntas(3)};
-    a(s+1,4)={espaco_juntas(4)};
-    a(s+1,5)={espaco_juntas(5)};
-    a(s+1,6)={espaco_juntas(6)};
-end
-
 %%%___________________movimentacao do braco________________________________
 
 % Create figure
@@ -67,12 +30,12 @@ pause_time = 0.05;
 %__________________________________________________________________________
 
 % dar os valores das juntas ao primeira posicao 
-theta1=a{1,1};
-theta2=a{1,2};
-theta3=a{1,3};
-theta4=a{1,4};
-theta5=a{1,5};
-theta6=a{1,6};
+theta1=0;
+theta2=0;
+theta3=0;
+theta4=0;
+theta5=0;
+theta6=0;
 
 % Atribuição do sistema de coordenadas
 %eloN = [theta, alfa, l, d]
@@ -115,7 +78,6 @@ eloD = createCylinder(d,LEEE,"xz");
 
 eloE = createCylinder(d,-LF,"xy");
 [cxE, cyE, czE] = transfCylinder(OTa*aTb*bTc*cTc1*c1Td*dTe,eloE);
-
 
 % gripper
 w = 50;
@@ -170,35 +132,65 @@ s2 = sprintf("[%1.1f %1.1f %1.1f %1.1f %1.1f %1.1f]", r(1), r(2), r(3), r(4), r(
 s = strcat(s1, s2);
 title(s)
 
+aA_0 = 0;
+aB_0 = 0;
+aC_0 = 0;
+aC1_0 = 0;
+aD_0 = 0;
+aE_0 = 0;
+
 % ciclo de movimentação dos elos
 
-for i=2:b(1)+1
-    pause()
+while true
+     % prompt user for rotation angles, in degrees ------------------------
+    prompt = {'X:','Y:','Z:','Phi:','Theta','Psi'};
+    dlgtitle = 'End Factor';
+    dims = [1 35];
+    definput = {'0','0','0','0','0','0'};
+    a = inputdlg(prompt,dlgtitle,dims,definput);
     
-    theta1_incr = linspace(deg2rad(a{i-1,1}),deg2rad(a{i,1}),frames);
-    theta2_incr = linspace(deg2rad(a{i-1,2}),deg2rad(a{i,2}),frames);
-    theta3_incr = linspace(deg2rad(a{i-1,3}),deg2rad(a{i,3}),frames);
-    theta4_incr = linspace(deg2rad(a{i-1,4}),deg2rad(a{i,4}),frames);
-    theta5_incr = linspace(deg2rad(a{i-1,5}),deg2rad(a{i,5}),frames);
-    theta6_incr = linspace(deg2rad(a{i-1,6}),deg2rad(a{i,6}),frames);
+    %check if input is valid or canceled
+    try
+        x = str2double(a{1});
+        y = str2double(a{2});
+        z = str2double(a{3});
+        phi = deg2rad(str2double(a{4}));
+        theta = deg2rad(str2double(a{5}));
+        psi = deg2rad(str2double(a{6}));
+        if isnan(x) || isnan(y) || isnan(z) || isnan(phi) || isnan(theta) || isnan(psi)
+            continue
+        end
+    catch
+        break
+    end
+    
+    espaco_juntas = cinematicaInversa([x,y,z,phi,theta,psi],[LA,LB,LC,LD,LE,LF],[1,-1,1])   
+    aA = espaco_juntas(1);
+    aB = espaco_juntas(2);
+    aC = espaco_juntas(3);
+    aC1 = espaco_juntas(4);
+    aD = espaco_juntas(5);
+    aE = espaco_juntas(6);
+    
+    % end prompt ---------------------------------------------------------
+
+    %get input values
+    theta1_incr = linspace(aA_0,aA,frames);
+    theta2_incr = linspace(aB_0,aB,frames);
+    theta3_incr = linspace(aC_0,aC,frames);
+    theta4_incr = linspace(aC1_0,aC1,frames);
+    theta5_incr = linspace(aD_0,aD,frames);
+    theta6_incr = linspace(aE_0,aE,frames);
     
     for n=1:frames
         
         %nova angulo para cada angulo ate chegar ao angulo pertendido
-        theta1 = theta1_incr(n);
-        theta2 = theta2_incr(n);
-        theta3 = theta3_incr(n);
-        theta4 = theta4_incr(n);
-        theta5 = theta5_incr(n);
-        theta6 = theta6_incr(n);
-        
-        % matriz das tranformações % for i=2:5
-        theta1_incr = linspace(deg2rad(a{i-1,1}),deg2rad(a{i,1}),frames);
-        theta2_incr = linspace(deg2rad(a{i-1,2}),deg2rad(a{i,2}),frames);
-        theta3_incr = linspace(deg2rad(a{i-1,3}),deg2rad(a{i,3}),frames);
-        theta4_incr = linspace(deg2rad(a{i-1,4}),deg2rad(a{i,4}),frames);
-        theta5_incr = linspace(deg2rad(a{i-1,5}),deg2rad(a{i,5}),frames);
-        theta6_incr = linspace(deg2rad(a{i-1,6}),deg2rad(a{i,6}),frames);
+        theta1 = deg2rad(theta1_incr(n));
+        theta2 = deg2rad(theta2_incr(n));
+        theta3 = deg2rad(theta3_incr(n));
+        theta4 = deg2rad(theta4_incr(n));
+        theta5 = deg2rad(theta5_incr(n));
+        theta6 = deg2rad(theta6_incr(n));
         
         param_eloA = [theta1, -pi/2, LB,LA];
         param_eloB = [theta2-pi/2, pi, LC, 0];
@@ -255,6 +247,13 @@ for i=2:b(1)+1
         pause(pause_time)
         
     end
+    
+    aA_0 = aA;
+    aB_0 = aB;
+    aC_0 = aC;
+    aC1_0 = aC1;
+    aD_0 = aD;
+    aE_0 = aE;
     
 end
 
