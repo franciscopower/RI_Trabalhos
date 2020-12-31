@@ -65,7 +65,11 @@ for s=1:b(1)
     L2 = LE*cos(theta3) - LD*sin(theta3);
     C2 = (L2*(sqrt(pwx^2 + pwy^2)-LB) + L1*pwz)/(L1^2 + L2^2);
     theta2 = asin((L1*C2 - pwz)/L2);
-%     theta2 = real(theta2);
+
+%     redundancia theta1 - inadmissivel
+%     theta1 = theta1 + pi;
+%     theta2 = pi - theta2;
+%     theta3 = - theta3;
     
     %-----------------------------------------------------
     %calculos theta4,5,6
@@ -75,27 +79,19 @@ for s=1:b(1)
     param_eloA = [theta1, -pi/2, LB,LA];
     param_eloB = [theta2-pi/2, pi, LC, 0];
     param_eloC = [theta3, -pi/2, LD, 0];
-    param_eloC1 = [0, 0, 0, -LE];
-    % param_eloD = [theta4, pi/2, 0, 0];
-    % param_eloE = [theta5, -pi/2, 0, 0];
-    % param_eloF = [theta6, 0, 0, -LF];
-    
+    param_eloC1 = [0, 0, 0, -LE];    
     
     % Transformações de cada elo
     OTa = trans_elo(param_eloA);
     aTb = trans_elo(param_eloB);
     bTc = trans_elo(param_eloC);
     cTc1 = trans_elo(param_eloC1);
-    % c1Td = trans_elo(param_eloD);
-    % dTe = trans_elo(param_eloE);
-    % eTf = trans_elo(param_eloF);
-    % fTt= rot3("x",pi);
     
     oTw = OTa*aTb*bTc*cTc1;
     
     wTt = oTw^-1 * oTt_i;
     
-    theta5 = atan2(-sqrt(wTt(1,3)^2 + wTt(2,3)^2),-wTt(3,3));
+    theta5 = atan2(+sqrt(wTt(1,3)^2 + wTt(2,3)^2),-wTt(3,3));
     
     theta4 = atan2(wTt(2,3)*sin(theta5), wTt(1,3)*sin(theta5));
     
