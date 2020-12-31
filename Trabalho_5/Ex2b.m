@@ -176,7 +176,7 @@ title(s)
 % ciclo de movimentação dos elos
 
 for i=2:b(1)+1
-    pause()
+    pause(1)
     
     theta1_incr = linspace(deg2rad(a{i-1,1}),deg2rad(a{i,1}),frames);
     theta2_incr = linspace(deg2rad(a{i-1,2}),deg2rad(a{i,2}),frames);
