@@ -20,3 +20,6 @@ set(h, 'XData', ncx, 'YData', ncy, 'ZData', ncz)
 
 pause(0.1)
 end
+
+%% sphere test
+
