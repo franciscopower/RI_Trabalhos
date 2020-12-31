@@ -44,7 +44,7 @@ param_eloC = [theta3, -pi/2, LD, 0];
 param_eloC1 = [0, 0, 0, -LE];
 param_eloD = [theta4, pi/2, 0, 0];
 param_eloE = [theta5, -pi/2, 0, 0];
-param_eloF = [theta6, 0, 0, -LF];
+param_eloF = [theta6, pi, 0, -LF];
 
 % Transformações de cada elo
 OTa = trans_elo(param_eloA);
@@ -54,7 +54,6 @@ cTc1 = trans_elo(param_eloC1);
 c1Td = trans_elo(param_eloD);
 dTe = trans_elo(param_eloE);
 eTf = trans_elo(param_eloF);
-fTt= rot3("x",pi);
 
 % Criar Cilindros dos elos
 d = 50;
@@ -83,7 +82,7 @@ eloE = createCylinder(d,-LF,"xy");
 % gripper
 w = 50;
 h = 50;
-LG = -70;
+LG = 70;
 
 ruf = [w h]';
 rub = [-w h]';
@@ -131,7 +130,6 @@ trasC1=OTa*aTb*bTc*cTc1;
 trasD=OTa*aTb*bTc*cTc1*c1Td;
 trasE=OTa*aTb*bTc*cTc1*c1Td*dTe;
 trastool=OTa*aTb*bTc*cTc1*c1Td*dTe*eTf;
-trastool1=OTa*aTb*bTc*cTc1*c1Td*dTe*eTf*fTt;
 
 
 %O
@@ -207,16 +205,6 @@ X_tool = [ Xpart_tool(1,:) Ypart_tool(1,:) Zpart_tool(1,:)];
 Y_tool = [ Xpart_tool(2,:) Ypart_tool(2,:) Zpart_tool(2,:)];
 Z_tool = [ Xpart_tool(3,:) Ypart_tool(3,:) Zpart_tool(3,:)];
 
-%tool1
-Xpart_tool1=trastool1*Xpart;
-Ypart_tool1=trastool1*Ypart;
-Zpart_tool1=trastool1*Zpart;
-
-X_tool1 = [ Xpart_tool1(1,:) Ypart_tool1(1,:) Zpart_tool1(1,:)];
-Y_tool1 = [ Xpart_tool1(2,:) Ypart_tool1(2,:) Zpart_tool1(2,:)];
-Z_tool1 = [ Xpart_tool1(3,:) Ypart_tool1(3,:) Zpart_tool1(3,:)];
-
-
 
 %plot dos eixos
 
@@ -246,9 +234,6 @@ hE1=fill3(X_E(39:end), Y_E(39:end), Z_E(39:end), 'r');
 htool = fill3(X_tool(1:38), Y_tool(1:38), Z_tool(1:38), 'b');
 htool11=fill3(X_tool(39:end), Y_tool(39:end), Z_tool(39:end), 'b');
 
-htool1 = fill3(X_tool1(1:38), Y_tool1(1:38), Z_tool1(1:38), 'r');
-htool111=fill3(X_tool1(39:end), Y_tool1(39:end), Z_tool1(39:end), 'r');
-
 hold off
 % lista de espaços de juntas
 a = {0,0,0,0,0,0;
@@ -258,7 +243,7 @@ a = {0,0,0,0,0,0;
     15,-30,-30,20,-20,165};
 
 % calculo posicao para titulo
-OTt = OTa*aTb*bTc*cTc1*c1Td*dTe*eTf*fTt;
+OTt = OTa*aTb*bTc*cTc1*c1Td*dTe*eTf;
 p = OTt(1:3,4);
 theta = rad2deg(asin(-OTt(3,1)));
 phi = rad2deg(atan2(OTt(3,2), OTt(3,3)));
@@ -309,7 +294,7 @@ for i=2:5
         param_eloC1 = [0, 0, 0, -LE];
         param_eloD = [theta4, pi/2, 0, 0]; 
         param_eloE = [theta5, -pi/2, 0, 0];
-        param_eloF = [theta6, 0, 0, -LF];
+        param_eloF = [theta6, pi, 0, -LF];
         
         % tranformaçao no elo
         
@@ -320,7 +305,6 @@ for i=2:5
         c1Td = trans_elo(param_eloD);
         dTe = trans_elo(param_eloE);
         eTf = trans_elo(param_eloF);
-        fTt= rot3("x",pi);
         
         [ncxA, ncyA, nczA] = transfCylinder(OTa,eloA);
         [ncxB, ncyB, nczB] = transfCylinder(OTa*aTb,eloB);
@@ -352,7 +336,6 @@ for i=2:5
         trasD=OTa*aTb*bTc*cTc1*c1Td;
         trasE=OTa*aTb*bTc*cTc1*c1Td*dTe;
         trastool=OTa*aTb*bTc*cTc1*c1Td*dTe*eTf;
-        trastool1=OTa*aTb*bTc*cTc1*c1Td*dTe*eTf*fTt;
             
         %O
         Xpart_O=trasO*Xpart;
@@ -426,15 +409,6 @@ for i=2:5
         Y_tool = [ Xpart_tool(2,:) Ypart_tool(2,:) Zpart_tool(2,:)];
         Z_tool = [ Xpart_tool(3,:) Ypart_tool(3,:) Zpart_tool(3,:)];
         
-        %tool1
-        Xpart_tool1=trastool1*Xpart;
-        Ypart_tool1=trastool1*Ypart;
-        Zpart_tool1=trastool1*Zpart;
-        
-        X_tool1 = [ Xpart_tool1(1,:) Ypart_tool1(1,:) Zpart_tool1(1,:)];
-        Y_tool1 = [ Xpart_tool1(2,:) Ypart_tool1(2,:) Zpart_tool1(2,:)];
-        Z_tool1 = [ Xpart_tool1(3,:) Ypart_tool1(3,:) Zpart_tool1(3,:)];
-        
         
         %plot dos eixos
         
@@ -446,7 +420,6 @@ for i=2:5
         set(hD, 'XData', X_D(1:38), 'YData',Y_D(1:38), 'ZData', Z_D(1:38))
         set(hE, 'XData', X_E(1:38), 'YData', Y_E(1:38), 'ZData', Z_E(1:38))
         set(htool, 'XData', X_tool(1:38), 'YData', Y_tool(1:38), 'ZData', Z_tool(1:38))
-        set(htool1, 'XData', X_tool1(1:38), 'YData', Y_tool1(1:38), 'ZData', Z_tool1(1:38))
         
         
         set(hO1, 'XData',  X_O(39:end), 'YData', Y_O(39:end), 'ZData',  Z_O(39:end))
@@ -457,13 +430,12 @@ for i=2:5
         set(hD1, 'XData',  X_D(39:end), 'YData',Y_D(39:end), 'ZData', Z_D(39:end))
         set(hE1, 'XData', X_E(39:end), 'YData', Y_E(39:end), 'ZData', Z_E(39:end))
         set(htool11, 'XData', X_tool(39:end), 'YData', Y_tool(39:end), 'ZData', Z_tool(39:end))
-        set(htool111, 'XData', X_tool1(39:end), 'YData', Y_tool1(39:end), 'ZData', Z_tool1(39:end))
         
 
         %_________________/eixos______________________
         
      
-        OTt = OTa*aTb*bTc*cTc1*c1Td*dTe*eTf*fTt;
+        OTt = OTa*aTb*bTc*cTc1*c1Td*dTe*eTf;
         p = OTt(1:3,4);
         theta = rad2deg(asin(-OTt(3,1)));
         phi = rad2deg(atan2(OTt(3,2), OTt(3,3)));

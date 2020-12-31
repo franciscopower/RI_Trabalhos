@@ -97,15 +97,15 @@ for s=1:b(1)
     
     theta5 = atan2(-sqrt(wTt(1,3)^2 + wTt(2,3)^2),-wTt(3,3));
     
-    theta4 = atan2(-wTt(2,3)*sin(theta5), -wTt(1,3)*sin(theta5));
+    theta4 = atan2(wTt(2,3)*sin(theta5), wTt(1,3)*sin(theta5));
     
-    theta6 = atan2(wTt(3,2)*sin(theta5), +wTt(3,1)*sin(theta5)); %foi retirado o sinal menos no numerador
+    theta6 = atan2(wTt(3,2)*sin(theta5), wTt(3,1)*sin(theta5));
     
     %redundancias
     
 %     theta2 = theta2 - pi;
 %     theta3 = theta3 - 2*pi;
-    theta4 = theta4 - pi;
+%     theta4 = theta4 - pi;
 %     theta5 = theta5 - pi;
 %     theta6 = - theta6 + pi;
     
@@ -171,7 +171,7 @@ param_eloC = [theta3, -pi/2, LD, 0];
 param_eloC1 = [0, 0, 0, -LE];
 param_eloD = [theta4, pi/2, 0, 0];
 param_eloE = [theta5, -pi/2, 0, 0];
-param_eloF = [theta6, 0, 0, -LF];
+param_eloF = [theta6, pi, 0, -LF];
 
 % Transformações de cada elo
 OTa = trans_elo(param_eloA);
@@ -181,7 +181,6 @@ cTc1 = trans_elo(param_eloC1);
 c1Td = trans_elo(param_eloD);
 dTe = trans_elo(param_eloE);
 eTf = trans_elo(param_eloF);
-fTt= rot3("x",pi);
 
 % Criar Cilindros dos elos
 d = 50;
@@ -210,7 +209,7 @@ eloE = createCylinder(d,-LF,"xy");
 % gripper
 w = 50;
 h = 50;
-LG = -70;
+LG = 70;
 
 ruf = [w h]';
 rub = [-w h]';
@@ -238,17 +237,6 @@ td = fill3([gripper(1,2:3) gripper(1,6:7)], [gripper(2,2:3) gripper(2,6:7)], [gr
 tf = fill3(gripper(1,1:4), gripper(2,1:4), gripper(3,1:4), 'y');
 tb = fill3(gripper(1,5:8), gripper(2,5:8), gripper(3,5:8), 'y');
 
-%tranformações 
-trasO=eye(4);
-trasA=OTa;
-trasB=OTa*aTb;
-trasC=OTa*aTb*bTc;
-trasC1=OTa*aTb*bTc*cTc1;
-trasD=OTa*aTb*bTc*cTc1*c1Td;
-trasE=OTa*aTb*bTc*cTc1*c1Td*dTe;
-trastool=OTa*aTb*bTc*cTc1*c1Td*dTe*eTf;
-trastool1=OTa*aTb*bTc*cTc1*c1Td*dTe*eTf*fTt;
-
 % lista de espaços de juntas
 % a = {theta1,theta2,theta3,theta4,theta5,theta6;
 %     35,0,-40,0,50,0;
@@ -257,7 +245,7 @@ trastool1=OTa*aTb*bTc*cTc1*c1Td*dTe*eTf*fTt;
 %     15,-30,-30,20,-20,165};
 
 % calculo posicao para titulo
-OTt = OTa*aTb*bTc*cTc1*c1Td*dTe*eTf*fTt;
+OTt = OTa*aTb*bTc*cTc1*c1Td*dTe*eTf;
 p = OTt(1:3,4);
 theta = rad2deg(asin(-OTt(3,1)));
 phi = rad2deg(atan2(OTt(3,2), OTt(3,3)));
@@ -307,7 +295,7 @@ for i=2:b(1)+1
         param_eloC1 = [0, 0, 0, -LE];
         param_eloD = [theta4, pi/2, 0, 0]; 
         param_eloE = [theta5, -pi/2, 0, 0];
-        param_eloF = [theta6, 0, 0, -LF];
+        param_eloF = [theta6, pi, 0, -LF];
         
         % tranformaçao no elo
         
@@ -318,7 +306,6 @@ for i=2:b(1)+1
         c1Td = trans_elo(param_eloD);
         dTe = trans_elo(param_eloE);
         eTf = trans_elo(param_eloF);
-        fTt= rot3("x",pi);
         
         [ncxA, ncyA, nczA] = transfCylinder(OTa,eloA);
         [ncxB, ncyB, nczB] = transfCylinder(OTa*aTb,eloB);
@@ -340,7 +327,7 @@ for i=2:b(1)+1
         set(tb, 'XData',gripper(1,5:8) , 'YData',gripper(2,5:8) , 'ZData',gripper(3,5:8) )
         
 
-        OTt = OTa*aTb*bTc*cTc1*c1Td*dTe*eTf*fTt;
+        OTt = OTa*aTb*bTc*cTc1*c1Td*dTe*eTf;
         p = OTt(1:3,4);
         theta = rad2deg(asin(-OTt(3,1)));
         phi = rad2deg(atan2(OTt(3,2), OTt(3,3)));

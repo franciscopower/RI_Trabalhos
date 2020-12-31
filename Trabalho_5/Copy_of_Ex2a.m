@@ -31,7 +31,7 @@ param_eloC = [theta3, -pi/2, LD, 0];
 param_eloC1 = [0, 0, 0, -LE];
 param_eloD = [theta4, pi/2, 0, 0];
 param_eloE = [theta5, -pi/2, 0, 0];
-param_eloF = [theta6, 0, 0, -LF];
+param_eloF = [theta6, pi, 0, -LF];
 
 % Transformações de cada elo
 OTa = trans_elo(param_eloA);
@@ -41,7 +41,6 @@ cTc1 = trans_elo(param_eloC1);
 c1Td = trans_elo(param_eloD);
 dTe = trans_elo(param_eloE);
 eTf = trans_elo(param_eloF);
-fTt= rot3("x",pi);
 
 % matriz de transformação para pw
 OTw = OTa*aTb*bTc*cTc1;
@@ -91,10 +90,7 @@ theta2 = acos((L2*(sqrt(pwx^2 + pwy^2)-LB) + L1*pwz)/(L1^2 + L2^2));
 
 % matriz 4R6
 wTt = c1Td*dTe*eTf;
-wTt = simplify(wTt);
-wTf=wTt*fTt;
 wTt = simplify(wTt)
-
 
 oTw = OTa*aTb*bTc*cTc1;
 
