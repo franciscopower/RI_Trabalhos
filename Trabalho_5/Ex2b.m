@@ -40,6 +40,9 @@ for s=1:b(1)
     
     espaco_juntas = cinematicaInversa([x,y,z,phi,theta,psi],[LA,LB,LC,LD,LE,LF],[1,-1,1])
     
+    % correcao para cumprir a interacao do FANUC
+    espaco_juntas(3) = espaco_juntas(3)-espaco_juntas(2);
+    
     % cria o espaco de juntas que vai ser usado no movimento do robo
     a(s+1,1)={espaco_juntas(1)};
     a(s+1,2)={espaco_juntas(2)};
@@ -69,7 +72,7 @@ pause_time = 0.05;
 % dar os valores das juntas ao primeira posicao 
 theta1=a{1,1};
 theta2=a{1,2};
-theta3=a{1,3};
+theta3=a{1,3} + theta2;
 theta4=a{1,4};
 theta5=a{1,5};
 theta6=a{1,6};
@@ -187,18 +190,10 @@ for i=2:b(1)+1
         %nova angulo para cada angulo ate chegar ao angulo pertendido
         theta1 = theta1_incr(n);
         theta2 = theta2_incr(n);
-        theta3 = theta3_incr(n);
+        theta3 = theta3_incr(n) + theta2_incr(n);
         theta4 = theta4_incr(n);
         theta5 = theta5_incr(n);
         theta6 = theta6_incr(n);
-        
-        % matriz das tranformações % for i=2:5
-        theta1_incr = linspace(deg2rad(a{i-1,1}),deg2rad(a{i,1}),frames);
-        theta2_incr = linspace(deg2rad(a{i-1,2}),deg2rad(a{i,2}),frames);
-        theta3_incr = linspace(deg2rad(a{i-1,3}),deg2rad(a{i,3}),frames);
-        theta4_incr = linspace(deg2rad(a{i-1,4}),deg2rad(a{i,4}),frames);
-        theta5_incr = linspace(deg2rad(a{i-1,5}),deg2rad(a{i,5}),frames);
-        theta6_incr = linspace(deg2rad(a{i-1,6}),deg2rad(a{i,6}),frames);
         
         param_eloA = [theta1, -pi/2, LB,LA];
         param_eloB = [theta2-pi/2, pi, LC, 0];
