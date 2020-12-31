@@ -17,7 +17,16 @@ LF = 100;
 % ordem da lista x,y,z,phi,theta,psi
 c = {700, 0,-90,deg2rad(90),deg2rad(0),deg2rad(90);
     790, 0,-90,deg2rad(90),deg2rad(0),deg2rad(90);
-    400,0,-90,deg2rad(90),deg2rad(0),deg2rad(90);
+    500,0,-90,deg2rad(90),deg2rad(0),deg2rad(90); % possiçao que manda o projetil
+    500,0,400,deg2rad(90),deg2rad(0),deg2rad(90);
+    156,-0,816, deg2rad(30),deg2rad(-0),deg2rad(90);
+    356,-400,500, deg2rad(30),deg2rad(-0),deg2rad(90);
+    -356,-500,300, deg2rad(30),deg2rad(-0),deg2rad(-90)
+    400,25,400,deg2rad(90),deg2rad(0),deg2rad(90);
+    500,0,-90,deg2rad(90),deg2rad(0),deg2rad(90);
+    790, 200,-90,deg2rad(90),deg2rad(0),deg2rad(90);
+    500, 200,-90,deg2rad(90),deg2rad(0),deg2rad(90);
+    700, 0,-90,deg2rad(90),deg2rad(0),deg2rad(90);
     };
 
 b=size(c);
@@ -56,13 +65,13 @@ figure(1)
 hold on
 axis equal
 grid on
-axis([-300 1000 -1000 1000 -250 600])
+axis([-600 1000 -1000 1000 -250 1600])
 xlabel('x')
 ylabel('y')
 zlabel('z')
 view(30,10)
 % Animation settings
-frames = 20;
+frames = 10;
 pause_time = 0.05;
 %__________________________________________________________________________
 
@@ -237,14 +246,38 @@ title(s)
 
 % ciclo de movimentação dos elos
 
-pickup = false;
+
+
+y = [0,0,0,0;
+    0,0,0,0;
+    0,0,0,0;
+    500,0,400,pi/2;
+    500,0,400,pi/2;
+    500,0,1100,pi/2;
+    500,0,1400,pi;
+    500,0,1100,pi+pi/2;
+    500,0,400,pi/2+pi;
+    0,0,0,0;
+    0,0,0,0;
+    0,0,0,0;
+    0,0,0,0;
+    0,0,0,0;
+    0,0,0,0;
+    ];
+
+
+pickup = 0;
 for i=2:b(1)+1
-    pause()
+    pause(0.01)
     
-     if c{i-1,1}==400 && c{i-1,2}==0 && c{i-1,3}==-90
-       pickup = true;
-    elseif c{i-1,1}==0 && c{i-1,2}==10 && c{i-1,3}==4
-        pickup = false;
+     if c{i-1,1}==500 && c{i-1,2}==0 && c{i-1,3}==-90
+       pickup = 1;
+    elseif c{i-1,1}==156 && c{i-1,2}==0 && c{i-1,3}==816
+        pickup = 2;
+    elseif c{i-1,1}==400 && c{i-1,2}==0 && c{i-1,3}==400
+        pickup = 1;
+    elseif c{i-1,1}==500 && c{i-1,2}==200 && c{i-1,3}==-90
+        pickup = 0;
     end
     
     theta1_incr = linspace(deg2rad(a{i-1,1}),deg2rad(a{i,1}),frames);
@@ -254,6 +287,12 @@ for i=2:b(1)+1
     theta5_incr = linspace(deg2rad(a{i-1,5}),deg2rad(a{i,5}),frames);
     theta6_incr = linspace(deg2rad(a{i-1,6}),deg2rad(a{i,6}),frames);
     
+    if pickup==2
+      x_incr = linspace(y(i-1,1),y(i,1),frames);
+           y_incr = linspace(y(i-1,2),y(i,2),frames);
+           z_incr = linspace(y(i-1,3),y(i,3),frames);
+           ang_incr = linspace(y(i-1,4),y(i,4),frames);
+    end
     for n=1:frames
         
         %nova angulo para cada angulo ate chegar ao angulo pertendido
@@ -263,14 +302,6 @@ for i=2:b(1)+1
         theta4 = theta4_incr(n);
         theta5 = theta5_incr(n);
         theta6 = theta6_incr(n);
-        
-        % matriz das tranformações % for i=2:5
-        theta1_incr = linspace(deg2rad(a{i-1,1}),deg2rad(a{i,1}),frames);
-        theta2_incr = linspace(deg2rad(a{i-1,2}),deg2rad(a{i,2}),frames);
-        theta3_incr = linspace(deg2rad(a{i-1,3}),deg2rad(a{i,3}),frames);
-        theta4_incr = linspace(deg2rad(a{i-1,4}),deg2rad(a{i,4}),frames);
-        theta5_incr = linspace(deg2rad(a{i-1,5}),deg2rad(a{i,5}),frames);
-        theta6_incr = linspace(deg2rad(a{i-1,6}),deg2rad(a{i,6}),frames);
         
         param_eloA = [theta1, -pi/2, LB,LA];
         param_eloB = [theta2-pi/2, pi, LC, 0];
@@ -308,8 +339,16 @@ for i=2:b(1)+1
         set(tf, 'XData',gripper(1,1:4) , 'YData',gripper(2,1:4) , 'ZData',gripper(3,1:4) )
         set(tb, 'XData',gripper(1,5:8) , 'YData',gripper(2,5:8) , 'ZData',gripper(3,5:8) )
         
-        if pickup
+        
+         
+         
+         
+        if pickup==1
             objeto = OTa*aTb*bTc*cTc1*c1Td*dTe*eTf*rot3('z',pi/2)*trans3(0,-25,10)*pts_objeto;
+        end
+        
+        if pickup==2  
+           objeto = trans3(x_incr(n),y_incr(n),z_incr(n))*rot3('y',ang_incr(n))*pts_objeto; 
         end
         
         set(objetof, 'XData',objeto(1,1:4) , 'YData',objeto(2,1:4) , 'ZData', objeto(3,1:4))

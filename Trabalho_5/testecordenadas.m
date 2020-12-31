@@ -30,10 +30,10 @@ LEEE = 280;
 LF = 100;
 
 theta1 = deg2rad(0);
-theta2 = deg2rad(37.4);
-theta3 = deg2rad(-34) ;
+theta2 = deg2rad(-30.4);
+theta3 = deg2rad(-31.8+60) ;
 theta4 = deg2rad(0);
-theta5 = deg2rad(70);
+theta5 = deg2rad(1.38);
 theta6 = deg2rad(90);
 
 % Atribuição do sistema de coordenadas
