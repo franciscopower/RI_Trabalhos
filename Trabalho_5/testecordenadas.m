@@ -1,58 +1,6 @@
-% valor pertendidos do ponto final 
-close all
 clear all
-% clc
-
-LA = 0;
-LB = 150;
-LC = 360;
-LD = 100;
-LE = 430;
-LEE = 150;
-LEEE = 280;
-LF = 100;
-
-% ordem da lista x,y,z,phi,theta,psi
-c = {680, 0,460,deg2rad(-135),deg2rad(-90),deg2rad(-45);
-    526.03,368.32,177.6,deg2rad(0),deg2rad(-80),deg2rad(-145);
-    338.21, 236.82,452.38,deg2rad(0),deg2rad(-40),deg2rad(-145);
-    -223.5,948.6,19.4,deg2rad(147.7),deg2rad(67.6),deg2rad(-127.5);
-    445.1,107.2,108.6,deg2rad(-170),deg2rad(40.6),deg2rad(-159.9);
-    };
-
-b=size(c);
-a=cell(b(1),6);
-a(1,1)={0};
-a(1,2)={0};
-a(1,3)={0};
-a(1,4)={0};
-a(1,5)={0};
-a(1,6)={0};
-
-for s=1:b(1)
-    
-    x=c{s,1};
-    y=c{s,2};
-    z=c{s,3};
-    phi= c{s,4};
-    theta= c{s,5};
-    psi= c{s,6};
-    
-    espaco_juntas = cinematicaInversa([x,y,z,phi,theta,psi],[LA,LB,LC,LD,LE,LF],[1,-1,1])
-    
-    % correcao para cumprir a interacao do FANUC
-    espaco_juntas(3) = espaco_juntas(3)-espaco_juntas(2);
-    
-    % cria o espaco de juntas que vai ser usado no movimento do robo
-    a(s+1,1)={espaco_juntas(1)};
-    a(s+1,2)={espaco_juntas(2)};
-    a(s+1,3)={espaco_juntas(3)};
-    a(s+1,4)={espaco_juntas(4)};
-    a(s+1,5)={espaco_juntas(5)};
-    a(s+1,6)={espaco_juntas(6)};
-end
-
-%%%___________________movimentacao do braco________________________________
+close all
+clc
 
 % Create figure
 figure(1)
@@ -67,15 +15,26 @@ view(30,10)
 % Animation settings
 frames = 20;
 pause_time = 0.05;
-%__________________________________________________________________________
 
-% dar os valores das juntas ao primeira posicao 
-theta1=a{1,1};
-theta2=a{1,2};
-theta3=a{1,3} + theta2;
-theta4=a{1,4};
-theta5=a{1,5};
-theta6=a{1,6};
+
+%% Ex1 --------------------------------------------------------------------
+
+% Dados
+LA = 0;
+LB = 150;
+LC = 360;
+LD = 100;
+LE = 430;
+LEE = 150;
+LEEE = 280;
+LF = 100;
+
+theta1 = deg2rad(0);
+theta2 = deg2rad(-30.4);
+theta3 = deg2rad(-31.8+60) ;
+theta4 = deg2rad(0);
+theta5 = deg2rad(1.38);
+theta6 = deg2rad(90);
 
 % Atribuição do sistema de coordenadas
 %eloN = [theta, alfa, l, d]
@@ -151,12 +110,26 @@ td = fill3([gripper(1,2:3) gripper(1,6:7)], [gripper(2,2:3) gripper(2,6:7)], [gr
 tf = fill3(gripper(1,1:4), gripper(2,1:4), gripper(3,1:4), 'y');
 tb = fill3(gripper(1,5:8), gripper(2,5:8), gripper(3,5:8), 'y');
 
+
+%tranformações 
+trasO=eye(4);
+trasA=OTa;
+trasB=OTa*aTb;
+trasC=OTa*aTb*bTc;
+trasC1=OTa*aTb*bTc*cTc1;
+trasD=OTa*aTb*bTc*cTc1*c1Td;
+trasE=OTa*aTb*bTc*cTc1*c1Td*dTe;
+trastool=OTa*aTb*bTc*cTc1*c1Td*dTe*eTf;
+
+
+
+hold off
 % lista de espaços de juntas
-% a = {theta1,theta2,theta3,theta4,theta5,theta6;
-%     35,0,-40,0,50,0;
-%     35,-40,0,0,50,0;
-%     105,60,-30,120,-20,40
-%     15,-30,-30,20,-20,165};
+a = {0,0,0,0,0,0;
+    35,0,-40,0,50,0;
+    35,-40,0,0,50,0;
+    105,60,-30,120,-20,40
+    15,-30,-30,20,-20,165};
 
 % calculo posicao para titulo
 OTt = OTa*aTb*bTc*cTc1*c1Td*dTe*eTf;
@@ -166,17 +139,18 @@ phi = rad2deg(atan2(OTt(3,2), OTt(3,3)));
 psi = rad2deg(atan2(OTt(2,1), OTt(1,1)));
 
 % End factor
-r = [p; phi; theta; psi];
+r = [p; phi; theta; psi]
 
 s1 = "End factor [x y z \phi \theta \psi]: ";
 s2 = sprintf("[%1.1f %1.1f %1.1f %1.1f %1.1f %1.1f]", r(1), r(2), r(3), r(4), r(5), r(6));
 s = strcat(s1, s2);
 title(s)
 
+
 % ciclo de movimentação dos elos
 
-for i=2:b(1)+1
-    pause(1)
+for i=2:5
+    pause()
     
     theta1_incr = linspace(deg2rad(a{i-1,1}),deg2rad(a{i,1}),frames);
     theta2_incr = linspace(deg2rad(a{i-1,2}),deg2rad(a{i,2}),frames);
@@ -190,10 +164,18 @@ for i=2:b(1)+1
         %nova angulo para cada angulo ate chegar ao angulo pertendido
         theta1 = theta1_incr(n);
         theta2 = theta2_incr(n);
-        theta3 = theta3_incr(n) + theta2_incr(n);
+        theta3 = theta3_incr(n) + theta2;
         theta4 = theta4_incr(n);
         theta5 = theta5_incr(n);
         theta6 = theta6_incr(n);
+        
+        % matriz das tranformações % for i=2:5
+        theta1_incr = linspace(deg2rad(a{i-1,1}),deg2rad(a{i,1}),frames);
+        theta2_incr = linspace(deg2rad(a{i-1,2}),deg2rad(a{i,2}),frames);
+        theta3_incr = linspace(deg2rad(a{i-1,3}),deg2rad(a{i,3}),frames);
+        theta4_incr = linspace(deg2rad(a{i-1,4}),deg2rad(a{i,4}),frames);
+        theta5_incr = linspace(deg2rad(a{i-1,5}),deg2rad(a{i,5}),frames);
+        theta6_incr = linspace(deg2rad(a{i-1,6}),deg2rad(a{i,6}),frames);
         
         param_eloA = [theta1, -pi/2, LB,LA];
         param_eloB = [theta2-pi/2, pi, LC, 0];
@@ -233,6 +215,18 @@ for i=2:b(1)+1
         set(tb, 'XData',gripper(1,5:8) , 'YData',gripper(2,5:8) , 'ZData',gripper(3,5:8) )
         
 
+        %tranformações
+        trasO=eye(4);
+        trasA=OTa;
+        trasB=OTa*aTb;
+        trasC=OTa*aTb*bTc;
+        trasC1=OTa*aTb*bTc*cTc1;
+        trasD=OTa*aTb*bTc*cTc1*c1Td;
+        trasE=OTa*aTb*bTc*cTc1*c1Td*dTe;
+        trastool=OTa*aTb*bTc*cTc1*c1Td*dTe*eTf;
+        
+        
+     
         OTt = OTa*aTb*bTc*cTc1*c1Td*dTe*eTf;
         p = OTt(1:3,4);
         theta = rad2deg(asin(-OTt(3,1)));
@@ -252,27 +246,5 @@ for i=2:b(1)+1
     end
     
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

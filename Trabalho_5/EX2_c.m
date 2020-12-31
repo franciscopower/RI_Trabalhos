@@ -3,6 +3,8 @@ close all
 clear all
 % clc
 
+
+%___________________________________
 LA = 0;
 LB = 150;
 LC = 360;
@@ -13,11 +15,18 @@ LEEE = 280;
 LF = 100;
 
 % ordem da lista x,y,z,phi,theta,psi
-c = {680, 0,460,deg2rad(-135),deg2rad(-90),deg2rad(-45);
-    526.03,368.32,177.6,deg2rad(0),deg2rad(-80),deg2rad(-145);
-    338.21, 236.82,452.38,deg2rad(0),deg2rad(-40),deg2rad(-145);
-    -223.5,948.6,19.4,deg2rad(147.7),deg2rad(67.6),deg2rad(-127.5);
-    445.1,107.2,108.6,deg2rad(-170),deg2rad(40.6),deg2rad(-159.9);
+c = {700, 0,-90,deg2rad(90),deg2rad(0),deg2rad(90);
+    790, 0,-90,deg2rad(90),deg2rad(0),deg2rad(90);
+    500,0,-90,deg2rad(90),deg2rad(0),deg2rad(90); % possiçao que manda o projetil
+    500,0,400,deg2rad(90),deg2rad(0),deg2rad(90);
+    156,-0,816, deg2rad(30),deg2rad(-0),deg2rad(90);
+    356,-400,500, deg2rad(30),deg2rad(-0),deg2rad(90);
+    -356,-500,300, deg2rad(30),deg2rad(-0),deg2rad(-90)
+    400,25,400,deg2rad(90),deg2rad(0),deg2rad(90);
+    500,0,-90,deg2rad(90),deg2rad(0),deg2rad(90);
+    790, 200,-90,deg2rad(90),deg2rad(0),deg2rad(90);
+    500, 200,-90,deg2rad(90),deg2rad(0),deg2rad(90);
+    700, 0,-90,deg2rad(90),deg2rad(0),deg2rad(90);
     };
 
 b=size(c);
@@ -40,9 +49,6 @@ for s=1:b(1)
     
     espaco_juntas = cinematicaInversa([x,y,z,phi,theta,psi],[LA,LB,LC,LD,LE,LF],[1,-1,1])
     
-    % correcao para cumprir a interacao do FANUC
-    espaco_juntas(3) = espaco_juntas(3)-espaco_juntas(2);
-    
     % cria o espaco de juntas que vai ser usado no movimento do robo
     a(s+1,1)={espaco_juntas(1)};
     a(s+1,2)={espaco_juntas(2)};
@@ -59,20 +65,20 @@ figure(1)
 hold on
 axis equal
 grid on
-axis([-300 1000 -1000 1000 -250 600])
+axis([-600 1000 -1000 1000 -250 1600])
 xlabel('x')
 ylabel('y')
 zlabel('z')
 view(30,10)
 % Animation settings
-frames = 20;
+frames = 10;
 pause_time = 0.05;
 %__________________________________________________________________________
 
 % dar os valores das juntas ao primeira posicao 
 theta1=a{1,1};
 theta2=a{1,2};
-theta3=a{1,3} + theta2;
+theta3=a{1,3};
 theta4=a{1,4};
 theta5=a{1,5};
 theta6=a{1,6};
@@ -95,6 +101,13 @@ cTc1 = trans_elo(param_eloC1);
 c1Td = trans_elo(param_eloD);
 dTe = trans_elo(param_eloE);
 eTf = trans_elo(param_eloF);
+
+%Tranfomacoes objto
+OTobjt=trans3(800,-25,-90);
+OTobjr=rot3('y',pi/2);
+
+%tranformaçoes mesa
+OTmesa=trans3(800,-200,-250)
 
 % Criar Cilindros dos elos
 d = 50;
@@ -120,6 +133,41 @@ eloE = createCylinder(d,-LF,"xy");
 [cxE, cyE, czE] = transfCylinder(OTa*aTb*bTc*cTc1*c1Td*dTe,eloE);
 
 
+% pontos do objeto
+w = 50;
+h = 75;
+l = 60;
+
+ruf = [l w h]';
+rub = [-l w h]';
+lub = [-l 0 h]';
+luf = [l 0 h]';
+rdf = [l w 0]';
+rdb = [-l w 0]';
+ldb = [-l 0 0]';
+ldf = [l 0 0]';
+
+pts_objeto = [luf ldf rdf ruf rub rdb ldb lub;
+    ones(1,8)];
+
+% pontos da mesa
+w = 500;
+h = 100;
+l = 90;
+
+ruf = [l w h]';
+rub = [-l w h]';
+lub = [-l 0 h]';
+luf = [l 0 h]';
+rdf = [l w 0]';
+rdb = [-l w 0]';
+ldb = [-l 0 0]';
+ldf = [l 0 0]';
+
+pts_mesa = [luf ldf rdf ruf rub rdb ldb lub;
+    ones(1,8)];
+
+
 % gripper
 w = 50;
 h = 50;
@@ -138,6 +186,29 @@ pts_gripper = [luf ldf rdf ruf rub rdb ldb lub;
     LG 0 0 LG LG 0 0 LG;
     ones(1,8)];
 gripper = OTa*aTb*bTc*cTc1*c1Td*dTe*eTf*pts_gripper;
+
+%coordenadas do objcto 
+objeto = OTobjt*OTobjr*pts_objeto;
+
+%coordenadas objeto
+mesa = OTmesa*pts_mesa;
+
+% display object
+objetof = fill3(objeto(1,1:4), objeto(2,1:4), objeto(3,1:4), 'c');
+objetor = fill3(objeto(1,3:6), objeto(2,3:6), objeto(3,3:6), 'c');
+objetob = fill3(objeto(1,5:8), objeto(2,5:8), objeto(3,5:8), 'c');
+objetol = fill3([objeto(1,1:2) objeto(1,7:8)] , [objeto(2,1:2) objeto(2,7:8)], [objeto(3,1:2) objeto(3,7:8)], 'c');
+objetou = fill3([objeto(1,1) objeto(1,4:5) objeto(1,8)] , [objeto(2,1) objeto(2,4:5) objeto(2,8)], [objeto(3,1) objeto(3,4:5) objeto(3,8)], 'c');
+objetod = fill3([objeto(1,2:3) objeto(1,6:7)] , [objeto(2,2:3) objeto(2,6:7)], [objeto(3,2:3) objeto(3,6:7)], 'c');
+
+% Display table
+mesaf = fill3(mesa(1,1:4), mesa(2,1:4), mesa(3,1:4), 'r');
+mesar = fill3(mesa(1,3:6), mesa(2,3:6), mesa(3,3:6), 'r');
+mesab = fill3(mesa(1,5:8), mesa(2,5:8), mesa(3,5:8), 'r');
+mesal = fill3([mesa(1,1:2) mesa(1,7:8)] , [mesa(2,1:2) mesa(2,7:8)], [mesa(3,1:2) mesa(3,7:8)], 'r');
+mesau = fill3([mesa(1,1) mesa(1,4:5) mesa(1,8)] , [mesa(2,1) mesa(2,4:5) mesa(2,8)], [mesa(3,1) mesa(3,4:5) mesa(3,8)], 'r');
+mesad = fill3([mesa(1,2:3) mesa(1,6:7)] , [mesa(2,2:3) mesa(2,6:7)], [mesa(3,2:3) mesa(3,6:7)], 'r');
+
 
 %
 O = surf(cxO, cyO, czO, 'FaceColor', 'r');
@@ -175,8 +246,39 @@ title(s)
 
 % ciclo de movimentação dos elos
 
+
+
+y = [0,0,0,0;
+    0,0,0,0;
+    0,0,0,0;
+    500,0,400,pi/2;
+    500,0,400,pi/2;
+    500,0,1100,pi/2;
+    500,0,1400,pi;
+    500,0,1100,pi+pi/2;
+    500,0,400,pi/2+pi;
+    0,0,0,0;
+    0,0,0,0;
+    0,0,0,0;
+    0,0,0,0;
+    0,0,0,0;
+    0,0,0,0;
+    ];
+
+
+pickup = 0;
 for i=2:b(1)+1
-    pause(1)
+    pause(0.01)
+    
+     if c{i-1,1}==500 && c{i-1,2}==0 && c{i-1,3}==-90
+       pickup = 1;
+    elseif c{i-1,1}==156 && c{i-1,2}==0 && c{i-1,3}==816
+        pickup = 2;
+    elseif c{i-1,1}==400 && c{i-1,2}==0 && c{i-1,3}==400
+        pickup = 1;
+    elseif c{i-1,1}==500 && c{i-1,2}==200 && c{i-1,3}==-90
+        pickup = 0;
+    end
     
     theta1_incr = linspace(deg2rad(a{i-1,1}),deg2rad(a{i,1}),frames);
     theta2_incr = linspace(deg2rad(a{i-1,2}),deg2rad(a{i,2}),frames);
@@ -185,12 +287,18 @@ for i=2:b(1)+1
     theta5_incr = linspace(deg2rad(a{i-1,5}),deg2rad(a{i,5}),frames);
     theta6_incr = linspace(deg2rad(a{i-1,6}),deg2rad(a{i,6}),frames);
     
+    if pickup==2
+      x_incr = linspace(y(i-1,1),y(i,1),frames);
+           y_incr = linspace(y(i-1,2),y(i,2),frames);
+           z_incr = linspace(y(i-1,3),y(i,3),frames);
+           ang_incr = linspace(y(i-1,4),y(i,4),frames);
+    end
     for n=1:frames
         
         %nova angulo para cada angulo ate chegar ao angulo pertendido
         theta1 = theta1_incr(n);
         theta2 = theta2_incr(n);
-        theta3 = theta3_incr(n) + theta2_incr(n);
+        theta3 = theta3_incr(n);
         theta4 = theta4_incr(n);
         theta5 = theta5_incr(n);
         theta6 = theta6_incr(n);
@@ -204,7 +312,6 @@ for i=2:b(1)+1
         param_eloF = [theta6, pi, 0, -LF];
         
         % tranformaçao no elo
-        
         OTa = trans_elo(param_eloA);
         aTb = trans_elo(param_eloB);
         bTc = trans_elo(param_eloC);
@@ -232,6 +339,27 @@ for i=2:b(1)+1
         set(tf, 'XData',gripper(1,1:4) , 'YData',gripper(2,1:4) , 'ZData',gripper(3,1:4) )
         set(tb, 'XData',gripper(1,5:8) , 'YData',gripper(2,5:8) , 'ZData',gripper(3,5:8) )
         
+        
+         
+         
+         
+        if pickup==1
+            objeto = OTa*aTb*bTc*cTc1*c1Td*dTe*eTf*rot3('z',pi/2)*trans3(0,-25,10)*pts_objeto;
+        end
+        
+        if pickup==2  
+           objeto = trans3(x_incr(n),y_incr(n),z_incr(n))*rot3('y',ang_incr(n))*pts_objeto; 
+        end
+        
+        set(objetof, 'XData',objeto(1,1:4) , 'YData',objeto(2,1:4) , 'ZData', objeto(3,1:4))
+        set(objetor, 'XData',objeto(1,3:6) , 'YData',objeto(2,3:6) , 'ZData', objeto(3,3:6))
+        set(objetob, 'XData',objeto(1,5:8) , 'YData', objeto(2,5:8), 'ZData',objeto(3,5:8) )
+        set(objetol, 'XData',[objeto(1,1:2) objeto(1,7:8)] , 'YData', [objeto(2,1:2) objeto(2,7:8)], 'ZData',[objeto(3,1:2) objeto(3,7:8)] )
+        set(objetou, 'XData',[objeto(1,1) objeto(1,4:5) objeto(1,8)] , 'YData',  [objeto(2,1) objeto(2,4:5) objeto(2,8)], 'ZData',[objeto(3,1) objeto(3,4:5) objeto(3,8)] )
+        set( objetod, 'XData',[objeto(1,2:3) objeto(1,6:7)] , 'YData', [objeto(2,2:3) objeto(2,6:7)], 'ZData',[objeto(3,2:3) objeto(3,6:7)] )
+        
+        
+        
 
         OTt = OTa*aTb*bTc*cTc1*c1Td*dTe*eTf;
         p = OTt(1:3,4);
@@ -252,6 +380,26 @@ for i=2:b(1)+1
     end
     
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
