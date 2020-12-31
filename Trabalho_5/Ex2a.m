@@ -90,10 +90,10 @@ oTw = OTa*aTb*bTc*cTc1;
 wTt = oTw^-1 * oTt_i;
 
 % calculo theta5
-theta5 = atan2(+sqrt(wTt(1,3)^2 + wTt(2,3)^2),-wTt(3,3));
+theta5 = atan2(+sqrt(wTt(1,3)^2 + wTt(2,3)^2),-wTt(3,3))
 % redundancia do punho: sinal da raiz quadrada no calculo do theta5
 
 % calculo theta4
-theta4 = atan2(wTt(2,3)*sin(theta5), wTt(1,3)*sin(theta5));
+theta4 = atan2(wTt(2,3)*sin(theta5), wTt(1,3)*sin(theta5))
 % calculo theta6
-theta6 = atan2(wTt(3,2)*sin(theta5), wTt(3,1)*sin(theta5));
+theta6 = atan2(wTt(3,2)*sin(theta5), wTt(3,1)*sin(theta5))

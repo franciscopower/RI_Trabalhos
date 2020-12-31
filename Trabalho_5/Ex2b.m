@@ -3,6 +3,8 @@ close all
 clear all
 % clc
 
+espaco_redundancias = [1,-1,1];
+
 LA = 0;
 LB = 150;
 LC = 360;
@@ -38,7 +40,7 @@ for s=1:b(1)
     theta= c{s,5};
     psi= c{s,6};
     
-    espaco_juntas = cinematicaInversa([x,y,z,phi,theta,psi],[LA,LB,LC,LD,LE,LF],[1,-1,1])
+    espaco_juntas = cinematicaInversa([x,y,z,phi,theta,psi],[LA,LB,LC,LD,LE,LF],espaco_redundancias)
     
     % correcao para cumprir a interacao do FANUC
     espaco_juntas(3) = espaco_juntas(3)-espaco_juntas(2);
