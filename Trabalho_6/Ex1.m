@@ -55,34 +55,27 @@ trasA=OTa;
 trasB=OTa*aTb;
 
 % lista de espaços de juntas
-a = {0,0;
-    10,10 };
-aA_0 = 0;
-aB_0 = 0;
+a = [0,0;
+    10,10];
+
 
 % calculo posicao para titulo
 OTt = OTa*aTb;
 p = OTt(1:3,4);
-theta = rad2deg(asin(-OTt(3,1)));
-phi = rad2deg(atan2(OTt(3,2), OTt(3,3)));
-psi = rad2deg(atan2(OTt(2,1), OTt(1,1)));
-
-% End factor
-r = [p; phi; theta; psi];
-
 s1 = "End factor [x y z]: ";
-s2 = sprintf("[%1.1f %1.1f %1.1f]", r(1), r(2), r(3));
+s2 = sprintf("[%1.1f %1.1f %1.1f]", p(1), p(2), p(3));
 s = strcat(s1, s2);
 title(s)
 
-
 % ciclo de movimentação dos elos
 
-for i=2:2
+aA_0 = 0;
+aB_0 = 0;
+for i=2:size(a,1)
     pause(1)
     
-    x = a{i,1};
-    y = a{i,2};
+    x = a(i,1);
+    y = a(i,2);
     espaco_juntas = cinematicaInversa([x,y],[LA,LB],-1);
     aA = espaco_juntas(1);
     aB = espaco_juntas(2);
@@ -109,26 +102,18 @@ for i=2:2
         
         set(A, 'XData', ncxA, 'YData', ncyA, 'ZData', nczA)
         set(B, 'XData', ncxB, 'YData', ncyB, 'ZData', nczB)
-       
-     
+
+        % calculate endfactor -----------------------------------------
         OTt = OTa*aTb;
         p = OTt(1:3,4);
-        theta = rad2deg(asin(-OTt(3,1)));
-        phi = rad2deg(atan2(OTt(3,2), OTt(3,3)));
-        psi = rad2deg(atan2(OTt(2,1), OTt(1,1)));
-        
-        % End factor
-        r = [p; phi; theta; psi];
-        
         s1 = "End factor [x y z]: ";
-        s2 = sprintf("[%1.1f %1.1f %1.1f]", r(1), r(2), r(3));
+        s2 = sprintf("[%1.1f %1.1f %1.1f]", p(1), p(2), p(3));
         s = strcat(s1, s2);
         title(s)
         
-        plot3(r(1),r(2),r(3),'.b')
+        plot3(p(1),p(2),p(3),'.b')
         
         pause(pause_time)
-        
     end
     
     aA_0 = aA;
