@@ -24,8 +24,6 @@ pw = [x;y;z] - LF*oTt_i(1:3,3);
 pwx = pw(1); pwy=pw(2); pwz=pw(3);
 
 %----------------------------------------------
-%calculo theta1
-theta1=atan2(pwy,pwx);
 
 %calculo theta3
 dp = (sqrt(pwx^2 + pwy^2) - LB)^2 + pwz^2;
@@ -41,6 +39,10 @@ L1 = LC + LD*cos(theta3) + LE*sin(theta3);
 L2 = LE*cos(theta3) - LD*sin(theta3);
 C2 = (L2*(sqrt(pwx^2 + pwy^2)-LB) + L1*pwz)/(L1^2 + L2^2);
 theta2 = asin((L1*C2 - pwz)/L2);
+
+%calculo theta1
+aux = (LB + LC*sin(theta2) + LE*cos(theta2 - theta3) + LD*sin(theta2 - theta3));
+theta1=atan2(pwy*aux,pwx*aux);
 
 %     redundancia theta1 - inadmissivel
 if redundancias(1) == -1

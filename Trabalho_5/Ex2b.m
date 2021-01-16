@@ -3,7 +3,7 @@ close all
 clear all
 % clc
 
-espaco_redundancias = [1,-1,1];
+espaco_redundancias = [1,-1,-1];
 
 LA = 0;
 LB = 150;
