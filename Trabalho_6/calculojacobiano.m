@@ -11,13 +11,6 @@ syms theta1 theta2 theta3 theta4 theta5 theta6
 syms pwx pwy pwz
 syms dp dp1 dp2
 
-% matriz de transformação global
-oTt_i = [
-    cos(theta)*cos(psi) cos(psi)*sin(phi)*sin(theta)-cos(phi)*sin(psi) cos(phi)*cos(psi)*sin(theta)+sin(phi)*sin(psi) x;
-    cos(theta)*sin(psi) cos(phi)*cos(psi)+sin(phi)*sin(theta)*sin(psi) -cos(psi)*sin(phi)+cos(phi)*sin(theta)*sin(psi) y;
-    -sin(theta) cos(theta)*sin(phi) cos(phi)*cos(theta) z;
-    0 0 0 1];
-
 % Tabela de Denavit-Hartenberg
 % param_eloN = [theta, alfa, l, d]
 param_eloA = [theta1, -pi/2, LB,LA];
@@ -43,9 +36,9 @@ OTT = simplify(OTT)
 
 % PX Py PZ
 
-Px=OTT(1,4)
-Py=OTT(2,4)
-Pz=OTT(3,4)
+Px=OTT(1,4);
+Py=OTT(2,4);
+Pz=OTT(3,4);
 
 % jacobiano 
 
