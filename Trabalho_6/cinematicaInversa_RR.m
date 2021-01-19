@@ -1,4 +1,4 @@
-function [espaco_juntas] = cinematicaInversa(end_factor, dim_elos, redundancias)
+function [espaco_juntas] = cinematicaInversa_RR(end_factor, dim_elos, redundancias)
 
 LA = dim_elos(1);
 LB = dim_elos(2);

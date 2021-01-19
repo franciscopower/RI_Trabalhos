@@ -13,16 +13,25 @@ ylabel('y')
 zlabel('z')
 % view(30,10)
 view(0,90)
+
+%% Dados --------------------------------------------------------------------
+
+% Comprimentos dos elos
+LA = 15;
+LB = 15;
+%diametro dos elos
+d = 2; 
+%ponto inicial
+Pi = [15,15];
+redundancia = -1;
+% raio do circulo
+r=10; 
+sentido_rot = -1;
 % Animation settings
-frames = 20;
-pause_time = 0.01;
+pause_time = 0.005;
 n_iter = 500;
 
 %% Ex1 --------------------------------------------------------------------
-
-% Dados
-LA = 15;
-LB = 15;
 
 theta1 = deg2rad(0);
 theta2 = deg2rad(0);
@@ -37,7 +46,7 @@ OTa = trans_elo(param_eloA);
 aTb = trans_elo(param_eloB);
 
 % Criar Cilindros dos elos
-d = 2;
+
 eloA = createCylinder(d,-LA,"yz");
 [cxA, cyA, czA] = transfCylinder(OTa,eloA);
 eloB = createCylinder(d,-LB,"yz");
@@ -53,21 +62,14 @@ s2 = sprintf("[%1.1f %1.1f %1.1f]", p(1), p(2), p(3));
 s = strcat(s1, s2);
 title(s)
 
-%ponto inicial
-Pi = [20,10];
-redundancia = -1;
-% raio do circulo
-r=10; 
-
 % cálculo cinematica diferencial inversa
 t = linspace(0,2*pi,n_iter);
-Qi = cinematicaInversa(Pi,[LA,LB],redundancia);
+Qi = cinematicaInversa_RR(Pi,[LA,LB],redundancia);
 Q(:,1) = [deg2rad(Qi(1));deg2rad(Qi(2))];
-R = [p(1);p(2)];
 
 for i=1:n_iter
    
-    dr = [-r*sin(t(i))*(2*pi/n_iter);
+    dr = [sentido_rot*r*sin(t(i))*(2*pi/n_iter);
         r*cos(t(i))*(2*pi/n_iter)];
     
     th1 = Q(1,end);
@@ -76,7 +78,6 @@ for i=1:n_iter
     jacob_inv = (1/(LA*sin(th2))) * jacob_inv;    
     dq = jacob_inv * dr;
     
-    R = R + dr;
     q = [th1; th2];
     Q = [Q q+dq];
     
