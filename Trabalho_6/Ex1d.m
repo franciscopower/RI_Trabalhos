@@ -28,7 +28,7 @@ redundancia = -1;
 r=10; 
 sentido_rot = -1;
 % Animation settings
-pause_time = 0.005;
+pause_time = 0.01;
 n_iter = 500;
 
 %% Ex1 --------------------------------------------------------------------
