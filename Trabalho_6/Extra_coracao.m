@@ -10,7 +10,7 @@ figure(1)
 hold on
 axis equal
 grid on
-axis([-300 1000 -1000 1000 -250 600])
+axis([-3000 10000 -10000 10000 -2500 6000])
 xlabel('x')
 ylabel('y')
 zlabel('z')
@@ -18,20 +18,20 @@ view(30,10)
 
 % Comprimentos dos elos
 LA = 0;
-LB = 150;
-LC = 360;
-LD = 100;
-LE = 430;
-LEE = 150;
-LEEE = 280;
-LF = 100;
+LB = 1500;
+LC = 3600;
+LD = 1000;
+LE = 4300;
+LEE = 1500;
+LEEE = 2800;
+LF = 1000;
 %diametro dos elos
-d = 50;
+d = 500;
 %ponto inicial
-Pi = [680, 0,200,deg2rad(-135),deg2rad(-90),deg2rad(-45)];
+Pi = [6800, 0,2000,deg2rad(-135),deg2rad(-90),deg2rad(-45)];
 espaco_redundancias = [1,-1,1];
 % Animation settings
-pause_time = 0.001;
+pause_time = 0.0001;
 n_iter = 500;
 
 %%
@@ -67,7 +67,7 @@ eTf = trans_elo(param_eloF);
 
 % Criar Cilindros dos elos
 
-eloO = createCylinder(d,-250,"xy");
+eloO = createCylinder(d,-2500,"xy");
 [cxO, cyO, czO] = transfCylinder(eye(4),eloO);
 
 eloA = createCylinder(d,-LB,"yz");
@@ -98,7 +98,7 @@ B = surf(cxB, cyB, czB, 'FaceColor', 'y');
 C = surf(cxC, cyC, czC, 'FaceColor', 'y');
 C1 = surf(cxC1, cyC1, czC1, 'FaceColor', 'y');
 D = surf(cxD, cyD, czD, 'FaceColor', 'y');
-E = surf(cxE, cyE, czE, 'FaceColor', 'k');
+E = surf(cxE, cyE, czE, 'FaceColor', 'y');
 
 % calculo posicao para titulo
 OTt = OTa*aTb*bTc*cTc1*c1Td*dTe*eTf;
@@ -117,19 +117,23 @@ title(s)
 
 % cálculo cinematica diferencial inversa
 %ponto inicial
-Pi = [680, 0,200,deg2rad(-135),deg2rad(-90),deg2rad(-45)];
+Pi = [6800, 0,2000,deg2rad(-135),deg2rad(-90),deg2rad(-45)];
 % circulo
-R=200; 
+R=20; 
 sentido_rot = -1;
 
 t = linspace(0,2*pi,n_iter);
 Q(:,1) = [deg2rad(Qi(1));deg2rad(Qi(2));deg2rad(Qi(3));deg2rad(Qi(4));deg2rad(Qi(5));deg2rad(Qi(6))];
 for i=1:n_iter
     
-%     expressoes dr
+    % expressoes dr
+%     dr = [0;
+%         sentido_rot*R*sin(t(i))*(2*pi/n_iter);
+%         R*cos(t(i))*(2*pi/n_iter)];
+
     dr = [0;
-        sentido_rot*R*sin(t(i))*(2*pi/n_iter);
-        R*cos(t(i))*(2*pi/n_iter)];
+        48*cos(t(i))*sin(t(i))^2;
+        10*sin(2*t(i)) + 6*sin(3*t(i)) + 4*sin(4*t(i)) - 13*sin(t(i))];
     
     % cinematica differencial
     theta1 = Q(1,end); theta2 = Q(2,end); theta3 = Q(3,end); theta4 = Q(4,end); theta5 = Q(5,end); theta6 = Q(6,end);
