@@ -3,7 +3,6 @@ close all
 clear all
 clc
 
-
 %___________________________________imput_desenho_livre____________________
 
 prompt = {'Numero de pontos a desenhar:'};
@@ -12,18 +11,28 @@ definput = {'5'};
 dims = [1 40];
 opts.Interpreter = 'tex';
 answer = inputdlg(prompt,dlgtitle,dims,definput,opts);
-
 numero_pontos=str2num(answer{1});
 
 figure(1)
 axis equal
-axis([-1000 1000 0 600])
+axis([-780 780 -250 600])
 xlabel('x')
 ylabel('y')
-
+title('Clique nos pontos a onde pretende ir')
+hold on
+% desenhar circulo
+th = 0:pi/50:2*pi;
+xunit = 780 * cos(th) + 0;
+yunit = (600+250)/2 * sin(th) + (600-250)/2;
+plot(xunit, yunit);
+% input de pontos
 [x_input,y_input]=ginput(numero_pontos)
-
+hold off
 close(1)
+
+%ponto inicial
+Pi = [680, x_input(1),y_input(1),deg2rad(-135),deg2rad(-90),deg2rad(-45)];
+espaco_redundancias = [1,-1,1];
 %______________________________ Dados__________________________________
 
 % Create figure
@@ -38,7 +47,6 @@ zlabel('z')
 % view(90,0)
 view(70,10)
 
-
 % Comprimentos dos elos
 LA = 0;
 LB = 150;
@@ -50,15 +58,12 @@ LEEE = 280;
 LF = 100;
 %diametro dos elos
 d = 50;
-%ponto inicial
-Pi = [680, 0,200,deg2rad(-135),deg2rad(-90),deg2rad(-45)];
-espaco_redundancias = [1,-1,1];
+
 % Animation settings
 pause_time = 0.0001;
-n_iter = 400;
+n_iter = 200;
 
 %__________________________________________________________________
-
 
 
 % dar os valores das juntas ao primeira posicao 
@@ -135,48 +140,42 @@ psi = rad2deg(atan2(OTt(2,1), OTt(1,1)));
 % End factor
 r = [p; phi; theta; psi];
 
-s1 = "End factor [x y z \phi \theta \psi]: ";
-s2 = sprintf("[%1.1f %1.1f %1.1f %1.1f %1.1f %1.1f]", r(1), r(2), r(3), r(4), r(5), r(6));
+s1 = "End factor [x y z]: ";
+s2 = sprintf("[%1.1f %1.1f %1.1f]", r(1), r(2), r(3));
 s = strcat(s1, s2);
 title(s)
 
 % cálculo cinematica diferencial inversa
-%ponto inicial
-Pi = [680, 0,200,deg2rad(-135),deg2rad(-90),deg2rad(-45)];
-% circulo
-R=200; 
-sentido_rot = -1;
 
-t = linspace(0,2*pi,n_iter);
 Q(:,1) = [deg2rad(Qi(1));deg2rad(Qi(2));deg2rad(Qi(3));deg2rad(Qi(4));deg2rad(Qi(5));deg2rad(Qi(6))];
-
-
 
 for p=2:numero_pontos
     
-    declibe=(y_input(p)-y_input(p-1))/(x_input(p)-y_input(p-1))
+    declibe=(y_input(p)-y_input(p-1))/(x_input(p)-x_input(p-1));
 
-
-for i=1:n_iter
-    
-%     expressoes dr
-    dr = [0;
-        (x_input(p)-x_input(p-1))/n_iter;
-        (declibe*(x_input(p)-x_input(p-1)))/n_iter];
-    
-    % cinematica differencial
-    theta1 = Q(1,end); theta2 = Q(2,end); theta3 = Q(3,end); theta4 = Q(4,end); theta5 = Q(5,end); theta6 = Q(6,end);
-    jacob = [LD*cos(theta2)*sin(theta1)*sin(theta3) - LC*sin(theta1)*sin(theta2) - LE*cos(theta2)*cos(theta3)*sin(theta1) - LB*sin(theta1) - LD*cos(theta3)*sin(theta1)*sin(theta2) - LF*cos(theta1)*sin(theta4)*sin(theta5) - LE*sin(theta1)*sin(theta2)*sin(theta3) - LF*cos(theta2)*cos(theta3)*cos(theta5)*sin(theta1) - LF*cos(theta5)*sin(theta1)*sin(theta2)*sin(theta3) + LF*cos(theta2)*cos(theta4)*sin(theta1)*sin(theta3)*sin(theta5) - LF*cos(theta3)*cos(theta4)*sin(theta1)*sin(theta2)*sin(theta5), LC*cos(theta1)*cos(theta2) + LD*cos(theta1)*cos(theta2)*cos(theta3) + LE*cos(theta1)*cos(theta2)*sin(theta3) - LE*cos(theta1)*cos(theta3)*sin(theta2) + LD*cos(theta1)*sin(theta2)*sin(theta3) + LF*cos(theta1)*cos(theta2)*cos(theta5)*sin(theta3) - LF*cos(theta1)*cos(theta3)*cos(theta5)*sin(theta2) + LF*cos(theta1)*cos(theta4)*sin(theta2)*sin(theta3)*sin(theta5) + LF*cos(theta1)*cos(theta2)*cos(theta3)*cos(theta4)*sin(theta5), LE*cos(theta1)*cos(theta3)*sin(theta2) - LE*cos(theta1)*cos(theta2)*sin(theta3) - LD*cos(theta1)*cos(theta2)*cos(theta3) - LD*cos(theta1)*sin(theta2)*sin(theta3) - LF*cos(theta1)*cos(theta2)*cos(theta5)*sin(theta3) + LF*cos(theta1)*cos(theta3)*cos(theta5)*sin(theta2) - LF*cos(theta1)*cos(theta4)*sin(theta2)*sin(theta3)*sin(theta5) - LF*cos(theta1)*cos(theta2)*cos(theta3)*cos(theta4)*sin(theta5), LF*cos(theta1)*cos(theta2)*sin(theta3)*sin(theta4)*sin(theta5) - LF*cos(theta4)*sin(theta1)*sin(theta5) - LF*cos(theta1)*cos(theta3)*sin(theta2)*sin(theta4)*sin(theta5), LF*cos(theta1)*cos(theta3)*cos(theta4)*cos(theta5)*sin(theta2) - LF*cos(theta1)*cos(theta2)*cos(theta3)*sin(theta5) - LF*cos(theta1)*sin(theta2)*sin(theta3)*sin(theta5) - LF*cos(theta1)*cos(theta2)*cos(theta4)*cos(theta5)*sin(theta3) - LF*cos(theta5)*sin(theta1)*sin(theta4), 0;
+    for i=1:n_iter
+        
+        %     expressoes dr
+        dr = [0;
+            (x_input(p)-x_input(p-1))/n_iter;
+            (declibe*(x_input(p)-x_input(p-1)))/n_iter];
+        
+        % cinematica differencial
+        theta1 = Q(1,end); theta2 = Q(2,end); theta3 = Q(3,end); theta4 = Q(4,end); theta5 = Q(5,end); theta6 = Q(6,end);
+        jacob = [LD*cos(theta2)*sin(theta1)*sin(theta3) - LC*sin(theta1)*sin(theta2) - LE*cos(theta2)*cos(theta3)*sin(theta1) - LB*sin(theta1) - LD*cos(theta3)*sin(theta1)*sin(theta2) - LF*cos(theta1)*sin(theta4)*sin(theta5) - LE*sin(theta1)*sin(theta2)*sin(theta3) - LF*cos(theta2)*cos(theta3)*cos(theta5)*sin(theta1) - LF*cos(theta5)*sin(theta1)*sin(theta2)*sin(theta3) + LF*cos(theta2)*cos(theta4)*sin(theta1)*sin(theta3)*sin(theta5) - LF*cos(theta3)*cos(theta4)*sin(theta1)*sin(theta2)*sin(theta5), LC*cos(theta1)*cos(theta2) + LD*cos(theta1)*cos(theta2)*cos(theta3) + LE*cos(theta1)*cos(theta2)*sin(theta3) - LE*cos(theta1)*cos(theta3)*sin(theta2) + LD*cos(theta1)*sin(theta2)*sin(theta3) + LF*cos(theta1)*cos(theta2)*cos(theta5)*sin(theta3) - LF*cos(theta1)*cos(theta3)*cos(theta5)*sin(theta2) + LF*cos(theta1)*cos(theta4)*sin(theta2)*sin(theta3)*sin(theta5) + LF*cos(theta1)*cos(theta2)*cos(theta3)*cos(theta4)*sin(theta5), LE*cos(theta1)*cos(theta3)*sin(theta2) - LE*cos(theta1)*cos(theta2)*sin(theta3) - LD*cos(theta1)*cos(theta2)*cos(theta3) - LD*cos(theta1)*sin(theta2)*sin(theta3) - LF*cos(theta1)*cos(theta2)*cos(theta5)*sin(theta3) + LF*cos(theta1)*cos(theta3)*cos(theta5)*sin(theta2) - LF*cos(theta1)*cos(theta4)*sin(theta2)*sin(theta3)*sin(theta5) - LF*cos(theta1)*cos(theta2)*cos(theta3)*cos(theta4)*sin(theta5), LF*cos(theta1)*cos(theta2)*sin(theta3)*sin(theta4)*sin(theta5) - LF*cos(theta4)*sin(theta1)*sin(theta5) - LF*cos(theta1)*cos(theta3)*sin(theta2)*sin(theta4)*sin(theta5), LF*cos(theta1)*cos(theta3)*cos(theta4)*cos(theta5)*sin(theta2) - LF*cos(theta1)*cos(theta2)*cos(theta3)*sin(theta5) - LF*cos(theta1)*sin(theta2)*sin(theta3)*sin(theta5) - LF*cos(theta1)*cos(theta2)*cos(theta4)*cos(theta5)*sin(theta3) - LF*cos(theta5)*sin(theta1)*sin(theta4), 0;
             LB*cos(theta1) + LC*cos(theta1)*sin(theta2) + LE*cos(theta1)*cos(theta2)*cos(theta3) - LD*cos(theta1)*cos(theta2)*sin(theta3) + LD*cos(theta1)*cos(theta3)*sin(theta2) + LE*cos(theta1)*sin(theta2)*sin(theta3) - LF*sin(theta1)*sin(theta4)*sin(theta5) + LF*cos(theta1)*cos(theta2)*cos(theta3)*cos(theta5) + LF*cos(theta1)*cos(theta5)*sin(theta2)*sin(theta3) - LF*cos(theta1)*cos(theta2)*cos(theta4)*sin(theta3)*sin(theta5) + LF*cos(theta1)*cos(theta3)*cos(theta4)*sin(theta2)*sin(theta5), LC*cos(theta2)*sin(theta1) + LD*cos(theta2)*cos(theta3)*sin(theta1) + LE*cos(theta2)*sin(theta1)*sin(theta3) - LE*cos(theta3)*sin(theta1)*sin(theta2) + LD*sin(theta1)*sin(theta2)*sin(theta3) + LF*cos(theta2)*cos(theta5)*sin(theta1)*sin(theta3) - LF*cos(theta3)*cos(theta5)*sin(theta1)*sin(theta2) + LF*cos(theta2)*cos(theta3)*cos(theta4)*sin(theta1)*sin(theta5) + LF*cos(theta4)*sin(theta1)*sin(theta2)*sin(theta3)*sin(theta5), LE*cos(theta3)*sin(theta1)*sin(theta2) - LE*cos(theta2)*sin(theta1)*sin(theta3) - LD*cos(theta2)*cos(theta3)*sin(theta1) - LD*sin(theta1)*sin(theta2)*sin(theta3) - LF*cos(theta2)*cos(theta5)*sin(theta1)*sin(theta3) + LF*cos(theta3)*cos(theta5)*sin(theta1)*sin(theta2) - LF*cos(theta2)*cos(theta3)*cos(theta4)*sin(theta1)*sin(theta5) - LF*cos(theta4)*sin(theta1)*sin(theta2)*sin(theta3)*sin(theta5), LF*cos(theta1)*cos(theta4)*sin(theta5) + LF*cos(theta2)*sin(theta1)*sin(theta3)*sin(theta4)*sin(theta5) - LF*cos(theta3)*sin(theta1)*sin(theta2)*sin(theta4)*sin(theta5), LF*cos(theta1)*cos(theta5)*sin(theta4) - LF*cos(theta2)*cos(theta3)*sin(theta1)*sin(theta5) - LF*sin(theta1)*sin(theta2)*sin(theta3)*sin(theta5) - LF*cos(theta2)*cos(theta4)*cos(theta5)*sin(theta1)*sin(theta3) + LF*cos(theta3)*cos(theta4)*cos(theta5)*sin(theta1)*sin(theta2), 0;
-             0,                                                                                                             LD*cos(theta2)*sin(theta3) - LE*cos(theta2)*cos(theta3) - LC*sin(theta2) - LD*cos(theta3)*sin(theta2) - LE*sin(theta2)*sin(theta3) - LF*cos(theta2)*cos(theta3)*cos(theta5) - LF*cos(theta5)*sin(theta2)*sin(theta3) + LF*cos(theta2)*cos(theta4)*sin(theta3)*sin(theta5) - LF*cos(theta3)*cos(theta4)*sin(theta2)*sin(theta5),                                                                                                 LE*cos(theta2)*cos(theta3) - LD*cos(theta2)*sin(theta3) + LD*cos(theta3)*sin(theta2) + LE*sin(theta2)*sin(theta3) + LF*cos(theta2)*cos(theta3)*cos(theta5) + LF*cos(theta5)*sin(theta2)*sin(theta3) - LF*cos(theta2)*cos(theta4)*sin(theta3)*sin(theta5) + LF*cos(theta3)*cos(theta4)*sin(theta2)*sin(theta5),                                                                - LF*cos(theta2)*cos(theta3)*sin(theta4)*sin(theta5) - LF*sin(theta2)*sin(theta3)*sin(theta4)*sin(theta5),                                                                                          LF*cos(theta3)*sin(theta2)*sin(theta5) - LF*cos(theta2)*sin(theta3)*sin(theta5) + LF*cos(theta2)*cos(theta3)*cos(theta4)*cos(theta5) + LF*cos(theta4)*cos(theta5)*sin(theta2)*sin(theta3), 0];
-    jacob_inv = pinv(jacob);
-    dq = jacob_inv * dr;
-    q = [theta1; theta2; theta3; theta4; theta5; theta6];
-    Q = [Q q+dq];
+            0,                                                                                                             LD*cos(theta2)*sin(theta3) - LE*cos(theta2)*cos(theta3) - LC*sin(theta2) - LD*cos(theta3)*sin(theta2) - LE*sin(theta2)*sin(theta3) - LF*cos(theta2)*cos(theta3)*cos(theta5) - LF*cos(theta5)*sin(theta2)*sin(theta3) + LF*cos(theta2)*cos(theta4)*sin(theta3)*sin(theta5) - LF*cos(theta3)*cos(theta4)*sin(theta2)*sin(theta5),                                                                                                 LE*cos(theta2)*cos(theta3) - LD*cos(theta2)*sin(theta3) + LD*cos(theta3)*sin(theta2) + LE*sin(theta2)*sin(theta3) + LF*cos(theta2)*cos(theta3)*cos(theta5) + LF*cos(theta5)*sin(theta2)*sin(theta3) - LF*cos(theta2)*cos(theta4)*sin(theta3)*sin(theta5) + LF*cos(theta3)*cos(theta4)*sin(theta2)*sin(theta5),                                                                - LF*cos(theta2)*cos(theta3)*sin(theta4)*sin(theta5) - LF*sin(theta2)*sin(theta3)*sin(theta4)*sin(theta5),                                                                                          LF*cos(theta3)*sin(theta2)*sin(theta5) - LF*cos(theta2)*sin(theta3)*sin(theta5) + LF*cos(theta2)*cos(theta3)*cos(theta4)*cos(theta5) + LF*cos(theta4)*cos(theta5)*sin(theta2)*sin(theta3), 0];
+        jacob_inv = pinv(jacob);
+        dq = jacob_inv * dr;
+        q = [theta1; theta2; theta3; theta4; theta5; theta6];
+        Q = [Q q+dq];
+    end
+    
+    
 end
 
 % ciclo de movimentação dos elos
-end
+
 for i=1:1
     pause(0.1)
     
@@ -239,8 +238,8 @@ for i=1:1
         % End factor
         r = [p; phi; theta; psi];
         
-        s1 = "End factor [x y z \phi \theta \psi]: ";
-        s2 = sprintf("[%1.1f %1.1f %1.1f %1.1f %1.1f %1.1f]", r(1), r(2), r(3), r(4), r(5), r(6));
+        s1 = "End factor [x y z]: ";
+        s2 = sprintf("[%1.1f %1.1f %1.1f]", r(1), r(2), r(3));
         s = strcat(s1, s2);
         title(s)
         
