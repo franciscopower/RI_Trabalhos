@@ -28,6 +28,7 @@ LF = 100;
 %diametro dos elos
 d = 50;
 %ponto inicial
+
 Pi = [680, 0,200,deg2rad(-135),deg2rad(-90),deg2rad(-45)];
 espaco_redundancias = [1,-1,1];
 % Animation settings
@@ -115,21 +116,22 @@ s2 = sprintf("[%1.1f %1.1f %1.1f %1.1f %1.1f %1.1f]", r(1), r(2), r(3), r(4), r(
 s = strcat(s1, s2);
 title(s)
 
-% cálculo cinematica diferencial inversa
-%ponto inicial
-Pi = [680, 0,200,deg2rad(-135),deg2rad(-90),deg2rad(-45)];
-% circulo
-R=200; 
-sentido_rot = -1;
+% cálculo cinematica diferencial inversa ----------------------------------
 
-t = linspace(0,2*pi,n_iter);
+%ponto inicial
+
+points_from_figure
+
 Q(:,1) = [deg2rad(Qi(1));deg2rad(Qi(2));deg2rad(Qi(3));deg2rad(Qi(4));deg2rad(Qi(5));deg2rad(Qi(6))];
-for i=1:n_iter
-    
+
+
+
+for i=1:5:size(x,1)-1
+        
 %     expressoes dr
     dr = [0;
-        sentido_rot*R*sin(t(i))*(2*pi/n_iter);
-        R*cos(t(i))*(2*pi/n_iter)];
+        x(i+1,1)-x(i,1);
+        y(i+1,1)-y(i,1)];
     
     % cinematica differencial
     theta1 = Q(1,end); theta2 = Q(2,end); theta3 = Q(3,end); theta4 = Q(4,end); theta5 = Q(5,end); theta6 = Q(6,end);
@@ -142,7 +144,7 @@ for i=1:n_iter
     Q = [Q q+dq];
 end
 
-% ciclo de movimentação dos elos
+% ciclo de movimentação dos elos ------------------------------------------
 
 for i=1:1
     pause(1)
